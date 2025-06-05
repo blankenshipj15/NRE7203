@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>NRE7203: Advanced Reactor Physics &#8212; NRE7203 0.0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css?v=12dfc556" />
+    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css?v=7f9a90b1" />
+    <script src="../_static/documentation_options.js?v=d45e8c67"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Project 2: Placeholder" href="project2.html" />
+    <link rel="prev" title="Project 1: Weighted Delta Tracking" href="project1.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="nre7203-advanced-reactor-physics">
+<h1>NRE7203: Advanced Reactor Physics<a class="headerlink" href="#nre7203-advanced-reactor-physics" title="Link to this heading">¶</a></h1>
+<p>Copyright (c) Dan Kotlyar</p>
+<p>Under Copyright law, you do not have the right to provide these notes to
+anyone else or to make any commercial use of them without express prior
+permission from me.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># import relevant packages</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;font.size&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">16</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="n">matplotlib</span> <span class="n">inline</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;figure.figsize&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">6</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span> <span class="c1"># Set default figure size</span>
+</pre></div>
+</div>
+</section>
+<section id="neutron-transport-with-monte-carlo">
+<h1>Neutron Transport with Monte Carlo<a class="headerlink" href="#neutron-transport-with-monte-carlo" title="Link to this heading">¶</a></h1>
+<section id="description">
+<h2>Description<a class="headerlink" href="#description" title="Link to this heading">¶</a></h2>
+<p>The purpose of this workshop is to implement <strong>two techniques</strong> that are
+used in Monte Carlo codes: 1. Surface (ray-tracing) - <strong>ST</strong> 2. Delta
+tracking - <strong>DT</strong>.</p>
+<section id="problem-set-up">
+<h3>Problem set-up<a class="headerlink" href="#problem-set-up" title="Link to this heading">¶</a></h3>
+<p>We will have a point source (located at the origin) surrounded with
+multiple shells of heterogeneous materials having unique cross sections.
+Our objectives are to calculate the: - Flux distribution, which for
+simplicity is defined as the neutrons crossing a certain surface -
+Leakage from the system (i.e., sphere)</p>
+</section>
+</section>
+<section id="set-of-exercises">
+<h2>Set of exercises<a class="headerlink" href="#set-of-exercises" title="Link to this heading">¶</a></h2>
+<p>You are required to complete the following exercises: 1. Analytic
+solution 2. Ray-tracing 3. Delta tracking</p>
+<section id="analytic-solution">
+<h3>Analytic solution<a class="headerlink" href="#analytic-solution" title="Link to this heading">¶</a></h3>
+<p>The programming will be done within the <code class="docutils literal notranslate"><span class="pre">pointsource_sphere.py</span></code> file.
+Note that we use object-oriented programming. This is not mandatory and
+only done here as a means of demonestration.</p>
+<p>Open the file to familiarize yourself with the <code class="docutils literal notranslate"><span class="pre">__init__</span></code> method. This
+is done together with the lecturer. Note that the entire volume is
+divided to equal-volume shells, according to which the corresponding
+radii are calculated. Also, the total and absorption cross sections are
+identical (i.e., no scattering)</p>
+<p><strong>Complete</strong> the <code class="docutils literal notranslate"><span class="pre">_Analytic</span></code> function that enables to calculate the
+analytic solution.</p>
+<p>The <em>analytic solution</em> can be derived as:</p>
+<p><span class="math notranslate nohighlight">\(\frac{I(R_i)}{I_0}={\prod}_{j=1}^i e^{-\Sigma_{t,j}\Delta R_j}\)</span></p>
+<p>with the <em>leakage calculated</em> when <span class="math notranslate nohighlight">\(i\)</span> represents the last shell
+(i.e., <span class="math notranslate nohighlight">\(R_{sphere}\)</span>)</p>
+<p><strong>Import the class</strong>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">mc</span> <span class="o">=</span> <span class="n">PointSourceInSphere</span><span class="p">(</span><span class="n">nMC</span><span class="p">,</span> <span class="n">S0</span><span class="p">,</span> <span class="n">R</span><span class="p">,</span> <span class="n">sigT</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>where, - <code class="docutils literal notranslate"><span class="pre">nMC</span></code> is the number of Monte Carlo repetitive simulations -
+<code class="docutils literal notranslate"><span class="pre">S0</span></code> is the number of source neutrons - <code class="docutils literal notranslate"><span class="pre">R</span></code> is the radius of the
+sphere in cm - <code class="docutils literal notranslate"><span class="pre">sigT</span></code> total cross section array for all the different
+regions</p>
+<p><strong>results</strong> are stored under the <code class="docutils literal notranslate"><span class="pre">resAN</span></code>, <code class="docutils literal notranslate"><span class="pre">resST</span></code>, <code class="docutils literal notranslate"><span class="pre">resDT</span></code>
+dictionaries on the created <code class="docutils literal notranslate"><span class="pre">mc</span></code> object.</p>
+<p><strong>Define inputs and execute analytic solution</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pointsource_sphere</span><span class="w"> </span><span class="kn">import</span> <span class="n">PointSourceInSphere</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">xs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">low</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">,</span> <span class="n">high</span> <span class="o">=</span> <span class="mf">0.25</span><span class="p">,</span> <span class="n">size</span> <span class="o">=</span> <span class="p">(</span><span class="mi">30</span><span class="p">))</span>
+<span class="c1"># xs[6] = 3</span>
+<span class="n">mc</span> <span class="o">=</span> <span class="n">PointSourceInSphere</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">10000</span><span class="p">,</span> <span class="mf">12.0</span><span class="p">,</span> <span class="n">xs</span><span class="p">)</span> <span class="c1"># np.full(10, 0.1)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">xs</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="mf">0.176501</span>   <span class="mf">0.2070751</span>  <span class="mf">0.20427257</span> <span class="mf">0.15860559</span> <span class="mf">0.15637731</span> <span class="mf">0.2024238</span>
+ <span class="mf">0.24527605</span> <span class="mf">0.11580691</span> <span class="mf">0.17080137</span> <span class="mf">0.16303241</span> <span class="mf">0.24845441</span> <span class="mf">0.11987619</span>
+ <span class="mf">0.11850086</span> <span class="mf">0.19295638</span> <span class="mf">0.12545192</span> <span class="mf">0.11110262</span> <span class="mf">0.1135676</span>  <span class="mf">0.19371089</span>
+ <span class="mf">0.13655721</span> <span class="mf">0.17385801</span> <span class="mf">0.13937613</span> <span class="mf">0.21607866</span> <span class="mf">0.20794862</span> <span class="mf">0.2116668</span>
+ <span class="mf">0.21684943</span> <span class="mf">0.21385561</span> <span class="mf">0.24084494</span> <span class="mf">0.24641954</span> <span class="mf">0.21830522</span> <span class="mf">0.20647605</span><span class="p">]</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="n">edgecolor</span> <span class="o">=</span> <span class="s2">&quot;black&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Macroscopic Cross Sections&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;$\Sigma_t$ [cm$^{-1}]$&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Count&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<img alt="../_images/NRE7203_MC_vStudents_21_0.png" src="../_images/NRE7203_MC_vStudents_21_0.png" />
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mc</span><span class="o">.</span><span class="n">Solve</span><span class="p">(</span><span class="s1">&#39;analytic&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mc</span><span class="o">.</span><span class="n">resAN</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s1">&#39;flx&#39;</span><span class="p">:</span> <span class="n">array</span><span class="p">([</span><span class="mf">5057.87143099</span><span class="p">,</span> <span class="mf">4108.60232796</span><span class="p">,</span> <span class="mf">3558.16652675</span><span class="p">,</span> <span class="mf">3255.46798368</span><span class="p">,</span>
+        <span class="mf">3023.1831431</span> <span class="p">,</span> <span class="mf">2780.27472072</span><span class="p">,</span> <span class="mf">2539.05908582</span><span class="p">,</span> <span class="mf">2442.08649843</span><span class="p">,</span>
+        <span class="mf">2316.43020042</span><span class="p">,</span> <span class="mf">2210.48994692</span><span class="p">,</span> <span class="mf">2067.79734731</span><span class="p">,</span> <span class="mf">2006.08323396</span><span class="p">,</span>
+        <span class="mf">1950.04626966</span><span class="p">,</span> <span class="mf">1866.43523431</span><span class="p">,</span> <span class="mf">1816.41550644</span><span class="p">,</span> <span class="mf">1775.09479823</span><span class="p">,</span>
+        <span class="mf">1735.49524434</span><span class="p">,</span> <span class="mf">1672.45361355</span><span class="p">,</span> <span class="mf">1630.9404321</span> <span class="p">,</span> <span class="mf">1581.32040348</span><span class="p">,</span>
+        <span class="mf">1543.88796282</span><span class="p">,</span> <span class="mf">1489.32778613</span><span class="p">,</span> <span class="mf">1440.13023952</span><span class="p">,</span> <span class="mf">1393.08242889</span><span class="p">,</span>
+        <span class="mf">1347.73242121</span><span class="p">,</span> <span class="mf">1305.57582611</span><span class="p">,</span> <span class="mf">1260.81778628</span><span class="p">,</span> <span class="mf">1217.67124598</span><span class="p">,</span>
+        <span class="mf">1181.53989588</span><span class="p">,</span> <span class="mf">1149.09739488</span><span class="p">]),</span>
+ <span class="s1">&#39;leakage&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">(</span><span class="mf">0.11490973948821107</span><span class="p">)}</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Leakage = </span><span class="si">{:.2f}</span><span class="s2"> %&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="mi">100</span><span class="o">*</span><span class="n">mc</span><span class="o">.</span><span class="n">resAN</span><span class="p">[</span><span class="s1">&#39;leakage&#39;</span><span class="p">]))</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Leakage</span> <span class="o">=</span> <span class="mf">11.49</span> <span class="o">%</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Sanity check</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Expected leakage = </span><span class="si">{:.2f}</span><span class="s2"> %&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="mi">100</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mi">12</span><span class="o">*</span><span class="mf">0.1</span><span class="p">)))</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Expected</span> <span class="n">leakage</span> <span class="o">=</span> <span class="mf">30.12</span> <span class="o">%</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mc</span><span class="o">.</span><span class="n">PlotFluxes</span><span class="p">(</span><span class="s1">&#39;analytic&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<img alt="../_images/NRE7203_MC_vStudents_26_0.png" src="../_images/NRE7203_MC_vStudents_26_0.png" />
+</section>
+<section id="ray-tracing">
+<h3>Ray-tracing<a class="headerlink" href="#ray-tracing" title="Link to this heading">¶</a></h3>
+<p>Complete the <code class="docutils literal notranslate"><span class="pre">_SolveST</span></code> method. Note that the sampling of the point
+source should not be performed at all as it is known that all the
+neutrons are born in the origin. However, the purpose was to describe
+the general sampling approach within the sphere.</p>
+<p>Also, all the source neutrons are sampled simultaneously (vectorized) as
+opposed to one-by-one. <strong>The general approach of ST is</strong>: 1. Sample
+<span class="math notranslate nohighlight">\(x_0\)</span>, <span class="math notranslate nohighlight">\(y_0\)</span>, <span class="math notranslate nohighlight">\(z_0\)</span> 2. Sample distance traveled
+<span class="math notranslate nohighlight">\(S_i\)</span> 3. Update the position <span class="math notranslate nohighlight">\(x_1\)</span>, <span class="math notranslate nohighlight">\(y_1\)</span>, <span class="math notranslate nohighlight">\(z_1\)</span>
+4. Check if the position is within the shell where the neutrons
+originated or not - If within the shell, then terminate the neutron -
+Otherwise, promote the neutron in the same direction to the end of the
+shell and update <span class="math notranslate nohighlight">\(x_0\)</span>, <span class="math notranslate nohighlight">\(y_0\)</span>, <span class="math notranslate nohighlight">\(z_0\)</span> and go to step 2.
+5. If the neutron crossses the last shell terminate it 6. Our scoring is
+fairly random here and we will be scoring neutrons that crossed a
+specific surface. This is easy to do with ST and in this specific case
+even easier as all the neutrons are traveling in the radial direction
+only and no scattering events are happening.</p>
+<p><strong>Define inputs and execute ST solution</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mc</span><span class="o">.</span><span class="n">Solve</span><span class="p">(</span><span class="s1">&#39;ST&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mc</span><span class="o">.</span><span class="n">resST</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s1">&#39;flx&#39;</span><span class="p">:</span> <span class="n">array</span><span class="p">([</span><span class="mf">5055.96</span><span class="p">,</span> <span class="mf">4107.85</span><span class="p">,</span> <span class="mf">3556.88</span><span class="p">,</span> <span class="mf">3250.15</span><span class="p">,</span> <span class="mf">3019.65</span><span class="p">,</span> <span class="mf">2776.33</span><span class="p">,</span> <span class="mf">2533.93</span><span class="p">,</span>
+        <span class="mf">2437.31</span><span class="p">,</span> <span class="mf">2311.56</span><span class="p">,</span> <span class="mf">2205.74</span><span class="p">,</span> <span class="mf">2064.87</span><span class="p">,</span> <span class="mf">2003.87</span><span class="p">,</span> <span class="mf">1948.32</span><span class="p">,</span> <span class="mf">1865.53</span><span class="p">,</span>
+        <span class="mf">1815.14</span><span class="p">,</span> <span class="mf">1774.27</span><span class="p">,</span> <span class="mf">1735.73</span><span class="p">,</span> <span class="mf">1673.44</span><span class="p">,</span> <span class="mf">1631.6</span> <span class="p">,</span> <span class="mf">1583.96</span><span class="p">,</span> <span class="mf">1545.84</span><span class="p">,</span>
+        <span class="mf">1491.15</span><span class="p">,</span> <span class="mf">1442.66</span><span class="p">,</span> <span class="mf">1394.99</span><span class="p">,</span> <span class="mf">1349.67</span><span class="p">,</span> <span class="mf">1307.64</span><span class="p">,</span> <span class="mf">1262.09</span><span class="p">,</span> <span class="mf">1219.2</span> <span class="p">,</span>
+        <span class="mf">1183.31</span><span class="p">,</span> <span class="mf">1151.85</span><span class="p">]),</span>
+ <span class="s1">&#39;fluxsim&#39;</span><span class="p">:</span> <span class="n">array</span><span class="p">([[</span><span class="mf">5145.</span><span class="p">,</span> <span class="mf">4991.</span><span class="p">,</span> <span class="mf">4956.</span><span class="p">,</span> <span class="o">...</span><span class="p">,</span> <span class="mf">5113.</span><span class="p">,</span> <span class="mf">5072.</span><span class="p">,</span> <span class="mf">5049.</span><span class="p">],</span>
+        <span class="p">[</span><span class="mf">4192.</span><span class="p">,</span> <span class="mf">4093.</span><span class="p">,</span> <span class="mf">4016.</span><span class="p">,</span> <span class="o">...</span><span class="p">,</span> <span class="mf">4133.</span><span class="p">,</span> <span class="mf">4098.</span><span class="p">,</span> <span class="mf">4112.</span><span class="p">],</span>
+        <span class="p">[</span><span class="mf">3669.</span><span class="p">,</span> <span class="mf">3544.</span><span class="p">,</span> <span class="mf">3519.</span><span class="p">,</span> <span class="o">...</span><span class="p">,</span> <span class="mf">3538.</span><span class="p">,</span> <span class="mf">3574.</span><span class="p">,</span> <span class="mf">3526.</span><span class="p">],</span>
+        <span class="o">...</span><span class="p">,</span>
+        <span class="p">[</span><span class="mf">1267.</span><span class="p">,</span> <span class="mf">1210.</span><span class="p">,</span> <span class="mf">1235.</span><span class="p">,</span> <span class="o">...</span><span class="p">,</span> <span class="mf">1227.</span><span class="p">,</span> <span class="mf">1163.</span><span class="p">,</span> <span class="mf">1194.</span><span class="p">],</span>
+        <span class="p">[</span><span class="mf">1233.</span><span class="p">,</span> <span class="mf">1161.</span><span class="p">,</span> <span class="mf">1200.</span><span class="p">,</span> <span class="o">...</span><span class="p">,</span> <span class="mf">1186.</span><span class="p">,</span> <span class="mf">1132.</span><span class="p">,</span> <span class="mf">1161.</span><span class="p">],</span>
+        <span class="p">[</span><span class="mf">1208.</span><span class="p">,</span> <span class="mf">1119.</span><span class="p">,</span> <span class="mf">1163.</span><span class="p">,</span> <span class="o">...</span><span class="p">,</span> <span class="mf">1155.</span><span class="p">,</span> <span class="mf">1104.</span><span class="p">,</span> <span class="mf">1126.</span><span class="p">]],</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">30</span><span class="p">,</span> <span class="mi">100</span><span class="p">)),</span>
+ <span class="s1">&#39;errflx&#39;</span><span class="p">:</span> <span class="n">array</span><span class="p">([</span><span class="mf">50.43628059</span><span class="p">,</span> <span class="mf">47.97131956</span><span class="p">,</span> <span class="mf">46.43388418</span><span class="p">,</span> <span class="mf">45.76753762</span><span class="p">,</span> <span class="mf">44.22677357</span><span class="p">,</span>
+        <span class="mf">40.0140113</span> <span class="p">,</span> <span class="mf">38.97852101</span><span class="p">,</span> <span class="mf">37.99597215</span><span class="p">,</span> <span class="mf">38.1639411</span> <span class="p">,</span> <span class="mf">38.54623717</span><span class="p">,</span>
+        <span class="mf">36.77870444</span><span class="p">,</span> <span class="mf">36.94608369</span><span class="p">,</span> <span class="mf">37.41173078</span><span class="p">,</span> <span class="mf">35.99290347</span><span class="p">,</span> <span class="mf">35.88649328</span><span class="p">,</span>
+        <span class="mf">35.75831512</span><span class="p">,</span> <span class="mf">35.8449034</span> <span class="p">,</span> <span class="mf">34.35005677</span><span class="p">,</span> <span class="mf">33.89011655</span><span class="p">,</span> <span class="mf">31.83172003</span><span class="p">,</span>
+        <span class="mf">31.77128263</span><span class="p">,</span> <span class="mf">31.30954327</span><span class="p">,</span> <span class="mf">29.8952237</span> <span class="p">,</span> <span class="mf">29.84308798</span><span class="p">,</span> <span class="mf">30.33745375</span><span class="p">,</span>
+        <span class="mf">29.43688842</span><span class="p">,</span> <span class="mf">28.9257999</span> <span class="p">,</span> <span class="mf">29.77784411</span><span class="p">,</span> <span class="mf">29.03160175</span><span class="p">,</span> <span class="mf">28.68357544</span><span class="p">]),</span>
+ <span class="s1">&#39;leakage&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">(</span><span class="mf">0.11518500000000004</span><span class="p">),</span>
+ <span class="s1">&#39;errleakage&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">(</span><span class="mf">0.0028683575439613523</span><span class="p">)}</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">mc</span><span class="o">.</span><span class="n">resST</span><span class="p">[</span><span class="s1">&#39;fluxsim&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">((</span><span class="n">mc</span><span class="o">.</span><span class="n">resST</span><span class="p">[</span><span class="s1">&#39;flx&#39;</span><span class="p">])</span><span class="o">-</span><span class="p">(</span><span class="n">mc</span><span class="o">.</span><span class="n">resAN</span><span class="p">[</span><span class="s1">&#39;flx&#39;</span><span class="p">])))</span><span class="o">/</span><span class="p">(</span><span class="n">mc</span><span class="o">.</span><span class="n">resAN</span><span class="p">[</span><span class="s1">&#39;flx&#39;</span><span class="p">]))</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mf">50.43628059244654</span>
+<span class="p">[</span><span class="mf">0.00046266</span> <span class="mf">0.00056955</span> <span class="mf">0.00065766</span> <span class="mf">0.00071881</span> <span class="mf">0.00077404</span> <span class="mf">0.00084166</span>
+ <span class="mf">0.00092162</span> <span class="mf">0.00095822</span> <span class="mf">0.0010102</span>  <span class="mf">0.00105861</span> <span class="mf">0.00113166</span> <span class="mf">0.00116648</span>
+ <span class="mf">0.0012</span>     <span class="mf">0.00125375</span> <span class="mf">0.00128828</span> <span class="mf">0.00131827</span> <span class="mf">0.00134835</span> <span class="mf">0.00139917</span>
+ <span class="mf">0.00143479</span> <span class="mf">0.00147981</span> <span class="mf">0.00151569</span> <span class="mf">0.00157121</span> <span class="mf">0.00162489</span> <span class="mf">0.00167977</span>
+ <span class="mf">0.00173629</span> <span class="mf">0.00179235</span> <span class="mf">0.00185598</span> <span class="mf">0.00192174</span> <span class="mf">0.00198051</span> <span class="mf">0.00203643</span><span class="p">]</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mc</span><span class="o">.</span><span class="n">PlotFluxes</span><span class="p">(</span><span class="s1">&#39;ST&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<img alt="../_images/NRE7203_MC_vStudents_33_0.png" src="../_images/NRE7203_MC_vStudents_33_0.png" />
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Analytic Leakage = </span><span class="si">{:.2f}</span><span class="s2"> %&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="mi">100</span><span class="o">*</span><span class="n">mc</span><span class="o">.</span><span class="n">resAN</span><span class="p">[</span><span class="s1">&#39;leakage&#39;</span><span class="p">]))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;MC/ST Leakage = </span><span class="si">{:.2f}</span><span class="s2"> %&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="mi">100</span><span class="o">*</span><span class="n">mc</span><span class="o">.</span><span class="n">resST</span><span class="p">[</span><span class="s1">&#39;leakage&#39;</span><span class="p">]))</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Analytic</span> <span class="n">Leakage</span> <span class="o">=</span> <span class="mf">11.49</span> <span class="o">%</span>
+<span class="n">MC</span><span class="o">/</span><span class="n">ST</span> <span class="n">Leakage</span> <span class="o">=</span> <span class="mf">11.52</span> <span class="o">%</span>
+</pre></div>
+</div>
+</section>
+<section id="delta-tracking">
+<h3>Delta tracking<a class="headerlink" href="#delta-tracking" title="Link to this heading">¶</a></h3>
+<p>Complete the <code class="docutils literal notranslate"><span class="pre">_SolveDT</span></code> method.</p>
+<p><strong>The general approach of DT is</strong>: 1. Sample <span class="math notranslate nohighlight">\(x_0\)</span>, <span class="math notranslate nohighlight">\(y_0\)</span>,
+<span class="math notranslate nohighlight">\(z_0\)</span> 2. Sample virtual distance traveled <span class="math notranslate nohighlight">\(S_i\)</span> using the
+majorant cross section. 3. Update the position <span class="math notranslate nohighlight">\(x_1\)</span>, <span class="math notranslate nohighlight">\(y_1\)</span>,
+<span class="math notranslate nohighlight">\(z_1\)</span> 4. Accept the virtual collision as a real one by sampling
+uniformly from [0, 1] and comparing to the <span class="math notranslate nohighlight">\(\Sigma_t/\Sigma_{maj}\)</span>
+- If virtual collision accepted (i.e. a real collision occurred), then
+terminate the neutron - Otherwise, use the new position as <span class="math notranslate nohighlight">\(x_0\)</span>,
+<span class="math notranslate nohighlight">\(y_0\)</span>, <span class="math notranslate nohighlight">\(z_0\)</span> and go to step 2.</p>
+<p><strong>Define inputs and execute ST solution</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mc</span><span class="o">.</span><span class="n">Solve</span><span class="p">(</span><span class="s1">&#39;DT&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mc</span><span class="o">.</span><span class="n">resDT</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s1">&#39;flx&#39;</span><span class="p">:</span> <span class="n">array</span><span class="p">([</span><span class="mf">5060.88</span><span class="p">,</span> <span class="mf">4113.04</span><span class="p">,</span> <span class="mf">3560.3</span> <span class="p">,</span> <span class="mf">3258.12</span><span class="p">,</span> <span class="mf">3023.67</span><span class="p">,</span> <span class="mf">2779.05</span><span class="p">,</span> <span class="mf">2538.2</span> <span class="p">,</span>
+        <span class="mf">2441.</span>  <span class="p">,</span> <span class="mf">2314.39</span><span class="p">,</span> <span class="mf">2209.37</span><span class="p">,</span> <span class="mf">2064.98</span><span class="p">,</span> <span class="mf">2003.3</span> <span class="p">,</span> <span class="mf">1947.26</span><span class="p">,</span> <span class="mf">1864.11</span><span class="p">,</span>
+        <span class="mf">1814.5</span> <span class="p">,</span> <span class="mf">1773.41</span><span class="p">,</span> <span class="mf">1734.02</span><span class="p">,</span> <span class="mf">1670.87</span><span class="p">,</span> <span class="mf">1629.99</span><span class="p">,</span> <span class="mf">1578.88</span><span class="p">,</span> <span class="mf">1540.6</span> <span class="p">,</span>
+        <span class="mf">1485.56</span><span class="p">,</span> <span class="mf">1437.31</span><span class="p">,</span> <span class="mf">1389.99</span><span class="p">,</span> <span class="mf">1344.88</span><span class="p">,</span> <span class="mf">1303.17</span><span class="p">,</span> <span class="mf">1258.64</span><span class="p">,</span> <span class="mf">1215.22</span><span class="p">,</span>
+        <span class="mf">1180.18</span><span class="p">,</span> <span class="mf">1147.72</span><span class="p">]),</span>
+ <span class="s1">&#39;fluxsim&#39;</span><span class="p">:</span> <span class="n">array</span><span class="p">([[</span><span class="mf">5166.</span><span class="p">,</span> <span class="mf">5000.</span><span class="p">,</span> <span class="mf">5077.</span><span class="p">,</span> <span class="o">...</span><span class="p">,</span> <span class="mf">5115.</span><span class="p">,</span> <span class="mf">5092.</span><span class="p">,</span> <span class="mf">5025.</span><span class="p">],</span>
+        <span class="p">[</span><span class="mf">4213.</span><span class="p">,</span> <span class="mf">4087.</span><span class="p">,</span> <span class="mf">4086.</span><span class="p">,</span> <span class="o">...</span><span class="p">,</span> <span class="mf">4186.</span><span class="p">,</span> <span class="mf">4123.</span><span class="p">,</span> <span class="mf">4054.</span><span class="p">],</span>
+        <span class="p">[</span><span class="mf">3660.</span><span class="p">,</span> <span class="mf">3531.</span><span class="p">,</span> <span class="mf">3559.</span><span class="p">,</span> <span class="o">...</span><span class="p">,</span> <span class="mf">3628.</span><span class="p">,</span> <span class="mf">3558.</span><span class="p">,</span> <span class="mf">3509.</span><span class="p">],</span>
+        <span class="o">...</span><span class="p">,</span>
+        <span class="p">[</span><span class="mf">1224.</span><span class="p">,</span> <span class="mf">1269.</span><span class="p">,</span> <span class="mf">1276.</span><span class="p">,</span> <span class="o">...</span><span class="p">,</span> <span class="mf">1205.</span><span class="p">,</span> <span class="mf">1210.</span><span class="p">,</span> <span class="mf">1198.</span><span class="p">],</span>
+        <span class="p">[</span><span class="mf">1187.</span><span class="p">,</span> <span class="mf">1221.</span><span class="p">,</span> <span class="mf">1240.</span><span class="p">,</span> <span class="o">...</span><span class="p">,</span> <span class="mf">1168.</span><span class="p">,</span> <span class="mf">1165.</span><span class="p">,</span> <span class="mf">1165.</span><span class="p">],</span>
+        <span class="p">[</span><span class="mf">1144.</span><span class="p">,</span> <span class="mf">1189.</span><span class="p">,</span> <span class="mf">1208.</span><span class="p">,</span> <span class="o">...</span><span class="p">,</span> <span class="mf">1131.</span><span class="p">,</span> <span class="mf">1127.</span><span class="p">,</span> <span class="mf">1134.</span><span class="p">]],</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">30</span><span class="p">,</span> <span class="mi">100</span><span class="p">)),</span>
+ <span class="s1">&#39;errflx&#39;</span><span class="p">:</span> <span class="n">array</span><span class="p">([</span><span class="mf">53.68803964</span><span class="p">,</span> <span class="mf">50.70383023</span><span class="p">,</span> <span class="mf">47.39229895</span><span class="p">,</span> <span class="mf">47.0925217</span> <span class="p">,</span> <span class="mf">45.75304471</span><span class="p">,</span>
+        <span class="mf">43.29281118</span><span class="p">,</span> <span class="mf">39.88433276</span><span class="p">,</span> <span class="mf">40.64037401</span><span class="p">,</span> <span class="mf">39.97921835</span><span class="p">,</span> <span class="mf">40.81902865</span><span class="p">,</span>
+        <span class="mf">39.96573032</span><span class="p">,</span> <span class="mf">38.64906208</span><span class="p">,</span> <span class="mf">38.19230813</span><span class="p">,</span> <span class="mf">36.84043838</span><span class="p">,</span> <span class="mf">34.82599604</span><span class="p">,</span>
+        <span class="mf">33.88571823</span><span class="p">,</span> <span class="mf">32.8332088</span> <span class="p">,</span> <span class="mf">33.11092116</span><span class="p">,</span> <span class="mf">33.81345738</span><span class="p">,</span> <span class="mf">32.4562105</span> <span class="p">,</span>
+        <span class="mf">32.18415759</span><span class="p">,</span> <span class="mf">32.74944885</span><span class="p">,</span> <span class="mf">33.07981106</span><span class="p">,</span> <span class="mf">32.00484182</span><span class="p">,</span> <span class="mf">31.73461202</span><span class="p">,</span>
+        <span class="mf">31.94903911</span><span class="p">,</span> <span class="mf">31.28466717</span><span class="p">,</span> <span class="mf">31.17645907</span><span class="p">,</span> <span class="mf">30.50618954</span><span class="p">,</span> <span class="mf">29.63851548</span><span class="p">]),</span>
+ <span class="s1">&#39;leakage&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">(</span><span class="mf">0.11477199999999999</span><span class="p">),</span>
+ <span class="s1">&#39;errleakage&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">(</span><span class="mf">0.002963851548239216</span><span class="p">)}</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">mc</span><span class="o">.</span><span class="n">resDT</span><span class="p">[</span><span class="s1">&#39;fluxsim&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]))</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mf">53.6880396364032</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mc</span><span class="o">.</span><span class="n">PlotFluxes</span><span class="p">(</span><span class="s1">&#39;DT&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<img alt="../_images/NRE7203_MC_vStudents_41_0.png" src="../_images/NRE7203_MC_vStudents_41_0.png" />
+</section>
+<section id="weighted-delta-tracking">
+<h3>Weighted Delta tracking<a class="headerlink" href="#weighted-delta-tracking" title="Link to this heading">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mc</span><span class="o">.</span><span class="n">Solve</span><span class="p">(</span><span class="s1">&#39;wdt&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mc</span><span class="o">.</span><span class="n">resWDT</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s1">&#39;flx&#39;</span><span class="p">:</span> <span class="n">array</span><span class="p">([</span><span class="mf">4437.81144298</span><span class="p">,</span> <span class="mf">3607.24816772</span><span class="p">,</span> <span class="mf">3127.23144244</span><span class="p">,</span> <span class="mf">2917.61601978</span><span class="p">,</span>
+        <span class="mf">2759.95056655</span><span class="p">,</span> <span class="mf">2545.83536794</span><span class="p">,</span> <span class="mf">2305.24210792</span><span class="p">,</span> <span class="mf">2258.44619489</span><span class="p">,</span>
+        <span class="mf">2156.96807961</span><span class="p">,</span> <span class="mf">2074.80693072</span><span class="p">,</span> <span class="mf">1933.56554811</span><span class="p">,</span> <span class="mf">1896.64132594</span><span class="p">,</span>
+        <span class="mf">1862.89693243</span><span class="p">,</span> <span class="mf">1787.68518568</span><span class="p">,</span> <span class="mf">1754.41503774</span><span class="p">,</span> <span class="mf">1729.55928276</span><span class="p">,</span>
+        <span class="mf">1705.55356924</span><span class="p">,</span> <span class="mf">1647.18946011</span><span class="p">,</span> <span class="mf">1615.05925725</span><span class="p">,</span> <span class="mf">1570.56948264</span><span class="p">,</span>
+        <span class="mf">1541.00381795</span><span class="p">,</span> <span class="mf">1487.78783102</span><span class="p">,</span> <span class="mf">1440.89413489</span><span class="p">,</span> <span class="mf">1395.22790532</span><span class="p">,</span>
+        <span class="mf">1350.42106814</span><span class="p">,</span> <span class="mf">1308.70062511</span><span class="p">,</span> <span class="mf">1264.33040135</span><span class="p">,</span> <span class="mf">1221.82068146</span><span class="p">,</span>
+        <span class="mf">1185.32550308</span><span class="p">,</span> <span class="mf">1152.67017606</span><span class="p">]),</span>
+ <span class="s1">&#39;fluxsim&#39;</span><span class="p">:</span> <span class="n">array</span><span class="p">([[</span><span class="mf">4410.26250816</span><span class="p">,</span> <span class="mf">4393.53674902</span><span class="p">,</span> <span class="mf">4449.7176438</span> <span class="p">,</span> <span class="o">...</span><span class="p">,</span> <span class="mf">4457.79816288</span><span class="p">,</span>
+         <span class="mf">4505.66994641</span><span class="p">,</span> <span class="mf">4367.53044392</span><span class="p">],</span>
+        <span class="p">[</span><span class="mf">3606.12098914</span><span class="p">,</span> <span class="mf">3538.32301517</span><span class="p">,</span> <span class="mf">3599.85501925</span><span class="p">,</span> <span class="o">...</span><span class="p">,</span> <span class="mf">3601.17300766</span><span class="p">,</span>
+         <span class="mf">3644.4098188</span> <span class="p">,</span> <span class="mf">3549.56221913</span><span class="p">],</span>
+        <span class="p">[</span><span class="mf">3136.38757503</span><span class="p">,</span> <span class="mf">3048.74175551</span><span class="p">,</span> <span class="mf">3129.6606196</span> <span class="p">,</span> <span class="o">...</span><span class="p">,</span> <span class="mf">3102.33131656</span><span class="p">,</span>
+         <span class="mf">3172.96291658</span><span class="p">,</span> <span class="mf">3090.15142815</span><span class="p">],</span>
+        <span class="o">...</span><span class="p">,</span>
+        <span class="p">[</span><span class="mf">1230.42324015</span><span class="p">,</span> <span class="mf">1168.72879226</span><span class="p">,</span> <span class="mf">1197.41404669</span><span class="p">,</span> <span class="o">...</span><span class="p">,</span> <span class="mf">1230.28116591</span><span class="p">,</span>
+         <span class="mf">1271.16388495</span><span class="p">,</span> <span class="mf">1172.07705334</span><span class="p">],</span>
+        <span class="p">[</span><span class="mf">1192.05557075</span><span class="p">,</span> <span class="mf">1131.96996147</span><span class="p">,</span> <span class="mf">1164.8420678</span> <span class="p">,</span> <span class="o">...</span><span class="p">,</span> <span class="mf">1197.1203689</span> <span class="p">,</span>
+         <span class="mf">1233.47926644</span><span class="p">,</span> <span class="mf">1136.88935084</span><span class="p">],</span>
+        <span class="p">[</span><span class="mf">1164.04776256</span><span class="p">,</span> <span class="mf">1098.01480426</span><span class="p">,</span> <span class="mf">1136.21172385</span><span class="p">,</span> <span class="o">...</span><span class="p">,</span> <span class="mf">1166.47200095</span><span class="p">,</span>
+         <span class="mf">1195.29715193</span><span class="p">,</span> <span class="mf">1101.37015764</span><span class="p">]],</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">30</span><span class="p">,</span> <span class="mi">100</span><span class="p">)),</span>
+ <span class="s1">&#39;errflx&#39;</span><span class="p">:</span> <span class="n">array</span><span class="p">([</span><span class="mf">40.68785175</span><span class="p">,</span> <span class="mf">35.66498257</span><span class="p">,</span> <span class="mf">36.19896095</span><span class="p">,</span> <span class="mf">34.48943302</span><span class="p">,</span> <span class="mf">34.38148781</span><span class="p">,</span>
+        <span class="mf">34.62084583</span><span class="p">,</span> <span class="mf">33.44304146</span><span class="p">,</span> <span class="mf">33.22750145</span><span class="p">,</span> <span class="mf">31.56404057</span><span class="p">,</span> <span class="mf">31.88989273</span><span class="p">,</span>
+        <span class="mf">31.7163377</span> <span class="p">,</span> <span class="mf">33.02732397</span><span class="p">,</span> <span class="mf">33.65021274</span><span class="p">,</span> <span class="mf">33.43948904</span><span class="p">,</span> <span class="mf">32.75600686</span><span class="p">,</span>
+        <span class="mf">32.97945204</span><span class="p">,</span> <span class="mf">32.29125116</span><span class="p">,</span> <span class="mf">30.91776872</span><span class="p">,</span> <span class="mf">30.41317578</span><span class="p">,</span> <span class="mf">29.87083807</span><span class="p">,</span>
+        <span class="mf">29.19499852</span><span class="p">,</span> <span class="mf">28.99511444</span><span class="p">,</span> <span class="mf">27.86513393</span><span class="p">,</span> <span class="mf">25.91625943</span><span class="p">,</span> <span class="mf">25.93813914</span><span class="p">,</span>
+        <span class="mf">25.45234076</span><span class="p">,</span> <span class="mf">24.81143143</span><span class="p">,</span> <span class="mf">25.19274938</span><span class="p">,</span> <span class="mf">24.94122875</span><span class="p">,</span> <span class="mf">25.03431666</span><span class="p">]),</span>
+ <span class="s1">&#39;leakage&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">(</span><span class="mf">0.11526701760617222</span><span class="p">),</span>
+ <span class="s1">&#39;errleakage&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">(</span><span class="mf">0.0025034316661319725</span><span class="p">)}</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">mc</span><span class="o">.</span><span class="n">resWDT</span><span class="p">[</span><span class="s1">&#39;fluxsim&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]))</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mf">40.687851746435555</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mc</span><span class="o">.</span><span class="n">PlotFluxes</span><span class="p">(</span><span class="s1">&#39;WDT&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<img alt="../_images/NRE7203_MC_vStudents_46_0.png" src="../_images/NRE7203_MC_vStudents_46_0.png" />
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Analytic Leakage = </span><span class="si">{:.2f}</span><span class="s2"> %&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="mi">100</span><span class="o">*</span><span class="n">mc</span><span class="o">.</span><span class="n">resAN</span><span class="p">[</span><span class="s1">&#39;leakage&#39;</span><span class="p">]))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;MC/ST Leakage = </span><span class="si">{:.2f}</span><span class="s2"> %&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="mi">100</span><span class="o">*</span><span class="n">mc</span><span class="o">.</span><span class="n">resST</span><span class="p">[</span><span class="s1">&#39;leakage&#39;</span><span class="p">]))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;MC/DT Leakage = </span><span class="si">{:.2f}</span><span class="s2"> %&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="mi">100</span><span class="o">*</span><span class="n">mc</span><span class="o">.</span><span class="n">resDT</span><span class="p">[</span><span class="s1">&#39;leakage&#39;</span><span class="p">]))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;MC/WDT Leakage = </span><span class="si">{:.2f}</span><span class="s2"> %&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="mi">100</span><span class="o">*</span><span class="n">mc</span><span class="o">.</span><span class="n">resWDT</span><span class="p">[</span><span class="s1">&#39;leakage&#39;</span><span class="p">]))</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Analytic</span> <span class="n">Leakage</span> <span class="o">=</span> <span class="mf">11.49</span> <span class="o">%</span>
+<span class="n">MC</span><span class="o">/</span><span class="n">ST</span> <span class="n">Leakage</span> <span class="o">=</span> <span class="mf">11.52</span> <span class="o">%</span>
+<span class="n">MC</span><span class="o">/</span><span class="n">DT</span> <span class="n">Leakage</span> <span class="o">=</span> <span class="mf">11.48</span> <span class="o">%</span>
+<span class="n">MC</span><span class="o">/</span><span class="n">WDT</span> <span class="n">Leakage</span> <span class="o">=</span> <span class="mf">11.53</span> <span class="o">%</span>
+</pre></div>
+</div>
+<p><strong>Execution times</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;ST = </span><span class="si">{:.2f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">mc</span><span class="o">.</span><span class="n">times</span><span class="p">[</span><span class="s1">&#39;ST&#39;</span><span class="p">]))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;DT = </span><span class="si">{:.2f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">mc</span><span class="o">.</span><span class="n">times</span><span class="p">[</span><span class="s1">&#39;DT&#39;</span><span class="p">]))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;WDT = </span><span class="si">{:.2f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">mc</span><span class="o">.</span><span class="n">times</span><span class="p">[</span><span class="s1">&#39;WDT&#39;</span><span class="p">]))</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ST</span> <span class="o">=</span> <span class="mf">39.01</span>
+<span class="n">DT</span> <span class="o">=</span> <span class="mf">22.20</span>
+<span class="n">WDT</span> <span class="o">=</span> <span class="mf">27.75</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mc</span><span class="o">.</span><span class="n">PlotDifferences</span><span class="p">()</span>
+</pre></div>
+</div>
+<img alt="../_images/NRE7203_MC_vStudents_50_0.png" src="../_images/NRE7203_MC_vStudents_50_0.png" />
+</section>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">NRE7203</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../overview.html">Class Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributors.html">Contributers</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Projects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Projects</a><ul>
+  <li><a href="project1.html">Project 1: Weighted Delta Tracking</a><ul>
+      <li>Previous: <a href="project1.html" title="previous chapter">Project 1: Weighted Delta Tracking</a></li>
+      <li>Next: <a href="project2.html" title="next chapter">Project 2: Placeholder</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2025, Blankenship J.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 0.7.16</a>
+      
+      |
+      <a href="../_sources/projects/NRE7203_MC_vStudents.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

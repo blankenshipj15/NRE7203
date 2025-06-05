@@ -36,58 +36,45 @@
             
   <section id="project-1-weighted-delta-tracking">
 <span id="proj1"></span><h1>Project 1: Weighted Delta Tracking<a class="headerlink" href="#project-1-weighted-delta-tracking" title="Link to this heading">¶</a></h1>
-<p>Weighted delta tracking is implemented for Monte Carlo simulations of neutron transport as a nonanalog method. The technique uses formalisms developed in Woodcock delta tracking but removes proability sampling for real or virtual collisions. This technique also uses implicit capture to adjust neutron weight during its random walk.</p>
-<p>Use <code class="docutils literal notranslate"><span class="pre">code-like</span></code> text.</p>
-<ol class="arabic simple">
-<li><p>First numbered item.</p></li>
-<li><p>Second numbered item.</p></li>
-<li><p>The user can filter the isotopes for which Bateman eqautions are solved.</p></li>
-</ol>
-<p><strong>Bold text</strong> to present a code snippet:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading">¶</a></h2>
+<p>Weighted delta tracking is implemented for Monte Carlo simulations of neutron transport as a nonanalog method. The technique uses formalisms developed in Woodcock delta tracking but removes probability sampling for real or virtual collisions. This technique also uses implicit capture to adjust neutron weight during its random walk. Using weighted delta tracking with Russian Roulette, the algorithm performance is compared against surface tracking and standard delta tracking with an analytical solution for reference.</p>
+<p>The weighted delta tracking algorithm and associated data processing is completed using <code class="docutils literal notranslate"><span class="pre">pointsource_sphere.py</span></code> which contains the class <code class="docutils literal notranslate"><span class="pre">PointSourceInSphere</span></code>. The functions contained within <code class="docutils literal notranslate"><span class="pre">PointSourceInSphere</span></code> include an analytic solver, a solver for surface tracking (ST), a solver for delta tracking (DT), a solver for weighted delta tracking (WDT), and associated post processing functions such as statistical analysis and plotting.</p>
+<p>The Monte Carlo simulation is initialized within the class using:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nMC</span><span class="p">,</span> <span class="n">S0</span><span class="p">,</span> <span class="n">R</span><span class="p">,</span> <span class="n">sigT</span><span class="p">):</span>
 </pre></div>
 </div>
-<p>Example of a <em>table</em></p>
-<table class="docutils align-default">
-<thead>
-<tr class="row-odd"><th class="head"><p>Input</p></th>
-<th class="head"><p>Description</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p>inp1</p></td>
-<td><p>Description 1</p></td>
-</tr>
-<tr class="row-odd"><td><p>inp2</p></td>
-<td><p>Description 2</p></td>
-</tr>
-<tr class="row-even"><td><p>inp3</p></td>
-<td><p>Description 3</p></td>
-</tr>
-</tbody>
-</table>
+<p><code class="docutils literal notranslate"><span class="pre">nMC</span></code> represents the number of Monte Carlo simulations, <code class="docutils literal notranslate"><span class="pre">S0</span></code> is the source strength, <code class="docutils literal notranslate"><span class="pre">R</span></code> is the radius of the outermost sphere in a series of concentric spherical shells, and <code class="docutils literal notranslate"><span class="pre">sigT</span></code> is an array containing total cross sections for each region.</p>
+<p>All solutions are developed in a Jupyter Notebook, a sample of which can be found here.</p>
+<p><a class="reference internal" href="Monte%20Carlo%20Jupyter%20Notebook.html#montecarlojupyternotebook"><span class="std std-ref">Weighted Delta Tracking Notebook</span></a></p>
+</section>
+<section id="methodology">
+<h2>Methodology<a class="headerlink" href="#methodology" title="Link to this heading">¶</a></h2>
+<p>The general approach to implementing a WDT solver with Russian Roulette is:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p>Sample neutron position following streaming.</p></li>
+<li><p>Calculate neutron weight to be tallied for regions crossed from previous location to current.</p></li>
+<li><p>Reduce neutron weight following the “collision.” (Representing a portion of the neutron absorbed, the remainder to continue its random walk.)</p></li>
+<li><p>Check neutron weight against a threshold weight, if above the threshold repeat steps 1:4. If below the threshold, complete step 5.</p></li>
+<li><p>Play Russian Roulette for survival and restore weight upon survival or terminate the neutron.</p></li>
+</ol>
+</div></blockquote>
+<dl>
+<dt>This project uses the majorant cross section, defined as <span class="math notranslate nohighlight">\(\Sigma_{maj} = max(\Sigma_{t,i})\)</span>, where <em>i</em> is over all regions. From this definition a pathlength is determined using</dt><dd><div class="math notranslate nohighlight">
+\[S = -ln(\xi)/\Sigma_{maj}\]</div>
+</dd>
+</dl>
+<p><span class="math notranslate nohighlight">\(\xi\)</span> is a random number drawn from a uniform distribution between 0 and 1. Assuming a point source, all neutrons are born at the origin (0,0,0).</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<ul>
-<li><p>bullet 1. Example if math notation in-line <span class="math notranslate nohighlight">\(\phi_{thermal}\)</span></p></li>
-<li><p>bullet 2. Math relation presented separately</p>
-<blockquote>
-<div><div class="math notranslate nohighlight">
-\[\bar{\phi} = \phi_{thermal}w_{thermal} + (1-w_{thermal})\phi_{fast}\]</div>
-</div></blockquote>
-</li>
+<ul class="simple">
+<li><p>Neutron directional quantities are sampled using the following:</p></li>
 </ul>
+<div class="math notranslate nohighlight">
+\[ \begin{align}\begin{aligned}\theta = \arccos(1 - 2\xi_{1})\\\phi = 2\pi\xi_{2}\end{aligned}\end{align} \]</div>
 </div>
-<section id="subsection">
-<h2>Subsection<a class="headerlink" href="#subsection" title="Link to this heading">¶</a></h2>
-<p>It is possible to reference various sections directly <a class="reference internal" href="#proj1"><span class="std std-ref">Project 1: Weighted Delta Tracking</span></a>.</p>
-<p>Or by feeding your own text: <a class="reference internal" href="#proj1"><span class="std std-ref">Project 1</span></a></p>
-<p>Include figures:</p>
-<a class="reference internal image-reference" href="../_images/GT_logo.png"><img alt="../_images/GT_logo.png" class="align-center" src="../_images/GT_logo.png" style="width: 600px;" />
-</a>
-</section>
-<section id="methodology-subsection">
-<h2>Methodology subsection<a class="headerlink" href="#methodology-subsection" title="Link to this heading">¶</a></h2>
+<p>The weight tallied for all regions crossed is given by <span class="math notranslate nohighlight">\(w_{i-1}(\Sigma_{t,i}/\Sigma_{maj})\)</span> and the reduction in neutron weight is calculated using <span class="math notranslate nohighlight">\(w_{i}=w_{i-1}(1-\Sigma_{t,i}/\Sigma_{maj})\)</span>.</p>
 <p>For each project I am expecting to see:</p>
 <blockquote>
 <div><ol class="arabic simple">
@@ -98,6 +85,45 @@
 <li><p>Brief summary</p></li>
 </ol>
 </div></blockquote>
+</section>
+<section id="subsection">
+<h2>Subsection<a class="headerlink" href="#subsection" title="Link to this heading">¶</a></h2>
+<p>It is possible to reference various sections directly <a class="reference internal" href="#proj1"><span class="std std-ref">Project 1: Weighted Delta Tracking</span></a>.</p>
+<p>Or by feeding your own text: <a class="reference internal" href="#proj1"><span class="std std-ref">Project 1</span></a></p>
+<p>Include figures:</p>
+<a class="reference internal image-reference" href="../_images/case1histograms.png"><img alt="../_images/case1histograms.png" class="align-center" src="../_images/case1histograms.png" style="width: 600px;" />
+</a>
+<p>Example of a <em>table</em></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Method</p></th>
+<th class="head"><p><span class="math notranslate nohighlight">\(\Delta\)</span> Leakage [%]</p></th>
+<th class="head"><p>Runtime [s]</p></th>
+<th class="head"><p><span class="math notranslate nohighlight">\(\sigma_{flux}\)</span></p></th>
+<th class="head"><p>FoM</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>ST</p></td>
+<td><p>0.01</p></td>
+<td><p>22.85</p></td>
+<td><p>45.48</p></td>
+<td><p>2.12E-5</p></td>
+</tr>
+<tr class="row-odd"><td><p>DT</p></td>
+<td><p>0.04</p></td>
+<td><p>20.54</p></td>
+<td><p>45.42</p></td>
+<td><p>2.36E-5</p></td>
+</tr>
+<tr class="row-even"><td><p>WDT</p></td>
+<td><p>0.02</p></td>
+<td><p>25.58</p></td>
+<td><p>44.49</p></td>
+<td><p>1.98E-5</p></td>
+</tr>
+</tbody>
+</table>
 </section>
 </section>
 
