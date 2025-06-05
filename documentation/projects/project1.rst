@@ -4,7 +4,7 @@
 Project 1: Weighted Delta Tracking
 ---------------------------------- 
 
-You can provide description here.
+Weighted delta tracking is implemented for Monte Carlo simulations of neutron transport as a nonanalog method. The technique uses formalisms developed in Woodcock delta tracking but removes proability sampling for real or virtual collisions. This technique also uses implicit capture to adjust neutron weight during its random walk.
 
 Use ``code-like`` text.
 
