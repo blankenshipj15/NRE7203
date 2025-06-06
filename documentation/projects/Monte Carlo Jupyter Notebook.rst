@@ -1,7 +1,12 @@
-.. _MonteCarloJupyterNotebook:
+:orphan:
 
+.. _montecarlojupyternotebook:
+
+================================
 Weighted Delta Tracking Notebook
---------------------------------
+================================
+
+Return to Project 1 documentation: :ref:`proj1`
 
 Copyright (c) Dan Kotlyar
 
@@ -21,8 +26,9 @@ permission from me.
     %matplotlib inline
     plt.rcParams['figure.figsize'] = [6, 4] # Set default figure size
 
+----------------------------------
 Neutron Transport with Monte Carlo
-==================================
+----------------------------------
 
 Description
 -----------
@@ -32,7 +38,7 @@ used in Monte Carlo codes: 1. Surface (ray-tracing) - **ST** 2. Delta
 tracking - **DT**.
 
 Problem set-up
-~~~~~~~~~~~~~~
+--------------
 
 We will have a point source (located at the origin) surrounded with
 multiple shells of heterogeneous materials having unique cross sections.
@@ -41,13 +47,13 @@ simplicity is defined as the neutrons crossing a certain surface -
 Leakage from the system (i.e., sphere)
 
 Set of exercises
-----------------
+-----------------
 
 You are required to complete the following exercises: 1. Analytic
 solution 2. Ray-tracing 3. Delta tracking
 
 Analytic solution
-~~~~~~~~~~~~~~~~~
+-------------------
 
 The programming will be done within the ``pointsource_sphere.py`` file.
 Note that we use object-oriented programming. This is not mandatory and
@@ -175,7 +181,7 @@ dictionaries on the created ``mc`` object.
 
 
 Ray-tracing
-~~~~~~~~~~~
+-------------
 
 Complete the ``_SolveST`` method. Note that the sampling of the point
 source should not be performed at all as it is known that all the
@@ -274,7 +280,7 @@ only and no scattering events are happening.
     
 
 Delta tracking
-~~~~~~~~~~~~~~
+---------------
 
 Complete the ``_SolveDT`` method.
 
@@ -345,7 +351,7 @@ terminate the neutron - Otherwise, use the new position as :math:`x_0`,
 
 
 Weighted Delta tracking
-~~~~~~~~~~~~~~~~~~~~~~~
+------------------------
 
 .. code::  
 
@@ -451,3 +457,5 @@ Weighted Delta tracking
 
 .. image:: images/NRE7203_MC_vStudents_50_0.png
 
+
+Return to top of notebook: :ref:`montecarlojupyternotebook`

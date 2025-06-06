@@ -8,7 +8,7 @@ NRE7203 Class Documentation
 
 .. only:: html
 
-This will serve as the central documentation hub for class projects performed during NRE7203 at Georgia Tech with Professor Kotlyar.
+This page contains the documentation for class projects performed during NRE7203 at Georgia Tech with Professor Kotlyar.
 
 
 .. toctree::
@@ -27,5 +27,4 @@ Indices and tables
 ==================
 
 * :ref:`genindex`
-* :ref:`modindex`
 * :ref:`search`

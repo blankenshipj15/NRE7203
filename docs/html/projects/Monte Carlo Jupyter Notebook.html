@@ -1,39 +1,82 @@
+
+
 <!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-<html lang="en" data-content_root="../">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Weighted Delta Tracking Notebook &mdash; NRE7203 0.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css?v=7f9a90b1" />
 
-    <title>Weighted Delta Tracking Notebook &#8212; NRE7203 0.0.1 documentation</title>
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=5ecbeea2" />
-    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css?v=12dfc556" />
-    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css?v=7f9a90b1" />
-    <script src="../_static/documentation_options.js?v=d45e8c67"></script>
-    <script src="../_static/doctools.js?v=9bcbadda"></script>
-    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
-    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=d45e8c67"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
-    <link rel="search" title="Search" href="../search.html" />
-   
-  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
-  
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
 
-  
-  
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
 
-  </head><body>
-  
-
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
           
+          
+          <a href="../index.html" class="icon icon-home">
+            NRE7203
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../overview.html">Class Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributors.html">Contributers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html">Projects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+</ul>
 
-          <div class="body" role="main">
-            
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">NRE7203</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Weighted Delta Tracking Notebook</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/projects/Monte Carlo Jupyter Notebook.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
   <section id="weighted-delta-tracking-notebook">
-<span id="montecarlojupyternotebook"></span><h1>Weighted Delta Tracking Notebook<a class="headerlink" href="#weighted-delta-tracking-notebook" title="Link to this heading">¶</a></h1>
+<span id="montecarlojupyternotebook"></span><h1>Weighted Delta Tracking Notebook<a class="headerlink" href="#weighted-delta-tracking-notebook" title="Link to this heading"></a></h1>
+<p>Return to Project 1 documentation: <a class="reference internal" href="project1.html#proj1"><span class="std std-ref">Project 1: Weighted Delta Tracking</span></a></p>
 <p>Copyright (c) Dan Kotlyar</p>
 <p>Under Copyright law, you do not have the right to provide these notes to
 anyone else or to make any commercial use of them without express prior
@@ -49,14 +92,15 @@ permission from me.</p>
 </pre></div>
 </div>
 <section id="neutron-transport-with-monte-carlo">
-<h2>Neutron Transport with Monte Carlo<a class="headerlink" href="#neutron-transport-with-monte-carlo" title="Link to this heading">¶</a></h2>
-</section>
-</section>
+<h2>Neutron Transport with Monte Carlo<a class="headerlink" href="#neutron-transport-with-monte-carlo" title="Link to this heading"></a></h2>
 <section id="description">
-<h1>Description<a class="headerlink" href="#description" title="Link to this heading">¶</a></h1>
+<h3>Description<a class="headerlink" href="#description" title="Link to this heading"></a></h3>
 <p>The purpose of this workshop is to implement <strong>two techniques</strong> that are
 used in Monte Carlo codes: 1. Surface (ray-tracing) - <strong>ST</strong> 2. Delta
 tracking - <strong>DT</strong>.</p>
+</section>
+<section id="problem-set-up">
+<h3>Problem set-up<a class="headerlink" href="#problem-set-up" title="Link to this heading"></a></h3>
 <p>We will have a point source (located at the origin) surrounded with
 multiple shells of heterogeneous materials having unique cross sections.
 Our objectives are to calculate the: - Flux distribution, which for
@@ -64,9 +108,12 @@ simplicity is defined as the neutrons crossing a certain surface -
 Leakage from the system (i.e., sphere)</p>
 </section>
 <section id="set-of-exercises">
-<h1>Set of exercises<a class="headerlink" href="#set-of-exercises" title="Link to this heading">¶</a></h1>
+<h3>Set of exercises<a class="headerlink" href="#set-of-exercises" title="Link to this heading"></a></h3>
 <p>You are required to complete the following exercises: 1. Analytic
 solution 2. Ray-tracing 3. Delta tracking</p>
+</section>
+<section id="analytic-solution">
+<h3>Analytic solution<a class="headerlink" href="#analytic-solution" title="Link to this heading"></a></h3>
 <p>The programming will be done within the <code class="docutils literal notranslate"><span class="pre">pointsource_sphere.py</span></code> file.
 Note that we use object-oriented programming. This is not mandatory and
 only done here as a means of demonestration.</p>
@@ -150,6 +197,9 @@ dictionaries on the created <code class="docutils literal notranslate"><span cla
 </pre></div>
 </div>
 <img alt="../_images/NRE7203_MC_vStudents_26_0.png" src="../_images/NRE7203_MC_vStudents_26_0.png" />
+</section>
+<section id="ray-tracing">
+<h3>Ray-tracing<a class="headerlink" href="#ray-tracing" title="Link to this heading"></a></h3>
 <p>Complete the <code class="docutils literal notranslate"><span class="pre">_SolveST</span></code> method. Note that the sampling of the point
 source should not be performed at all as it is known that all the
 neutrons are born in the origin. However, the purpose was to describe
@@ -220,6 +270,9 @@ only and no scattering events are happening.</p>
 <span class="n">MC</span><span class="o">/</span><span class="n">ST</span> <span class="n">Leakage</span> <span class="o">=</span> <span class="mf">11.52</span> <span class="o">%</span>
 </pre></div>
 </div>
+</section>
+<section id="delta-tracking">
+<h3>Delta tracking<a class="headerlink" href="#delta-tracking" title="Link to this heading"></a></h3>
 <p>Complete the <code class="docutils literal notranslate"><span class="pre">_SolveDT</span></code> method.</p>
 <p><strong>The general approach of DT is</strong>: 1. Sample <span class="math notranslate nohighlight">\(x_0\)</span>, <span class="math notranslate nohighlight">\(y_0\)</span>,
 <span class="math notranslate nohighlight">\(z_0\)</span> 2. Sample virtual distance traveled <span class="math notranslate nohighlight">\(S_i\)</span> using the
@@ -268,6 +321,9 @@ terminate the neutron - Otherwise, use the new position as <span class="math not
 </pre></div>
 </div>
 <img alt="../_images/NRE7203_MC_vStudents_41_0.png" src="../_images/NRE7203_MC_vStudents_41_0.png" />
+</section>
+<section id="weighted-delta-tracking">
+<h3>Weighted Delta tracking<a class="headerlink" href="#weighted-delta-tracking" title="Link to this heading"></a></h3>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mc</span><span class="o">.</span><span class="n">Solve</span><span class="p">(</span><span class="s1">&#39;wdt&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -342,76 +398,37 @@ terminate the neutron - Otherwise, use the new position as <span class="math not
 </pre></div>
 </div>
 <img alt="../_images/NRE7203_MC_vStudents_50_0.png" src="../_images/NRE7203_MC_vStudents_50_0.png" />
+<p>Return to top of notebook: <a class="reference internal" href="#montecarlojupyternotebook"><span class="std std-ref">Weighted Delta Tracking Notebook</span></a></p>
+</section>
+</section>
 </section>
 
 
+           </div>
           </div>
-          
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Blankenship J.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
         </div>
       </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="Main">
-        <div class="sphinxsidebarwrapper">
-<h1 class="logo"><a href="../index.html">NRE7203</a></h1>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
 
-
-
-
-
-
-
-
-<h3>Navigation</h3>
-<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../overview.html">Class Overview</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../contributors.html">Contributers</a></li>
-<li class="toctree-l1"><a class="reference internal" href="index.html">Projects</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
-</ul>
-
-<div class="relations">
-<h3>Related Topics</h3>
-<ul>
-  <li><a href="../index.html">Documentation overview</a><ul>
-  </ul></li>
-</ul>
-</div>
-<search id="searchbox" style="display: none" role="search">
-  <h3 id="searchlabel">Quick search</h3>
-    <div class="searchformwrapper">
-    <form class="search" action="../search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
-      <input type="submit" value="Go" />
-    </form>
-    </div>
-</search>
-<script>document.getElementById('searchbox').style.display = "block"</script>
-
-
-
-
-
-
-
-
-        </div>
-      </div>
-      <div class="clearer"></div>
-    </div>
-    <div class="footer">
-      &#169;2025, Blankenship J.
-      
-      |
-      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.3</a>
-      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 0.7.16</a>
-      
-      |
-      <a href="../_sources/projects/Monte Carlo Jupyter Notebook.rst.txt"
-          rel="nofollow">Page source</a>
-    </div>
-
-    
-
-    
-  </body>
+</body>
 </html>

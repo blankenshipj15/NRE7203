@@ -6,7 +6,6 @@ Glossary
 
 .. glossary::
 
-
     Jupyter notebook
         Powerful web application used in this project, for examples and
         tutorials containing real python code. From `<https://jupyter.org>`_:
@@ -36,3 +35,8 @@ Glossary
         Human-readable format used for configuration files in this
         project. For more information, see
         `<https://pyyaml.org/wiki/PyYAMLDocumentation>`_
+    
+    sphinx
+        A python package used to create (in this case) .html files out of .rst
+        files. Sphinx powers the creation of this page! More information at
+        `<https://www.sphinx-doc.org/en/master/index.html>`_

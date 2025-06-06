@@ -3,10 +3,6 @@
 Class Overview
 ================
 
-**Advanced Reactor Physics** explores topics of current interest relevant to advanced reactor designs, fuel cycle analysis, nuclear thermal propulsion, and more. In addition to the theoretical development of the subject, attention is paid to create efficient and clean documentation for the tools .
+**Advanced Reactor Physics** explores topics of current interest relevant to advanced reactor designs and fuel cycle analysis. In addition to the theoretical development of the subject, attention is paid to create efficient and clean documentation for the tools used and further developed outside of class.
 
-Documentation for the tools developed is provided by *Sphinx*. This tool creates documentation for Python code and .rst files.
-
-More information for *Sphinx* can be found `here`_.
-
-.. _here: https://www.sphinx-doc.org/en/master/index.html 
+Through hands on projects, this class develops a deeper understanding of "what's under the hood" when it comes to solving complex engineering design problems in reactor physics.
