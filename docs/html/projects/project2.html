@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Project 2: Placeholder &mdash; NRE7203 0.0.1 documentation</title>
+  <title>Project 2: Transport Correction Ratio &mdash; NRE7203 0.0.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css?v=7f9a90b1" />
@@ -17,6 +17,7 @@
       <script src="../_static/documentation_options.js?v=d45e8c67"></script>
       <script src="../_static/doctools.js?v=9bcbadda"></script>
       <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -49,7 +50,20 @@
 <li class="toctree-l1"><a class="reference internal" href="../contributors.html">Contributers</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Projects</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="project1.html">Project 1: Weighted Delta Tracking</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Project 2: Placeholder</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Project 2: Transport Correction Ratio</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#introduction">Introduction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#methodology">Methodology</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#source-comparisons">Source Comparisons</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#isotope-mass-a-1-h-2">Isotope Mass A&gt;1 (H-2)</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#results">Results</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#mono-energetic-source">Mono-energetic Source</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#h-2-tcr">H-2 TCR</a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
@@ -70,7 +84,7 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="index.html">Projects</a></li>
-      <li class="breadcrumb-item active">Project 2: Placeholder</li>
+      <li class="breadcrumb-item active">Project 2: Transport Correction Ratio</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/projects/project2.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -80,9 +94,102 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="project-2-placeholder">
-<span id="proj2"></span><h1>Project 2: Placeholder<a class="headerlink" href="#project-2-placeholder" title="Link to this heading"></a></h1>
-<p>Pending project 2 definition and input.</p>
+  <section id="project-2-transport-correction-ratio">
+<span id="proj2"></span><h1>Project 2: Transport Correction Ratio<a class="headerlink" href="#project-2-transport-correction-ratio" title="Link to this heading"></a></h1>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading"></a></h2>
+<p>A transport correction ratio allows for one to determine the transport cross section <span class="math notranslate nohighlight">\(\Sigma_{tr}(\mathbf{r},E)\)</span> as a function of the correction ratio, <span class="math notranslate nohighlight">\(\tau(\mathbf{r},E)\)</span> and the total macroscopic cross section, <span class="math notranslate nohighlight">\(\Sigma_{t}(\mathbf{r},E)\)</span>.</p>
+<p>The transport correction ratio (TCR) is given by</p>
+<div class="math notranslate nohighlight">
+\[\tau(E)=\frac{\Sigma_{tr}(E)}{\Sigma_{t}(E)}=\left[ 1+\frac{1}{\phi(E)} \int_E^{E_{max}} dE'\frac{\phi(E')\mu(E' \rightarrow E)}{\tau(E')(1-\alpha)(E')} \right]^{-1}\]</div>
+<p>where the differential scattering angle is given by</p>
+<div class="math notranslate nohighlight">
+\[\mu(E' \rightarrow E)= \frac{1}{2}(A+1)\sqrt{\frac{E}{E'}}-\frac{1}{2}(A-1)\sqrt{\frac{E'}{E}}\]</div>
+<p>and <span class="math notranslate nohighlight">\(\alpha\)</span> is</p>
+<div class="math notranslate nohighlight">
+\[\alpha = \frac{(1-A)^2}{(1+A)^2}\]</div>
+<p>This formulation assumes an infinite homogeneous medium were neutron absorption is neglected. To solve this set of equations, one must first calculate the infinite flux spectrum given energy dependent cross section data and a known source.</p>
+<p>Using slowing down theory, the neutron flux spectrum can be derived from</p>
+<div class="math notranslate nohighlight">
+\[\Sigma_T(E)\phi(E)=\int_E^{\frac{E}{\alpha}}\frac{\Sigma_s(E')\phi(E')}{(1-\alpha)E'}dE'+S(E)\]</div>
+<p>The objective is to calculate various flux spectrum and TCR and observe the differing results based on the source used, the isotope considered, and numerical methods employed.</p>
+<p>For reference, a sample of work completed using the functions described below is contained in the Jupyter Notebook:</p>
+<p>:ref:``</p>
+</section>
+<section id="methodology">
+<h2>Methodology<a class="headerlink" href="#methodology" title="Link to this heading"></a></h2>
+<p>The python script <code class="docutils literal notranslate"><span class="pre">transportcorrection.py</span></code> was modified to accomplish the following goals:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p>Perform a comparison of TCRs developed for H-1 energy dependent cross sections using both a fission spectrum source and a mono-energetic source.</p></li>
+<li><p>Investigate the TCR for H-2 given a fission spectrum source.</p></li>
+<li><p>Change numerical integration schemes and identify performance differences.</p></li>
+</ol>
+</div></blockquote>
+<section id="source-comparisons">
+<h3>Source Comparisons<a class="headerlink" href="#source-comparisons" title="Link to this heading"></a></h3>
+<p>To accomodate for the mono-energetic source, changes were made to the <code class="docutils literal notranslate"><span class="pre">energyInterpolation</span></code> function. A check was implemented to identify the user defined mono-energetic source and then the non-zero energy index was placed in the nearest fine energy structure bin. A sample of the function change is provided.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Check if src is mono-energetic</span>
+<span class="n">nonzero_indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nonzero</span><span class="p">(</span><span class="n">src</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">nonzero_indices</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+    <span class="n">idx</span> <span class="o">=</span> <span class="n">nonzero_indices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="c1"># get index of the source</span>
+    <span class="n">mono_energy</span> <span class="o">=</span> <span class="n">energy</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+    <span class="n">mono_value</span> <span class="o">=</span> <span class="n">src</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+
+    <span class="c1"># Initialize new source as zeros</span>
+    <span class="n">src1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">energy_new</span><span class="p">)</span>
+
+    <span class="c1"># Find closest index in energy_new to mono_energy</span>
+    <span class="n">closest_idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">energy_new</span> <span class="o">-</span> <span class="n">mono_energy</span><span class="p">)</span><span class="o">.</span><span class="n">argmin</span><span class="p">()</span>
+
+    <span class="c1"># Assign mono_value to closest bin</span>
+    <span class="n">src1</span><span class="p">[</span><span class="n">closest_idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">mono_value</span>
+</pre></div>
+</div>
+<p>The mono-energetic source tested was set at <span class="math notranslate nohighlight">\(E_{max}\)</span> to correspond to the maximum energy used in the fine energy structure. With this mono-energetic source, the fission spectrum source, and H-1 cross section data, the infinite flux spectrums and the TCRs were developed.</p>
+</section>
+<section id="isotope-mass-a-1-h-2">
+<h3>Isotope Mass A&gt;1 (H-2)<a class="headerlink" href="#isotope-mass-a-1-h-2" title="Link to this heading"></a></h3>
+<p>When H-1 is used for flux calculations, the term <span class="math notranslate nohighlight">\(\alpha\)</span> is zero. This simplified the expressions for infinite flux and TCR. However, for isotopes with mass A&gt;1, we must retain <span class="math notranslate nohighlight">\(\alpha\)</span>.
+Furthermore, the amount of energy a neutron loses in an elastic collision with isotopes other than H-1 is limited by <span class="math notranslate nohighlight">\(\alpha E'\)</span>. Therefore, a maximum neutron energy that is capable of down-scattering into the energy of concern was defined.
+This was accomplished by modifying the function <code class="docutils literal notranslate"><span class="pre">InfFlux</span></code> to receive the isotope mass, A, as an argument. After checking A&gt;1, a maximum energy capable of contributing to the flux in each energy <em>i</em> (signified by rows) is found which then limits the <em>j</em> energies (columns) to iterate over.
+The logig begins with determining the maximum energy for each row <em>i</em> and then finding the applicable columns <em>j</em> that can contribute to the infinite flux.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">E_max</span> <span class="o">=</span> <span class="n">energy</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">/</span> <span class="n">alpha</span> <span class="c1"># maximum energy to downscatter from contributing to row i</span>
+
+<span class="c1"># Find indices j &gt;= i (not considering upscatter) where energy[j] &lt;= E_max</span>
+<span class="n">downscatter_indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">energy</span><span class="p">[</span><span class="n">i</span><span class="p">:]</span> <span class="o">&lt;=</span> <span class="n">E_max</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+<span class="n">j_end</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="n">downscatter_indices</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>  <span class="c1"># index of highest energy j</span>
+
+<span class="c1"># Define slice of contributing energy range</span>
+<span class="n">E_slice</span> <span class="o">=</span> <span class="n">energy</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="n">j_end</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+<span class="n">sigS_slice</span> <span class="o">=</span> <span class="n">sigS</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="n">j_end</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+<span class="n">dE</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">E_slice</span><span class="p">)</span>
+<span class="n">n_intervals</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">dE</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="results">
+<h2>Results<a class="headerlink" href="#results" title="Link to this heading"></a></h2>
+<section id="mono-energetic-source">
+<h3>Mono-energetic Source<a class="headerlink" href="#mono-energetic-source" title="Link to this heading"></a></h3>
+<a class="reference internal image-reference" href="../_images/H1xsPlot.png"><img alt="../_images/H1xsPlot.png" class="align-center" src="../_images/H1xsPlot.png" style="width: 600px;" />
+</a>
+<a class="reference internal image-reference" href="../_images/spectrumCompare.png"><img alt="../_images/spectrumCompare.png" class="align-center" src="../_images/spectrumCompare.png" style="width: 600px;" />
+</a>
+<a class="reference internal image-reference" href="../_images/monoVSfissTCR.png"><img alt="../_images/monoVSfissTCR.png" class="align-center" src="../_images/monoVSfissTCR.png" style="width: 600px;" />
+</a>
+</section>
+<section id="h-2-tcr">
+<h3>H-2 TCR<a class="headerlink" href="#h-2-tcr" title="Link to this heading"></a></h3>
+<a class="reference internal image-reference" href="../_images/H2xsPlot.png"><img alt="../_images/H2xsPlot.png" class="align-center" src="../_images/H2xsPlot.png" style="width: 600px;" />
+</a>
+<a class="reference internal image-reference" href="../_images/H2fissTCR.png"><img alt="../_images/H2fissTCR.png" class="align-center" src="../_images/H2fissTCR.png" style="width: 600px;" />
+</a>
+<p>Return to the top of the page: <a class="reference internal" href="#proj2"><span class="std std-ref">Project 2: Transport Correction Ratio</span></a></p>
+</section>
+</section>
 </section>
 
 
