@@ -55,13 +55,16 @@
 <li class="toctree-l3"><a class="reference internal" href="#methodology">Methodology</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#source-comparisons">Source Comparisons</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#isotope-mass-a-1-h-2">Isotope Mass A&gt;1 (H-2)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#numerical-integration-changes">Numerical Integration Changes</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#results">Results</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#mono-energetic-source">Mono-energetic Source</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#h-2-tcr">H-2 TCR</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#simpson-s-versus-trapezoidal">Simpson’s Versus Trapezoidal</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="#conclusions">Conclusions</a></li>
 </ul>
 </li>
 </ul>
@@ -114,7 +117,7 @@
 \[\Sigma_T(E)\phi(E)=\int_E^{\frac{E}{\alpha}}\frac{\Sigma_s(E')\phi(E')}{(1-\alpha)E'}dE'+S(E)\]</div>
 <p>The objective is to calculate various flux spectrum and TCR and observe the differing results based on the source used, the isotope considered, and numerical methods employed.</p>
 <p>For reference, a sample of work completed using the functions described below is contained in the Jupyter Notebook:</p>
-<p>:ref:``</p>
+<p><a class="reference internal" href="TCR_workshop.html#tcrnotebook"><span class="std std-ref">TCR Notebook</span></a></p>
 </section>
 <section id="methodology">
 <h2>Methodology<a class="headerlink" href="#methodology" title="Link to this heading"></a></h2>
@@ -153,7 +156,7 @@
 <p>When H-1 is used for flux calculations, the term <span class="math notranslate nohighlight">\(\alpha\)</span> is zero. This simplified the expressions for infinite flux and TCR. However, for isotopes with mass A&gt;1, we must retain <span class="math notranslate nohighlight">\(\alpha\)</span>.
 Furthermore, the amount of energy a neutron loses in an elastic collision with isotopes other than H-1 is limited by <span class="math notranslate nohighlight">\(\alpha E'\)</span>. Therefore, a maximum neutron energy that is capable of down-scattering into the energy of concern was defined.
 This was accomplished by modifying the function <code class="docutils literal notranslate"><span class="pre">InfFlux</span></code> to receive the isotope mass, A, as an argument. After checking A&gt;1, a maximum energy capable of contributing to the flux in each energy <em>i</em> (signified by rows) is found which then limits the <em>j</em> energies (columns) to iterate over.
-The logig begins with determining the maximum energy for each row <em>i</em> and then finding the applicable columns <em>j</em> that can contribute to the infinite flux.</p>
+The logic begins with determining the maximum energy for each row <em>i</em> and then finding the applicable columns <em>j</em> that can contribute to the infinite flux.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">E_max</span> <span class="o">=</span> <span class="n">energy</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">/</span> <span class="n">alpha</span> <span class="c1"># maximum energy to downscatter from contributing to row i</span>
 
 <span class="c1"># Find indices j &gt;= i (not considering upscatter) where energy[j] &lt;= E_max</span>
@@ -168,27 +171,91 @@ The logig begins with determining the maximum energy for each row <em>i</em> and
 <span class="n">n_intervals</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">dE</span><span class="p">)</span>
 </pre></div>
 </div>
+<p>Using this control structure, the upperbound of the infinite flux calculation is enforced. Accounting for <span class="math notranslate nohighlight">\(E_{max}\)</span> in the TCR calculation is handled in a similar manner.
+One additional step is needed to include the flux spectrum such that <span class="math notranslate nohighlight">\(\phi(E')\rightarrow\phi(E(i)&lt;E(j) \le E_{max,i})\)</span>.</p>
+</section>
+<section id="numerical-integration-changes">
+<h3>Numerical Integration Changes<a class="headerlink" href="#numerical-integration-changes" title="Link to this heading"></a></h3>
+<p>A Simpson’s 1/3 Rule integration technique is applied by taking the general technique, given by:</p>
+<div class="math notranslate nohighlight">
+\[\int f(x) \,dx = \sum_{i} \frac{h}{3}[f(x_{k})+4f(x_{k+1})+f(x_{k+2})]\]</div>
+<p>The coefficients of the function evaluated at each point represent the weighting factors of the kernel. Each index <em>k</em> represents a sliding window in row <em>i</em> which takes three points from the <em>j</em> columns.
+The step length factor, <em>h</em>, is taken as half the difference between the two endpoints in the three-point sliding window. This helps to prevent errors introduced due to irregularly spaced energy grids but also increases the number of calculations necessary since each integration step updates the weighting factor.
+For each three-point window, a local step length is calculated. This sliding three-point window is applied for all <em>j</em> columns that satisfy <span class="math notranslate nohighlight">\(\phi(E')\rightarrow\phi(E(i)&lt;E(j) \le E_{max,i})\)</span>.</p>
+<p>An example for the three-point window Simpson’s integration is given as:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">n_slice</span> <span class="o">-</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">):</span> <span class="c1"># chunk energy points in sets of three</span>
+  <span class="n">E0</span><span class="p">,</span> <span class="n">E1</span><span class="p">,</span> <span class="n">E2</span> <span class="o">=</span> <span class="n">E_slice</span><span class="p">[</span><span class="n">j</span><span class="p">:</span><span class="n">j</span><span class="o">+</span><span class="mi">3</span><span class="p">]</span>
+  <span class="n">f0</span><span class="p">,</span> <span class="n">f1</span><span class="p">,</span> <span class="n">f2</span> <span class="o">=</span> <span class="n">flx_slice</span><span class="p">[</span><span class="n">j</span><span class="p">:</span><span class="n">j</span><span class="o">+</span><span class="mi">3</span><span class="p">]</span>
+  <span class="n">idx0</span><span class="p">,</span> <span class="n">idx1</span><span class="p">,</span> <span class="n">idx2</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="n">j</span><span class="p">,</span> <span class="n">i</span> <span class="o">+</span> <span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">i</span> <span class="o">+</span> <span class="n">j</span> <span class="o">+</span> <span class="mi">2</span>  <span class="c1"># move through columns while ignoring up-scatter</span>
+
+  <span class="n">h</span> <span class="o">=</span> <span class="p">(</span><span class="n">E2</span> <span class="o">-</span> <span class="n">E0</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span> <span class="c1"># Locally calculated step length for each three point window</span>
+
+  <span class="c1"># Calculate matrix A values using sliced inputs for each of the three points</span>
+  <span class="n">mtxA</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">idx0</span><span class="p">]</span> <span class="o">+=</span> <span class="p">(</span><span class="n">h</span><span class="o">/</span><span class="mi">3</span><span class="p">)</span> <span class="o">*</span> <span class="n">f0</span> <span class="o">*</span> <span class="p">(</span><span class="mf">0.5</span> <span class="o">*</span> <span class="p">((</span><span class="n">A</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">energy</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">/</span> <span class="n">E0</span><span class="p">)</span><span class="o">**</span><span class="mf">0.5</span> <span class="o">-</span> <span class="p">(</span><span class="n">A</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">E0</span> <span class="o">/</span> <span class="n">energy</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="o">**</span><span class="mf">0.5</span><span class="p">))</span> <span class="o">/</span> <span class="p">(</span><span class="n">flx</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">alpha</span><span class="p">)</span> <span class="o">*</span> <span class="n">E0</span><span class="p">)</span>
+  <span class="n">mtxA</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">idx1</span><span class="p">]</span> <span class="o">+=</span> <span class="p">(</span><span class="n">h</span><span class="o">/</span><span class="mi">3</span><span class="p">)</span> <span class="o">*</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">f1</span> <span class="o">*</span> <span class="p">(</span><span class="mf">0.5</span> <span class="o">*</span> <span class="p">((</span><span class="n">A</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">energy</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">/</span> <span class="n">E1</span><span class="p">)</span><span class="o">**</span><span class="mf">0.5</span> <span class="o">-</span> <span class="p">(</span><span class="n">A</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">E1</span> <span class="o">/</span> <span class="n">energy</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="o">**</span><span class="mf">0.5</span><span class="p">))</span> <span class="o">/</span> <span class="p">(</span><span class="n">flx</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">alpha</span><span class="p">)</span> <span class="o">*</span> <span class="n">E1</span><span class="p">)</span>
+  <span class="n">mtxA</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">idx2</span><span class="p">]</span> <span class="o">+=</span> <span class="p">(</span><span class="n">h</span><span class="o">/</span><span class="mi">3</span><span class="p">)</span> <span class="o">*</span> <span class="n">f2</span> <span class="o">*</span> <span class="p">(</span><span class="mf">0.5</span> <span class="o">*</span> <span class="p">((</span><span class="n">A</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">energy</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">/</span> <span class="n">E2</span><span class="p">)</span><span class="o">**</span><span class="mf">0.5</span> <span class="o">-</span> <span class="p">(</span><span class="n">A</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">E2</span> <span class="o">/</span> <span class="n">energy</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="o">**</span><span class="mf">0.5</span><span class="p">))</span> <span class="o">/</span> <span class="p">(</span><span class="n">flx</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">alpha</span><span class="p">)</span> <span class="o">*</span> <span class="n">E2</span><span class="p">)</span>
+</pre></div>
+</div>
 </section>
 </section>
 <section id="results">
 <h2>Results<a class="headerlink" href="#results" title="Link to this heading"></a></h2>
 <section id="mono-energetic-source">
 <h3>Mono-energetic Source<a class="headerlink" href="#mono-energetic-source" title="Link to this heading"></a></h3>
+<p>Hydrogen-1 (H-1) cross section data is provided below. This data supports an assumption that that absorption cross section data is ignored, and that scattering and total cross sections are approximately equal.</p>
 <a class="reference internal image-reference" href="../_images/H1xsPlot.png"><img alt="../_images/H1xsPlot.png" class="align-center" src="../_images/H1xsPlot.png" style="width: 600px;" />
 </a>
+<p>The flux spectrum from both the fission source and the mono-energetic source are shown below. This plot assumes an infinite homogeneous medium of H-1 for the flux calculations. The mono-energetic source is identifiable at the highest energy.</p>
 <a class="reference internal image-reference" href="../_images/spectrumCompare.png"><img alt="../_images/spectrumCompare.png" class="align-center" src="../_images/spectrumCompare.png" style="width: 600px;" />
 </a>
+<p>The TCR is found by matrix inversion for both the fission source flux spectrum and the mono-energetic source flux spectrum to yield the TCR figure below. Both converge to the expected <span class="math notranslate nohighlight">\(\tau_{0}=1/3\)</span> as E→0. The mono-energetic source produces a rapid decrease and large undershoot at higher energies. The sharp change in TCR is due to the rapidly changing flux spectrum.</p>
 <a class="reference internal image-reference" href="../_images/monoVSfissTCR.png"><img alt="../_images/monoVSfissTCR.png" class="align-center" src="../_images/monoVSfissTCR.png" style="width: 600px;" />
 </a>
 </section>
 <section id="h-2-tcr">
 <h3>H-2 TCR<a class="headerlink" href="#h-2-tcr" title="Link to this heading"></a></h3>
+<p>The scattering and total macroscopic cross section data used in calculating the flux spectrum and TCR for H-2 is provided below. The cross sections differ at the highest energies but remain consistent throughout most of the energy range considered. Using the data below and the fission spectrum source, the TCR for H-2 is developed.</p>
 <a class="reference internal image-reference" href="../_images/H2xsPlot.png"><img alt="../_images/H2xsPlot.png" class="align-center" src="../_images/H2xsPlot.png" style="width: 600px;" />
 </a>
+<p>The TCR converges to the expected <span class="math notranslate nohighlight">\(\tau_{0}=2/3\)</span> as E→0. Additionally, the TCR converges to <span class="math notranslate nohighlight">\(\tau_{0}\)</span> at higher energies than in the H-1 case.</p>
 <a class="reference internal image-reference" href="../_images/H2fissTCR.png"><img alt="../_images/H2fissTCR.png" class="align-center" src="../_images/H2fissTCR.png" style="width: 600px;" />
 </a>
-<p>Return to the top of the page: <a class="reference internal" href="#proj2"><span class="std std-ref">Project 2: Transport Correction Ratio</span></a></p>
 </section>
+<section id="simpson-s-versus-trapezoidal">
+<h3>Simpson’s Versus Trapezoidal<a class="headerlink" href="#simpson-s-versus-trapezoidal" title="Link to this heading"></a></h3>
+<p>The Simpson integration technique implemented was less efficient but provided comparable results to the trapezoidal method.
+The techniques were compared using a fission spectrum source and H-2 cross section data.</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Number of Energy Points</p></th>
+<th class="head"><p>Simpson’s Time [s]</p></th>
+<th class="head"><p>Trapezoidal Time [s]</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>501</p></td>
+<td><p>0.1690</p></td>
+<td><p>0.0878</p></td>
+</tr>
+<tr class="row-odd"><td><p>5001</p></td>
+<td><p>6.1907</p></td>
+<td><p>4.1578</p></td>
+</tr>
+</tbody>
+</table>
+<p>The TCRs for both 501 and 5001 energy points are plotted and shown below. At 501 points, there is a discrepancy between the two techniques as E→0.
+However, increasing the number of energy points by an order of magnitude drastically reduced the relative error between the two methods.</p>
+<a class="reference internal image-reference" href="../_images/SimpsonTCR501.png"><img alt="../_images/SimpsonTCR501.png" class="align-center" src="../_images/SimpsonTCR501.png" style="width: 600px;" />
+</a>
+<a class="reference internal image-reference" href="../_images/SimpsonTCR5001.png"><img alt="../_images/SimpsonTCR5001.png" class="align-center" src="../_images/SimpsonTCR5001.png" style="width: 600px;" />
+</a>
+</section>
+</section>
+<section id="conclusions">
+<h2>Conclusions<a class="headerlink" href="#conclusions" title="Link to this heading"></a></h2>
+<p>The transport correction ratio accounts for anisotropy that is ignored by isotropic assumptions made for cross section generation. Using the methods described, a energy dependent transport cross section can be found for various isotopes given energy dependent scattering
+and total cross section data and neutron source information. However, the numerical integration technique chosen can have significant impact to computational cost if high fidelity in energy is desired.</p>
+<p>Return to the top of the page: <a class="reference internal" href="#proj2"><span class="std std-ref">Project 2: Transport Correction Ratio</span></a></p>
 </section>
 </section>
 

@@ -1,0 +1,248 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Transport Correction Ratio Notebook &mdash; NRE7203 0.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css?v=7f9a90b1" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=d45e8c67"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            NRE7203
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../overview.html">Class Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributors.html">Contributers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html">Projects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">NRE7203</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Transport Correction Ratio Notebook</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/projects/TCR_workshop.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="transport-correction-ratio-notebook">
+<span id="tcrnotebook"></span><h1>Transport Correction Ratio Notebook<a class="headerlink" href="#transport-correction-ratio-notebook" title="Link to this heading"></a></h1>
+<p>Return to Project 2 documentation: <a class="reference internal" href="project2.html#proj2"><span class="std std-ref">Project 2: Transport Correction Ratio</span></a></p>
+<p>Transport Correction Ratio</p>
+<p>This notebook is used to compare transport correction ratios (TCR) for
+H-1 and higher atomic mass isotopes.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># import relevant packages</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;font.size&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">16</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;figure.figsize&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">6</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span> <span class="c1"># Set default figure sizeimport numpy as np</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># import relevant functions from transportcorrection.py</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">transportcorrection</span><span class="w"> </span><span class="kn">import</span> <span class="n">energyInterpolation</span><span class="p">,</span> <span class="n">InfFlux</span><span class="p">,</span> <span class="n">Plot1d</span><span class="p">,</span> <span class="n">analyticTCR</span>
+</pre></div>
+</div>
+<p>Read in cross section data</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># read in data from desired data file (first we will use H1 data)</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;./database/H2.csv&quot;</span><span class="p">)</span>
+<span class="n">isotopeMass</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="n">isotopeName</span> <span class="o">=</span> <span class="s2">&quot;H2&quot;</span>
+<span class="n">energy</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;energy&#39;</span><span class="p">])</span>
+<span class="n">sigT</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;total&#39;</span><span class="p">])</span>
+<span class="n">sigS</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;scattering&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>Define the source term</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># source term definition</span>
+<span class="c1"># fission spectrum</span>
+<span class="n">srcFiss</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">energy</span><span class="o">/</span><span class="mf">9.880E+05</span><span class="p">)</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sinh</span><span class="p">((</span><span class="mf">2.249E-06</span><span class="o">*</span><span class="n">energy</span><span class="p">)</span><span class="o">**</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">srcFiss</span> <span class="o">=</span> <span class="n">srcFiss</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">srcFiss</span><span class="p">)</span>
+<span class="c1"># Monoenergetic source</span>
+<span class="n">srcMono</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">energy</span><span class="p">)</span>
+<span class="n">srcMono</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">energy</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">srcMono</span> <span class="o">=</span> <span class="n">srcMono</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">srcMono</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Interpolate the energy and cross section data to improve resolution</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">energyN</span> <span class="o">=</span> <span class="mi">501</span> <span class="c1"># number of energy points</span>
+<span class="n">lowerE</span><span class="p">,</span> <span class="n">upperE</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">19E+06</span>  <span class="c1">#  upper and lower energy limits</span>
+
+<span class="c1"># Define interpolated arrays for fission spectrum source and monoenergetic source</span>
+<span class="n">sigS1Fiss</span><span class="p">,</span> <span class="n">sigT1Fiss</span><span class="p">,</span> <span class="n">src1Fiss</span><span class="p">,</span> <span class="n">energy1Fiss</span> <span class="o">=</span>\
+    <span class="n">energyInterpolation</span><span class="p">(</span><span class="n">energy</span><span class="p">,</span> <span class="n">sigS</span><span class="p">,</span> <span class="n">sigT</span><span class="p">,</span> <span class="n">srcFiss</span><span class="p">,</span> <span class="n">energyN</span><span class="p">,</span> <span class="n">lowerE</span><span class="p">,</span> <span class="n">upperE</span><span class="p">,</span><span class="s1">&#39;log&#39;</span><span class="p">)</span>
+
+<span class="n">sigS1Mono</span><span class="p">,</span> <span class="n">sigT1Mono</span><span class="p">,</span> <span class="n">src1Mono</span><span class="p">,</span> <span class="n">energy1Mono</span> <span class="o">=</span>\
+    <span class="n">energyInterpolation</span><span class="p">(</span><span class="n">energy</span><span class="p">,</span> <span class="n">sigS</span><span class="p">,</span> <span class="n">sigT</span><span class="p">,</span> <span class="n">srcMono</span><span class="p">,</span> <span class="n">energyN</span><span class="p">,</span> <span class="n">lowerE</span><span class="p">,</span> <span class="n">upperE</span><span class="p">,</span><span class="s1">&#39;log&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">Plot1d</span><span class="p">(</span><span class="n">energy1Fiss</span><span class="p">,</span> <span class="n">sigT1Fiss</span><span class="p">,</span> <span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;Energy, eV&quot;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;total&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s2">&quot;-k&quot;</span><span class="p">,</span> <span class="n">markerfill</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">legend</span><span class="o">=</span><span class="s2">&quot;$\Sigma_</span><span class="si">{t}</span><span class="s2">(E)$&quot;</span><span class="p">)</span>
+<span class="n">Plot1d</span><span class="p">(</span><span class="n">energy1Fiss</span><span class="p">,</span> <span class="n">sigS1Fiss</span><span class="p">,</span> <span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;Energy, eV&quot;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;Cross sections, b&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s2">&quot;--r&quot;</span><span class="p">,</span> <span class="n">markerfill</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">legend</span><span class="o">=</span><span class="s2">&quot;$\Sigma_</span><span class="si">{s}</span><span class="s2">(E)$&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">()</span>
+</pre></div>
+</div>
+<img alt="../_images/TCR_workshop_11_0.png" src="../_images/TCR_workshop_11_0.png" />
+<p>Solve for flux using either an infinite flux formulation or a separate
+analytic flux</p>
+<p>Infinite flux general form for A <span class="math notranslate nohighlight">\(\ge\)</span> 1:</p>
+<div class="math notranslate nohighlight">
+\[\begin{equation}
+\Sigma_T(E)\phi(E)=\int_E^{\infty}\frac{\Sigma_s(E')\phi(E')}{(1-\alpha)E'}dE'+S(E)
+\end{equation}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\alpha\)</span> is:</p>
+<div class="math notranslate nohighlight">
+\[\begin{equation}
+\alpha = \frac{(1-A)^2}{(1+A)^2}
+\end{equation}\]</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># choose the infinite flux solution (from fission spectrum source or monoenergetic source)</span>
+<span class="n">flxFiss</span> <span class="o">=</span> <span class="n">InfFlux</span><span class="p">(</span><span class="n">energy1Fiss</span><span class="p">,</span> <span class="n">sigS1Fiss</span><span class="p">,</span> <span class="n">sigT1Fiss</span><span class="p">,</span> <span class="n">src1Fiss</span><span class="p">,</span> <span class="n">isotopeMass</span><span class="p">)</span>
+<span class="n">flxMono</span> <span class="o">=</span> <span class="n">InfFlux</span><span class="p">(</span><span class="n">energy1Mono</span><span class="p">,</span> <span class="n">sigS1Mono</span><span class="p">,</span> <span class="n">sigT1Mono</span><span class="p">,</span> <span class="n">src1Mono</span><span class="p">,</span> <span class="n">isotopeMass</span><span class="p">)</span>
+<span class="c1"># normalized</span>
+<span class="n">flxNormFiss</span> <span class="o">=</span> <span class="n">flxFiss</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">flxFiss</span><span class="p">)</span>
+<span class="n">flxNormMono</span> <span class="o">=</span> <span class="n">flxMono</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">flxMono</span><span class="p">)</span>
+
+<span class="c1"># Plots for comparing mono-energetic to fission sources</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">loglog</span><span class="p">(</span><span class="n">energy1Fiss</span><span class="p">,</span> <span class="n">flxFiss</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Fission Source&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">loglog</span><span class="p">(</span><span class="n">energy1Mono</span><span class="p">,</span><span class="n">flxMono</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Mono-Energetic Source&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Energy, eV&#39;</span><span class="p">),</span> <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Flux Spectrum&#39;</span><span class="p">),</span> <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">()</span>
+</pre></div>
+</div>
+<img alt="../_images/TCR_workshop_14_0.png" src="../_images/TCR_workshop_14_0.png" />
+<p>Solve for the TCR using:</p>
+<div class="math notranslate nohighlight">
+\[\begin{equation}
+\tau(E)=\left[ 1+\frac{1}{\phi(E)} \int_E^{E_{max}} dE'\frac{\phi(E')\mu(E' \rightarrow E)}{\tau(E')(1-\alpha)(E')} \right]^{-1}
+\end{equation}\]</div>
+<p>where</p>
+<div class="math notranslate nohighlight">
+\[\begin{equation}
+\mu(E' \rightarrow E)= \frac{1}{2}(A+1)\sqrt{\frac{E}{E'}}-\frac{1}{2}(A-1)\sqrt{\frac{E'}{E}}
+\end{equation}\]</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1">#using simpson method</span>
+<span class="n">start</span><span class="o">=</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="n">tauFissSimpson</span> <span class="o">=</span> <span class="n">analyticTCR</span><span class="p">(</span><span class="n">energy1Fiss</span><span class="p">,</span> <span class="n">flxNormFiss</span><span class="p">,</span> <span class="n">isotopeMass</span><span class="p">,</span> <span class="s1">&#39;simpson&#39;</span><span class="p">)</span>
+<span class="n">end</span><span class="o">=</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;calculation took </span><span class="si">{</span><span class="n">end</span><span class="o">-</span><span class="n">start</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">s&quot;</span><span class="p">)</span>
+
+<span class="c1">#using trapezoid method</span>
+<span class="n">start</span><span class="o">=</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="n">tauFissTrap</span> <span class="o">=</span> <span class="n">analyticTCR</span><span class="p">(</span><span class="n">energy1Fiss</span><span class="p">,</span> <span class="n">flxNormFiss</span><span class="p">,</span> <span class="n">isotopeMass</span><span class="p">,</span> <span class="s1">&#39;trapezoid&#39;</span><span class="p">)</span>
+<span class="n">end</span><span class="o">=</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;calculation took </span><span class="si">{</span><span class="n">end</span><span class="o">-</span><span class="n">start</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">s&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">calculation</span> <span class="n">took</span> <span class="mf">0.0715</span><span class="n">s</span>
+<span class="n">calculation</span> <span class="n">took</span> <span class="mf">0.0458</span><span class="n">s</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># find average cosine of the scattering angle and Tau as energy approaches 0</span>
+<span class="n">tau0</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="mi">2</span><span class="o">/</span><span class="p">(</span><span class="mi">3</span><span class="o">*</span><span class="n">isotopeMass</span><span class="p">))</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">flxNormFiss</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">Plot1d</span><span class="p">(</span><span class="n">energy1Fiss</span><span class="p">,</span> <span class="n">tauFissSimpson</span><span class="p">,</span> <span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;Energy, eV&quot;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;$</span><span class="se">\\</span><span class="s2">tau(E)$&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s2">&quot;-k&quot;</span><span class="p">,</span> <span class="n">markerfill</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">legend</span><span class="o">=</span><span class="s1">&#39;Simpson Integration&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">()</span>
+<span class="n">Plot1d</span><span class="p">(</span><span class="n">energy1Fiss</span><span class="p">,</span> <span class="n">tauFissTrap</span><span class="p">,</span> <span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;Energy, eV&quot;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;$</span><span class="se">\\</span><span class="s2">tau(E)$&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s2">&quot;-b&quot;</span><span class="p">,</span> <span class="n">markerfill</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">legend</span><span class="o">=</span><span class="s1">&#39;Trapezoidal Integration&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">()</span>
+<span class="n">Plot1d</span><span class="p">(</span><span class="n">energy1Fiss</span><span class="p">,</span> <span class="n">tau0</span><span class="p">,</span> <span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;Energy, eV&quot;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;$</span><span class="se">\\</span><span class="s2">tau(E)$&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s2">&quot;--r&quot;</span><span class="p">,</span> <span class="n">markerfill</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">legend</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">isotopeMass</span><span class="si">}</span><span class="s1">/3&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mf">0.85</span><span class="p">,</span> <span class="s2">&quot;501 Points&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;r&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Text</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mf">0.85</span><span class="p">,</span> <span class="s1">&#39;5001 Points&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<img alt="../_images/TCR_workshop_18_1.png" src="../_images/TCR_workshop_18_1.png" />
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">diff</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">tauFissSimpson</span> <span class="o">-</span> <span class="n">tauFissTrap</span><span class="p">)</span>
+<span class="c1"># Find the index of the maximum difference</span>
+<span class="n">max_index</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">diff</span><span class="p">)</span>
+<span class="n">max_value</span> <span class="o">=</span> <span class="n">diff</span><span class="p">[</span><span class="n">max_index</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Max difference: </span><span class="si">{</span><span class="n">max_value</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Max</span> <span class="n">difference</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.02935336</span><span class="p">]</span>
+</pre></div>
+</div>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Blankenship J.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
