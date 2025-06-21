@@ -85,19 +85,23 @@ Three cases were tested. The first test considered ten regions with macroscopic 
 
 Using the ST, DT, and WDT routines, the following flux results were obtained. The cross sections are given by the histogram below. The flux tally in each of the ten regions is overlaid on the analytic flux for the given cross sections. The case that generated these plots was 100 simulations at 10000 neutrons with a outer radius of 12 cm :math:`^{-1}`.
 
-.. image:: images/case1histograms.png
+.. image:: images/monte_carlo_results/case1histograms.png
   :width: 600
   :align: center
 
-.. image:: images/case1STflux.png
+.. image:: images/monte_carlo_results/case1STflux.png
   :width: 600
   :align: center
 
-.. image:: images/case1DTflux.png
+.. image:: images/monte_carlo_results/case1DTflux.png
   :width: 600
   :align: center
 
-.. image:: images/case1WDTflux.png
+.. image:: images/monte_carlo_results/case1WDTflux.png
+  :width: 600
+  :align: center
+
+.. image:: images/monte_carlo_results/case1diff.png
   :width: 600
   :align: center
 
@@ -106,19 +110,23 @@ Case 2
 --------------
 The second case defined :math:`\Sigma_{t}` in the seventh region as 3 cm :math:`^{-1}`. All other cross sections were randomly generated as in case 1. The same simulation parameters were chosen. The resulting flux plots were generated based on the cross sections:
 
-.. image:: images/case2histogram.png
+.. image:: images/monte_carlo_results/case2histogram.png
   :width: 600
   :align: center
 
-.. image:: images/case2STflux.png
+.. image:: images/monte_carlo_results/case2STflux.png
   :width: 600
   :align: center
 
-.. image:: images/case2DTflux.png
+.. image:: images/monte_carlo_results/case2DTflux.png
   :width: 600
   :align: center
 
-.. image:: images/case2WDTflux.png
+.. image:: images/monte_carlo_results/case2WDTflux.png
+  :width: 600
+  :align: center
+
+.. image:: images/monte_carlo_results/case2diff.png
   :width: 600
   :align: center
 
@@ -127,19 +135,23 @@ Case 3
 --------------
 The third case returned cross sections to being uniformly distributed between 0.1 and 0.25 cm :math:`^{-1}`. However, this case used 30 regions. Again the same simulation parameters were used. The resulting flux plots were obtained with the cross sections shown below.
 
-.. image:: images/case3histogram.png
+.. image:: images/monte_carlo_results/case3histogram.png
   :width: 600
   :align: center
 
-.. image:: images/case3STflux.png
+.. image:: images/monte_carlo_results/case3STflux.png
   :width: 600
   :align: center
 
-.. image:: images/case3DTflux.png
+.. image:: images/monte_carlo_results/case3DTflux.png
   :width: 600
   :align: center
 
-.. image:: images/case3WDTflux.png
+.. image:: images/monte_carlo_results/case3WDTflux.png
+  :width: 600
+  :align: center
+
+.. image:: images/monte_carlo_results/case3diff.png
   :width: 600
   :align: center
 
@@ -154,11 +166,11 @@ The tables below give relevant data in terms of leakage, runtimes, flux standard
 ============= =============================== ================ ====================== =========================
 Method            :math:`\Delta` Leakage [%]     Runtime [s]    :math:`\sigma_{flux}`       FoM
 ============= =============================== ================ ====================== =========================
-ST                       0.01                    22.85                45.48                  2.12E-5
+ST                       0.01                    25.11                50.92                  1.54E-5
 ------------- ------------------------------- ---------------- ---------------------- -------------------------
-DT                        0.04                    20.54                45.42                 2.36E-5
+DT                        0.04                    25.16                50.60                 1.55E-5
 ------------- ------------------------------- ---------------- ---------------------- -------------------------
-WDT                        0.02                    25.58                44.49                1.98E-5
+WDT                        0.02                    29.85                45.29                1.63E-5
 ============= =============================== ================ ====================== =========================
 
 *Case 2 Summary Results*
@@ -166,11 +178,11 @@ WDT                        0.02                    25.58                44.49   
 ============= =============================== ================ ====================== =========================
 Method            :math:`\Delta` Leakage [%]     Runtime [s]    :math:`\sigma_{flux}`       FoM
 ============= =============================== ================ ====================== =========================
-ST                       0.00                    21.33                46.12                  2.20E-5
+ST                       0.00                    21.40                53.46                  1.84E-5
 ------------- ------------------------------- ---------------- ---------------------- -------------------------
-DT                        0.00                    89.64                46.62                 5.13E-6
+DT                        0.01                    90.72                47.23                 4.94E-6
 ------------- ------------------------------- ---------------- ---------------------- -------------------------
-WDT                        0.00                    203.66                9.62                5.31E-5
+WDT                        0.00                    190.54                38.76                3.49E-6
 ============= =============================== ================ ====================== =========================
 
 *Case 3 Summary Results*
@@ -178,11 +190,11 @@ WDT                        0.00                    203.66                9.62   
 ============= =============================== ================ ====================== =========================
 Method            :math:`\Delta` Leakage [%]     Runtime [s]    :math:`\sigma_{flux}`       FoM
 ============= =============================== ================ ====================== =========================
-ST                       0.03                    39.01                50.44                  1.01E-5
+ST                       0.01                    37.95                48.33                  1.13E-5
 ------------- ------------------------------- ---------------- ---------------------- -------------------------
-DT                        0.01                    22.20                53.69                 1.56E-5
+DT                        0.01                    19.84                42.80                 2.75E-5
 ------------- ------------------------------- ---------------- ---------------------- -------------------------
-WDT                        0.04                    27.75                40.49                2.18E-5
+WDT                        0.02                    23.99                50.94                1.61E-5
 ============= =============================== ================ ====================== =========================
 
 ===========
@@ -193,8 +205,7 @@ In summary, surface tracking, standard delta tracking, and weighted delta tracki
 By varying the number of shells and the macroscopic cross sections, the differences between solution methods were identified.
 Delta tracking and weighted delta tracking were penalized in case 2 due to the insertion of a large macroscopic cross section.
 Surface tracking was penalized when the number of regions, therefore surfaces, was increased. From these results, the times in which one uses different algorithms is dependent on the physical system modeled.
-The difference in analytic and weighted delta tracking flux in case 2 warrants additonal study. It is expected the roulette played is inadequate in overcoming the large majorant cross section which reduces neutron weight rapidly.
-Overall, it is interesting to see the performance differences in the presented algorithms.
+Overall, all algorithms were in good agreement with the analytic solutions. It is interesting to see the performance differences in the presented algorithms and the different use-cases for each.
 
 Return to the top of the page: :ref:`proj1`
 
