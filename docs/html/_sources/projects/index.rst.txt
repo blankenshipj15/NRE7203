@@ -8,6 +8,7 @@ This section outlines the projects completed for NRE7203. Each of the below link
 
 1. :ref:`Weighted Delta Tracking <proj1>`	
 2. :ref:`Transport Correction Ratio <proj2>`
+3. :ref:`Diffusion Coefficients and Critical Spectrum Search <proj3>`
 
 
 
@@ -18,6 +19,7 @@ This section outlines the projects completed for NRE7203. Each of the below link
 
    project1.rst
    project2.rst
+   project3.rst
 
 
 

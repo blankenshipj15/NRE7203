@@ -1,0 +1,296 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fuel Assembly Diffusion &mdash; NRE7203 0.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css?v=7f9a90b1" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=d45e8c67"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            NRE7203
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../overview.html">Class Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributors.html">Contributers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html">Projects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">NRE7203</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Fuel Assembly Diffusion</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/projects/FA_diffusion.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="fuel-assembly-diffusion">
+<span id="fa-diffusion"></span><h1>Fuel Assembly Diffusion<a class="headerlink" href="#fuel-assembly-diffusion" title="Link to this heading"></a></h1>
+<p>Return to Project 3 documentation: <a class="reference internal" href="project3.html#proj3"><span class="std std-ref">Project 3: Diffusion Coefficients and Critical Spectrum Search</span></a></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># import relevant packages</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.linalg</span><span class="w"> </span><span class="kn">import</span> <span class="n">solve</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">rcParams</span>
+
+<span class="c1"># Default values</span>
+<span class="n">FONT_SIZE</span> <span class="o">=</span> <span class="mi">16</span>  <span class="c1"># font size for plotting purposes</span>
+<span class="c1"># rcParams[&#39;figure.dpi&#39;] = 300</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;figure.figsize&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">6</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span> <span class="c1"># Set default figure size</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">serpentTools</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">serpentTools.settings</span><span class="w"> </span><span class="kn">import</span> <span class="n">rc</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">plotter</span><span class="w"> </span><span class="kn">import</span> <span class="n">Plot1d</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">numerical_TCR</span><span class="w"> </span><span class="kn">import</span> <span class="n">InScatter</span><span class="p">,</span> <span class="n">OutScatter</span><span class="p">,</span> <span class="n">FluxLimited</span><span class="p">,</span> <span class="n">Condense2gr</span>
+</pre></div>
+</div>
+</section>
+<section id="transport-cross-section">
+<h1>Transport cross section<a class="headerlink" href="#transport-cross-section" title="Link to this heading"></a></h1>
+<section id="description">
+<h2>Description<a class="headerlink" href="#description" title="Link to this heading"></a></h2>
+<p><strong>In-scatter</strong></p>
+<p><span class="math notranslate nohighlight">\(\Sigma_{tr,g} = \Sigma_{t,g} - \frac{{\sum}_{g'}\Sigma_{s1,g'g}J_{g'}}{J_g}\)</span></p>
+<p><strong>Out-scatter</strong></p>
+<p><span class="math notranslate nohighlight">\(\Sigma_{tr,g} \approx \Sigma_{t,g} - \frac{{\sum}_{g'}\Sigma_{s1,gg'}J_{g}}{J_g}=\Sigma_{t,g}-\Sigma_{s1,g}\)</span></p>
+<p><strong>Flux-limited</strong></p>
+<p><span class="math notranslate nohighlight">\(\Sigma_{tr,g} = \Sigma_{t,g} - \frac{{\sum}_{g'}\Sigma_{s1,g'g}\phi_{g'}}{\phi_g}\)</span></p>
+<p>Obtain the <strong>current</strong></p>
+<p><span class="math notranslate nohighlight">\(\Sigma_{t,h}J_h-{\sum}_{h'}\Sigma_{s1,h'h}J_{h'}=\frac{1}{3}B\phi_h\)</span></p>
+<section id="read-results-from-serpent">
+<h3>Read results from Serpent<a class="headerlink" href="#read-results-from-serpent" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 70-group Infinite Results</span>
+<span class="n">resFile70gr</span> <span class="o">=</span> <span class="s2">&quot;./serpent/fa2D_70gr_inf_res.m&quot;</span>
+<span class="c1"># 2-Group B1 Leakage Corrected Reference Results</span>
+<span class="n">resFile2gr</span> <span class="o">=</span> <span class="s2">&quot;./serpent/fa2D_2gr_B1_res.m&quot;</span>
+<span class="c1"># 70-group Infinite Hydrogen Results</span>
+<span class="n">resFile70grH</span> <span class="o">=</span> <span class="s2">&quot;./serpent/infinite_h_basic_h1_r1_res.m&quot;</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Read the results using the serpentTools package</span>
+<span class="n">rc</span><span class="p">[</span><span class="s2">&quot;serpentVersion&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;2.2.1&quot;</span>
+<span class="n">res70gr</span> <span class="o">=</span> <span class="n">serpentTools</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">resFile70gr</span><span class="p">)</span>
+<span class="n">res2gr</span> <span class="o">=</span> <span class="n">serpentTools</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">resFile2gr</span><span class="p">)</span>
+<span class="n">res70grH</span> <span class="o">=</span> <span class="n">serpentTools</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">resFile70grH</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">SERPENT</span> <span class="n">Serpent</span> <span class="mf">2.1.32</span> <span class="n">found</span> <span class="ow">in</span> <span class="o">./</span><span class="n">serpent</span><span class="o">/</span><span class="n">infinite_h_basic_h1_r1_res</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">but</span> <span class="n">version</span> <span class="mf">2.2.1</span> <span class="ow">is</span> <span class="n">defined</span> <span class="ow">in</span> <span class="n">settings</span>
+  <span class="n">Attempting</span> <span class="n">to</span> <span class="n">read</span> <span class="n">anyway</span><span class="o">.</span> <span class="n">Please</span> <span class="n">report</span> <span class="n">strange</span> <span class="n">behaviors</span><span class="o">/</span><span class="n">failures</span> <span class="n">to</span> <span class="n">developers</span><span class="o">.</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 70-group fuel assembly data</span>
+<span class="n">ng</span> <span class="o">=</span> <span class="mi">70</span>
+<span class="n">univ0</span> <span class="o">=</span> <span class="n">res70gr</span><span class="o">.</span><span class="n">getUniv</span><span class="p">(</span><span class="s1">&#39;0&#39;</span><span class="p">,</span> <span class="n">timeDays</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">flxLat</span> <span class="o">=</span> <span class="n">univ0</span><span class="o">.</span><span class="n">infExp</span><span class="p">[</span><span class="s1">&#39;infFlx&#39;</span><span class="p">]</span>
+<span class="n">sigTLat</span> <span class="o">=</span> <span class="n">univ0</span><span class="o">.</span><span class="n">infExp</span><span class="p">[</span><span class="s1">&#39;infTot&#39;</span><span class="p">]</span>
+<span class="n">SP1Lat</span> <span class="o">=</span> <span class="n">univ0</span><span class="o">.</span><span class="n">infExp</span><span class="p">[</span><span class="s1">&#39;infSp1&#39;</span><span class="p">]</span>
+<span class="n">cmmTranspLat</span> <span class="o">=</span> <span class="n">univ0</span><span class="o">.</span><span class="n">gc</span><span class="p">[</span><span class="s1">&#39;cmmTranspxs&#39;</span><span class="p">]</span>      <span class="c1"># represents in-scatter</span>
+<span class="n">infTranspLat</span> <span class="o">=</span> <span class="n">univ0</span><span class="o">.</span><span class="n">infExp</span><span class="p">[</span><span class="s1">&#39;infTranspxs&#39;</span><span class="p">]</span>  <span class="c1"># out-scatter</span>
+<span class="n">energyLat</span> <span class="o">=</span> <span class="n">univ0</span><span class="o">.</span><span class="n">groups</span> <span class="o">*</span> <span class="mf">1e6</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Retrieve the reference diffusion coefficients for 2-groups</span>
+<span class="n">univ0</span> <span class="o">=</span> <span class="n">res2gr</span><span class="o">.</span><span class="n">getUniv</span><span class="p">(</span><span class="s1">&#39;0&#39;</span><span class="p">,</span> <span class="n">timeDays</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">cmmDiffCoeff2g</span> <span class="o">=</span> <span class="n">univ0</span><span class="o">.</span><span class="n">gc</span><span class="p">[</span><span class="s1">&#39;cmmDiffcoef&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># using the serpent results to get infinite TCR</span>
+<span class="n">cmmTauLat</span> <span class="o">=</span> <span class="n">cmmTranspLat</span> <span class="o">/</span> <span class="n">sigTLat</span>
+</pre></div>
+</div>
+<p><strong>To create the scattering matrix with the following structure</strong>: 1-&gt;1,
+2-&gt;1 3-&gt;1 … 1-&gt;2, 2-&gt;2 3-&gt;2 … 1-&gt;3, 2-&gt;3 3-&gt;3 … …</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">SP1Lat</span><span class="o">=</span><span class="n">SP1Lat</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="n">ng</span><span class="p">,</span><span class="n">ng</span><span class="p">))</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span>
+</pre></div>
+</div>
+<p><strong>Execute in-scatter function</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">inSigTrLat</span><span class="p">,</span> <span class="n">inTauLat</span><span class="p">,</span> <span class="n">JgLat</span>  <span class="o">=</span> <span class="n">InScatter</span><span class="p">(</span><span class="n">ng</span><span class="p">,</span> <span class="n">SP1Lat</span><span class="p">,</span> <span class="n">sigTLat</span><span class="p">,</span> <span class="n">flxLat</span><span class="p">,</span> <span class="n">B2</span><span class="o">=</span><span class="mf">1E-06</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Execute the out-scatter</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">outSigTrLat</span><span class="p">,</span> <span class="n">outTauLat</span> <span class="o">=</span> <span class="n">OutScatter</span><span class="p">(</span><span class="n">ng</span><span class="p">,</span> <span class="n">SP1Lat</span><span class="p">,</span> <span class="n">sigTLat</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Execute the flux-limited</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">limitSigTrLat</span><span class="p">,</span> <span class="n">limitTauLat</span>  <span class="o">=</span> <span class="n">FluxLimited</span><span class="p">(</span><span class="n">ng</span><span class="p">,</span> <span class="n">SP1Lat</span><span class="p">,</span> <span class="n">sigTLat</span><span class="p">,</span> <span class="n">flxLat</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="a-2-group-energy-structure-is-defined-for-fast-and-thermal-neutrons-with-group-1-fast-having-energies-0-625-ev-and-group-2-thermal-having-energies-le-0-625-ev">
+<h3>A 2-group energy structure is defined for fast and thermal neutrons with group 1 (fast) having energies &gt; 0.625 eV and group 2 (thermal) having energies <span class="math notranslate nohighlight">\(\le\)</span> 0.625 eV.<a class="headerlink" href="#a-2-group-energy-structure-is-defined-for-fast-and-thermal-neutrons-with-group-1-fast-having-energies-0-625-ev-and-group-2-thermal-having-energies-le-0-625-ev" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Find the energy cutoff index</span>
+<span class="n">energyCutoff</span> <span class="o">=</span> <span class="mf">0.625</span> <span class="c1"># energy cutoff value defining neutron energy group [eV]</span>
+<span class="n">g1Indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">energyLat</span> <span class="o">&gt;</span> <span class="mf">0.625</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">g2Indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">energyLat</span> <span class="o">&lt;=</span> <span class="mf">0.625</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+</section>
+<section id="diffusion-coefficient-group-condensation">
+<h3>Diffusion Coefficient Group Condensation<a class="headerlink" href="#diffusion-coefficient-group-condensation" title="Link to this heading"></a></h3>
+<p>Determine the 2-group diffusion coefficients for in-scatter,
+out-scatter, and flux-limited defined transport cross sections.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">inDiffCoeff2g</span> <span class="o">=</span> <span class="n">Condense2gr</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="p">(</span><span class="mi">3</span><span class="o">*</span><span class="n">inSigTrLat</span><span class="p">),</span> <span class="n">flxLat</span><span class="p">,</span> <span class="n">energyLat</span><span class="p">,</span> <span class="n">cutoffE</span><span class="o">=</span><span class="mf">0.625</span><span class="p">)</span>
+<span class="n">outDiffCoeff2g</span> <span class="o">=</span> <span class="n">Condense2gr</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="p">(</span><span class="mi">3</span><span class="o">*</span><span class="n">outSigTrLat</span><span class="p">),</span> <span class="n">flxLat</span><span class="p">,</span> <span class="n">energyLat</span><span class="p">,</span> <span class="n">cutoffE</span><span class="o">=</span><span class="mf">0.625</span><span class="p">)</span>
+<span class="n">limitDiffCoeff2g</span> <span class="o">=</span> <span class="n">Condense2gr</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="p">(</span><span class="mi">3</span><span class="o">*</span><span class="n">limitSigTrLat</span><span class="p">),</span> <span class="n">flxLat</span><span class="p">,</span> <span class="n">energyLat</span><span class="p">,</span> <span class="n">cutoffE</span><span class="o">=</span><span class="mf">0.625</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The 2-group diffusion coefficients for the in-scatter method are </span><span class="si">{</span><span class="n">inDiffCoeff2g</span><span class="si">}</span><span class="s2"> with relative errors of </span><span class="si">{</span><span class="mi">100</span><span class="o">*</span><span class="p">(</span><span class="n">inDiffCoeff2g</span><span class="o">-</span><span class="n">cmmDiffCoeff2g</span><span class="p">)</span><span class="o">/</span><span class="n">cmmDiffCoeff2g</span><span class="si">}</span><span class="s2">%.&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The 2-group diffusion coefficients for the out-scatter method are </span><span class="si">{</span><span class="n">outDiffCoeff2g</span><span class="si">}</span><span class="s2"> with relative errors of </span><span class="si">{</span><span class="mi">100</span><span class="o">*</span><span class="p">(</span><span class="n">outDiffCoeff2g</span><span class="o">-</span><span class="n">cmmDiffCoeff2g</span><span class="p">)</span><span class="o">/</span><span class="n">cmmDiffCoeff2g</span><span class="si">}</span><span class="s2">%.&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The 2-group diffusion coefficients for the flux-limited method are </span><span class="si">{</span><span class="n">limitDiffCoeff2g</span><span class="si">}</span><span class="s2"> with relative errors of </span><span class="si">{</span><span class="mi">100</span><span class="o">*</span><span class="p">(</span><span class="n">limitDiffCoeff2g</span><span class="o">-</span><span class="n">cmmDiffCoeff2g</span><span class="p">)</span><span class="o">/</span><span class="n">cmmDiffCoeff2g</span><span class="si">}</span><span class="s2">%.&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">The</span> <span class="mi">2</span><span class="o">-</span><span class="n">group</span> <span class="n">diffusion</span> <span class="n">coefficients</span> <span class="k">for</span> <span class="n">the</span> <span class="ow">in</span><span class="o">-</span><span class="n">scatter</span> <span class="n">method</span> <span class="n">are</span> <span class="p">[</span><span class="mf">1.69854949</span> <span class="mf">0.88303605</span><span class="p">]</span> <span class="k">with</span> <span class="n">relative</span> <span class="n">errors</span> <span class="n">of</span> <span class="p">[</span><span class="o">-</span><span class="mf">3.38501006</span> <span class="o">-</span><span class="mf">0.56684185</span><span class="p">]</span><span class="o">%.</span>
+<span class="n">The</span> <span class="mi">2</span><span class="o">-</span><span class="n">group</span> <span class="n">diffusion</span> <span class="n">coefficients</span> <span class="k">for</span> <span class="n">the</span> <span class="n">out</span><span class="o">-</span><span class="n">scatter</span> <span class="n">method</span> <span class="n">are</span> <span class="p">[</span><span class="mf">1.73376106</span> <span class="mf">0.82629467</span><span class="p">]</span> <span class="k">with</span> <span class="n">relative</span> <span class="n">errors</span> <span class="n">of</span> <span class="p">[</span><span class="o">-</span><span class="mf">1.38214492</span> <span class="o">-</span><span class="mf">6.95613244</span><span class="p">]</span><span class="o">%.</span>
+<span class="n">The</span> <span class="mi">2</span><span class="o">-</span><span class="n">group</span> <span class="n">diffusion</span> <span class="n">coefficients</span> <span class="k">for</span> <span class="n">the</span> <span class="n">flux</span><span class="o">-</span><span class="n">limited</span> <span class="n">method</span> <span class="n">are</span> <span class="p">[</span><span class="mf">1.68208348</span> <span class="mf">0.87193724</span><span class="p">]</span> <span class="k">with</span> <span class="n">relative</span> <span class="n">errors</span> <span class="n">of</span> <span class="p">[</span><span class="o">-</span><span class="mf">4.32161155</span> <span class="o">-</span><span class="mf">1.8166092</span> <span class="p">]</span><span class="o">%.</span>
+</pre></div>
+</div>
+</section>
+<section id="read-70-group-data-from-infinite-hydrogen-assembly-to-perform-hydrogen-correction-for-out-scatter-calculated-sigma-tr">
+<h3>Read 70-group data from infinite hydrogen assembly to perform hydrogen correction for out-scatter calculated <span class="math notranslate nohighlight">\(\Sigma_{tr}\)</span><a class="headerlink" href="#read-70-group-data-from-infinite-hydrogen-assembly-to-perform-hydrogen-correction-for-out-scatter-calculated-sigma-tr" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">univ0</span> <span class="o">=</span> <span class="n">res70grH</span><span class="o">.</span><span class="n">getUniv</span><span class="p">(</span><span class="s1">&#39;0&#39;</span><span class="p">,</span> <span class="n">timeDays</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">flxH</span> <span class="o">=</span> <span class="n">univ0</span><span class="o">.</span><span class="n">infExp</span><span class="p">[</span><span class="s1">&#39;infFlx&#39;</span><span class="p">]</span>
+<span class="n">sigTH</span> <span class="o">=</span> <span class="n">univ0</span><span class="o">.</span><span class="n">infExp</span><span class="p">[</span><span class="s1">&#39;infTot&#39;</span><span class="p">]</span>
+<span class="n">SP1H</span> <span class="o">=</span> <span class="n">univ0</span><span class="o">.</span><span class="n">infExp</span><span class="p">[</span><span class="s1">&#39;infSp1&#39;</span><span class="p">]</span>
+<span class="n">cmmTranspH</span> <span class="o">=</span> <span class="n">univ0</span><span class="o">.</span><span class="n">gc</span><span class="p">[</span><span class="s1">&#39;cmmTranspxs&#39;</span><span class="p">]</span>      <span class="c1"># represents in-scatter</span>
+<span class="n">infTranspH</span> <span class="o">=</span> <span class="n">univ0</span><span class="o">.</span><span class="n">infExp</span><span class="p">[</span><span class="s1">&#39;infTranspxs&#39;</span><span class="p">]</span>  <span class="c1"># out-scatter</span>
+<span class="n">energyH</span> <span class="o">=</span> <span class="n">univ0</span><span class="o">.</span><span class="n">groups</span> <span class="o">*</span> <span class="mf">1e6</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">SP1H</span><span class="o">=</span><span class="n">SP1H</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="n">ng</span><span class="p">,</span><span class="n">ng</span><span class="p">))</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span>
+
+<span class="c1"># Calculate the in-scatter method transport correction factor for H-1</span>
+<span class="n">inSigTrH</span><span class="p">,</span> <span class="n">inTauH</span><span class="p">,</span> <span class="n">JgH</span>  <span class="o">=</span> <span class="n">InScatter</span><span class="p">(</span><span class="n">ng</span><span class="p">,</span> <span class="n">SP1H</span><span class="p">,</span> <span class="n">sigTH</span><span class="p">,</span> <span class="n">flxH</span><span class="p">,</span> <span class="n">B2</span><span class="o">=</span><span class="mf">1E-04</span><span class="p">)</span>
+
+<span class="c1"># Calculate the microscopic transport cross section using out-scatter macroscopic transport cross section</span>
+<span class="n">outSigTrH</span><span class="p">,</span> <span class="n">outTauH</span> <span class="o">=</span> <span class="n">OutScatter</span><span class="p">(</span><span class="n">ng</span><span class="p">,</span> <span class="n">SP1H</span><span class="p">,</span> <span class="n">sigTH</span><span class="p">)</span>
+<span class="n">numberDensInf</span> <span class="o">=</span> <span class="mf">4.29318E+23</span> <span class="c1"># from N = rho*Avagadro/(mass_H)</span>
+<span class="n">outMicroTrH</span> <span class="o">=</span> <span class="n">infTranspH</span><span class="o">/</span><span class="n">numberDensInf</span>
+
+<span class="c1"># Remove the hydrogen generated transport xs from the lattice transport xs</span>
+<span class="n">numberDensLat</span> <span class="o">=</span> <span class="mf">2.7496E+22</span> <span class="c1"># hydrogen number density smeared over lattice</span>
+<span class="n">outSigTrLatMinus</span> <span class="o">=</span> <span class="n">infTranspLat</span> <span class="o">-</span> <span class="n">outMicroTrH</span> <span class="o">*</span> <span class="n">numberDensLat</span>
+
+<span class="c1"># Find microscopic total cross section for hydrogen</span>
+<span class="n">microTotalH</span> <span class="o">=</span> <span class="n">sigTH</span><span class="o">/</span><span class="n">numberDensInf</span>
+<span class="n">outSigTrLatCorrected</span> <span class="o">=</span> <span class="n">outSigTrLatMinus</span> <span class="o">+</span> <span class="n">microTotalH</span> <span class="o">*</span> <span class="n">numberDensLat</span> <span class="o">*</span> <span class="n">inTauH</span>
+</pre></div>
+</div>
+</section>
+<section id="calculate-the-corrected-2-group-diffusion-coefficients-for-the-out-scatter-method">
+<h3>Calculate the corrected 2-group diffusion coefficients for the out-scatter method<a class="headerlink" href="#calculate-the-corrected-2-group-diffusion-coefficients-for-the-out-scatter-method" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">outDiffCoeff2gCorrected</span> <span class="o">=</span> <span class="n">Condense2gr</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="p">(</span><span class="mi">3</span><span class="o">*</span><span class="n">outSigTrLatCorrected</span><span class="p">),</span> <span class="n">flxLat</span><span class="p">,</span> <span class="n">energyLat</span><span class="p">,</span> <span class="n">cutoffE</span><span class="o">=</span><span class="mf">0.625</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The 2-group diffusion coefficients for the corrected out-scatter method are </span><span class="si">{</span><span class="n">outDiffCoeff2gCorrected</span><span class="si">}</span><span class="s2"> with relative errors of </span><span class="si">{</span><span class="mi">100</span><span class="o">*</span><span class="p">(</span><span class="n">outDiffCoeff2gCorrected</span><span class="o">-</span><span class="n">cmmDiffCoeff2g</span><span class="p">)</span><span class="o">/</span><span class="n">cmmDiffCoeff2g</span><span class="si">}</span><span class="s2">%.&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">The</span> <span class="mi">2</span><span class="o">-</span><span class="n">group</span> <span class="n">diffusion</span> <span class="n">coefficients</span> <span class="k">for</span> <span class="n">the</span> <span class="n">corrected</span> <span class="n">out</span><span class="o">-</span><span class="n">scatter</span> <span class="n">method</span> <span class="n">are</span> <span class="p">[</span><span class="mf">1.71873483</span> <span class="mf">0.8845672</span> <span class="p">]</span> <span class="k">with</span> <span class="n">relative</span> <span class="n">errors</span> <span class="n">of</span> <span class="p">[</span><span class="o">-</span><span class="mf">2.23685006</span> <span class="o">-</span><span class="mf">0.3944285</span> <span class="p">]</span><span class="o">%.</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot in-scatter TCR used for hydrogen correction</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">Plot1d</span><span class="p">(</span><span class="n">energyH</span><span class="p">,</span> <span class="n">inTauH</span><span class="p">,</span> <span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;Energy, eV&quot;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span>
+        <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s2">&quot;-k&quot;</span><span class="p">,</span> <span class="n">markerfill</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">([</span><span class="s1">&#39;In-scatter&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">matplotlib</span><span class="o">.</span><span class="n">legend</span><span class="o">.</span><span class="n">Legend</span> <span class="n">at</span> <span class="mh">0x2f60c037950</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<img alt="../_images/infH1Tau.png" src="../_images/infH1Tau.png" />
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot hydrogen corrected out-scatter transport cross sections</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">visible</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">Plot1d</span><span class="p">(</span><span class="n">energyLat</span><span class="p">,</span> <span class="n">outSigTrLat</span><span class="p">,</span> <span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;Energy, eV&quot;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span>
+        <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s2">&quot;-k&quot;</span><span class="p">,</span> <span class="n">markerfill</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>
+<span class="n">Plot1d</span><span class="p">(</span><span class="n">energyLat</span><span class="p">,</span> <span class="n">outSigTrLatCorrected</span><span class="p">,</span> <span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;Energy, eV&quot;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span>
+        <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s2">&quot;-r&quot;</span><span class="p">,</span> <span class="n">markerfill</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">([</span><span class="s1">&#39;Out-Scatter&#39;</span><span class="p">,</span> <span class="s1">&#39;Corrected&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">matplotlib</span><span class="o">.</span><span class="n">legend</span><span class="o">.</span><span class="n">Legend</span> <span class="n">at</span> <span class="mh">0x2f60dfd2590</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<img alt="../_images/correctedTranspXs.png" src="../_images/correctedTranspXs.png" />
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Blankenship J.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

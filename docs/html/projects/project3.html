@@ -1,0 +1,240 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Project 3: Diffusion Coefficients and Critical Spectrum Search &mdash; NRE7203 0.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css?v=7f9a90b1" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=d45e8c67"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Glossary" href="../glossary.html" />
+    <link rel="prev" title="Project 2: Transport Correction Ratio" href="project2.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            NRE7203
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../overview.html">Class Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributors.html">Contributers</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Projects</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="project1.html">Project 1: Weighted Delta Tracking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="project2.html">Project 2: Transport Correction Ratio</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Project 3: Diffusion Coefficients and Critical Spectrum Search</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#introduction">Introduction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#methodology">Methodology</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#diffusion-coefficient-calculations">Diffusion Coefficient Calculations</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#critical-spectrum-search">Critical Spectrum Search</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#results">Results</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#in-scatter-out-scatter-and-flux-limited-group-constants">In-Scatter, Out-Scatter, and Flux-Limited Group Constants</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id1">Critical Spectrum Search</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#conclusions">Conclusions</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">NRE7203</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Projects</a></li>
+      <li class="breadcrumb-item active">Project 3: Diffusion Coefficients and Critical Spectrum Search</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/projects/project3.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="project-3-diffusion-coefficients-and-critical-spectrum-search">
+<span id="proj3"></span><h1>Project 3: Diffusion Coefficients and Critical Spectrum Search<a class="headerlink" href="#project-3-diffusion-coefficients-and-critical-spectrum-search" title="Link to this heading"></a></h1>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading"></a></h2>
+<p>Different methods are available to calculate transport cross sections and transport correction ratios. The selected method is often dependent on practically available information necessary for calculating the tranport cross sections.
+Some common methods used in calcuting transport cross sections include in-scatter, out-scatter, and flux-limited approaches. The in-scatter approach relies on the current weighted first moment of the scattering matrix. In multigroup form, the in-scatter transport cross section is calculated as</p>
+<div class="math notranslate nohighlight">
+\[\Sigma_{tr,g} = \Sigma_{t,g} - \frac{{\sum}_{g'}\Sigma_{s1,g'g}J_{g'}}{J_g}\]</div>
+<p>It is not always practical to perform current tallying which results in the in-scatter method not always being viable. The out-scatter approach alleviates the need for current tallying by assuming that out-scatter from group <cite>g</cite> to <cite>g’</cite> is approximately equal to in-scatter from group <cite>g’</cite> to <cite>g</cite>.
+With this assumption, the transport cross section calculation is simplified to</p>
+<div class="math notranslate nohighlight">
+\[\Sigma_{tr,g} \approx \Sigma_{t,g} - \frac{{\sum}_{g'}\Sigma_{s1,gg'}J_{g}}{J_g}=\Sigma_{t,g}-\Sigma_{s1,g}\]</div>
+<p>Finally, the flux-limited approach removes the necessity of considering current weighting and instead uses flux weighting of the first moment of the scattering matrix. The transport cross section is then found by</p>
+<div class="math notranslate nohighlight">
+\[\Sigma_{tr,g} = \Sigma_{t,g} - \frac{{\sum}_{g'}\Sigma_{s1,g'g}\phi_{g'}}{\phi_g}\]</div>
+<p>After calculating transport cross sections for a given homogenized lattice, fine group diffusion coefficents can be calculated and then condensed to 2-groups by</p>
+<div class="math notranslate nohighlight">
+\[D_{G} = \frac{\sum_{g'\in G} \frac{1}{3 \Sigma_{tr,g'}} \phi_{g'} }{\sum_{g'\in G} \phi_{g'}}\]</div>
+<p>The out-scatter method tends to underpredict transport cross sections due to anisotropic scattering largely attributed to hydrogen. This is particularly pronounced at high energies. The out-scatter method undergoes hydrogen correction to improve tranport cross sections.</p>
+<p>The transport cross section calculation enables the performance of a critical spectrum search for the lattice under consideration. The following “steps” are performed for the critical spectrum calculation:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p>The assembly is modeled with reflective boundary conditions.</p></li>
+<li><p>The neutron leakage (controlled with buckling term) is adjusted to achieve <span class="math notranslate nohighlight">\(k_{eff}=1\)</span>.</p></li>
+</ol>
+</div></blockquote>
+<p>Possible methods used to calculate the critical spectrum include the B1 method, P1 method, and the CASMO-4E method (CM). For B1 and P1 methods, the following equations are used:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{equation}
+\begin{split}
+\Sigma_{t,g}\phi_g-{\sum}_{g'}\Sigma_{s0,g'g}\phi_{g'}\pm iBJ_g=\chi_g \\
+3a_g(B)\Sigma_{t,g}J_g-3{\sum}_{g'}\Sigma_{s1,g'g}J_{g'}=\mp iB\phi_g
+\end{split}
+\end{equation}\end{split}\]</div>
+<p>P1 flux is calculated by forcing <span class="math notranslate nohighlight">\(a_g(B)=1\)</span>.
+The CM flux calculation uses the fundamental mode equation. A key difference between methods is the CM method assumes known diffusion coefficients and does not calculate the diffusion coefficients from matrix inversion.
+The method calculates flux by solving</p>
+<div class="math notranslate nohighlight">
+\[\begin{equation}
+\Sigma_{t,g}\phi_g + D_{g}B^{2} - {\sum}_{g'}\Sigma_{s0,g'g}\phi_{g'} = \chi_{g}
+\end{equation}\]</div>
+<p>with the fine group diffusion coefficients calculated as <span class="math notranslate nohighlight">\(\frac{1}{3\Sigma_{tr,g}^{CMM}}\)</span> and a value for <span class="math notranslate nohighlight">\(B^{2}\)</span> assumed.</p>
+<p>The Jupyter Notebooks containing work completed for diffusion coefficient condensation, hydrogen correction, and critical spectrum calculations are provided below:</p>
+<p><a class="reference internal" href="FA_diffusion.html#fa-diffusion"><span class="std std-ref">Fuel Assembly Diffusion</span></a></p>
+<p><a class="reference internal" href="FA_critspectrum.html#fa-critspectrum"><span class="std std-ref">Critical Spectrum Calculations</span></a></p>
+</section>
+<section id="methodology">
+<h2>Methodology<a class="headerlink" href="#methodology" title="Link to this heading"></a></h2>
+<p>Two python files, <code class="docutils literal notranslate"><span class="pre">numerical_TCR.py</span></code> and <code class="docutils literal notranslate"><span class="pre">critical_spectrum.py</span></code>, are developed to perform post-processing of data provided by Serpent. All data from Serpent files is read using <code class="docutils literal notranslate"><span class="pre">serpentTools</span></code>. The result files are built for the following fuel assembly.</p>
+<a class="reference internal image-reference" href="../_images/fa2D_70gr_inf_geom1.png"><img alt="../_images/fa2D_70gr_inf_geom1.png" class="align-center" src="../_images/fa2D_70gr_inf_geom1.png" style="width: 600px;" />
+</a>
+<p>The above geometry represents fuel pins (red) with guide tubes (grey) and a water moderator. The hydrogen correction is performed with a Serpent results file created for an infinite hydrogen medium.</p>
+<section id="diffusion-coefficient-calculations">
+<h3>Diffusion Coefficient Calculations<a class="headerlink" href="#diffusion-coefficient-calculations" title="Link to this heading"></a></h3>
+<p>Separate functions are developed for calculating in-scatter (<code class="docutils literal notranslate"><span class="pre">InScatter</span></code>), out-scatter (<code class="docutils literal notranslate"><span class="pre">OutScatter</span></code>), and flux-limited (<code class="docutils literal notranslate"><span class="pre">FluxLimited</span></code>) transport cross sections. The methodology for performing hydrogen correction of the out-scatter method is provided in the Jupyter Notebook: <a class="reference internal" href="FA_diffusion.html#fa-diffusion"><span class="std std-ref">Fuel Assembly Diffusion</span></a>.</p>
+<p>In general, the functions take arguments of <code class="docutils literal notranslate"><span class="pre">ng</span></code>, <code class="docutils literal notranslate"><span class="pre">sigS1</span></code>, <code class="docutils literal notranslate"><span class="pre">sigT</span></code>, <code class="docutils literal notranslate"><span class="pre">flx</span></code>, and <code class="docutils literal notranslate"><span class="pre">B2</span></code> each representing the number of energy groups, the 1st moment scattering matrix, the total macroscopic cross section array, the flux array, and the buckling.</p>
+<p>Group condensation is performed using the function <code class="docutils literal notranslate"><span class="pre">Condense2gr</span></code>.</p>
+</section>
+<section id="critical-spectrum-search">
+<h3>Critical Spectrum Search<a class="headerlink" href="#critical-spectrum-search" title="Link to this heading"></a></h3>
+<p>The critical spectrum search is performed by perturbing the buckling, calculating the flux spectrum, updating the multiplication factor, and then iterating on the buckling again until the multiplication factor reaches critical conditions (within some <span class="math notranslate nohighlight">\(\epsilon\)</span>).
+Flux spectrums are generated using the functions <code class="docutils literal notranslate"><span class="pre">SolveB1</span></code> and <code class="docutils literal notranslate"><span class="pre">SolveCM</span></code>. A separate function, <code class="docutils literal notranslate"><span class="pre">CriticalSpectrum</span></code>, performs the critical spectrum search for the specified method. To calculate P1 critical flux spectrum, the <span class="math notranslate nohighlight">\(a_g(B)\)</span> term is set to 1.</p>
+</section>
+</section>
+<section id="results">
+<h2>Results<a class="headerlink" href="#results" title="Link to this heading"></a></h2>
+<section id="in-scatter-out-scatter-and-flux-limited-group-constants">
+<h3>In-Scatter, Out-Scatter, and Flux-Limited Group Constants<a class="headerlink" href="#in-scatter-out-scatter-and-flux-limited-group-constants" title="Link to this heading"></a></h3>
+<p>The CMM diffusion coefficients, calculated from “fa2D_2gr_B1_res.m” results file, are taken
+as the reference value. All other diffusion coefficients are calculated from transport cross sections derived
+from “fa2D_70gr_inf_res.m” and then condensed into 2-groups. Across all fast group diffusion coefficients,
+the flux limited approach had the largest deviation from CMM values. For thermal diffusion coefficients,
+the largest deviation was found using the out-scatter method, indicating possible inaccuracies at thermal
+energies. The hydrogen corrected out-scatter method produced balanced results for both fast and thermal
+groups. The out-scatter method performed better than expected in the fast group considering out-scatter
+methods tend to underpredict transport cross sections at high energies.</p>
+<a class="reference internal image-reference" href="../_images/diffCoeffCompare.png"><img alt="../_images/diffCoeffCompare.png" class="align-center" src="../_images/diffCoeffCompare.png" style="width: 600px;" />
+</a>
+<a class="reference internal image-reference" href="../_images/infH1Tau.png"><img alt="../_images/infH1Tau.png" class="align-center" src="../_images/infH1Tau.png" style="width: 600px;" />
+</a>
+<a class="reference internal image-reference" href="../_images/correctedTranspXs.png"><img alt="../_images/correctedTranspXs.png" class="align-center" src="../_images/correctedTranspXs.png" style="width: 600px;" />
+</a>
+</section>
+<section id="id1">
+<h3>Critical Spectrum Search<a class="headerlink" href="#id1" title="Link to this heading"></a></h3>
+<p>Each spectrum is calculated using a critical spectrum search while iterating on the buckling term. The
+multiplication factor tolerance is set at 1E-08. The critical spectrums are achieved after 4 iterations for B1,
+3 iterations for P1, and 3 iterations for CM. Using the critical flux spectrums from each method, 2-group
+constants are generated and compared against the B1 results from Serpent. The results are summarized in the table and figure below.</p>
+<a class="reference internal image-reference" href="../_images/criticalspectrums.png"><img alt="../_images/criticalspectrums.png" class="align-center" src="../_images/criticalspectrums.png" style="width: 600px;" />
+</a>
+<a class="reference internal image-reference" href="../_images/critBucklingCompare.png"><img alt="../_images/critBucklingCompare.png" class="align-center" src="../_images/critBucklingCompare.png" style="width: 600px;" />
+</a>
+<p>The critical flux spectrums are all in good agreement for each of the calculation methods. For the 2-group
+constants, the B1 method produces highly consistent diffusion coefficients and reduced absorption cross
+sections. The P1 method slightly overestimates the diffusion coefficients in both groups but shares a similar
+buckling value to the B1 calculation. The CM method produces the highest estimates of diffusion
+coefficients but tracks well for other group constants. The CM method calculates fine group diffusion
+coefficients with the CMM transport cross sections from Serpent which is likely why the 2-group diffusion
+coefficients deviate from the other methods.</p>
+</section>
+</section>
+<section id="conclusions">
+<h2>Conclusions<a class="headerlink" href="#conclusions" title="Link to this heading"></a></h2>
+<p>The calculated diffusion coefficients represent ways in which the transport cross section can be calculated, both with and without the current. This flexibility alleviates the necessity to tally current but comes with some error.
+However, after hydrogen correction, each method presents minimal error for 2-group diffusion coefficents. The critical spectrum calculation method also demonstrates good agreement across methods but shows a trend where group 1 diffusion coefficients are larger for CM methods.</p>
+<p>Return to the top of the page: <a class="reference internal" href="#proj3"><span class="std std-ref">Project 3: Diffusion Coefficients and Critical Spectrum Search</span></a></p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="project2.html" class="btn btn-neutral float-left" title="Project 2: Transport Correction Ratio" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../glossary.html" class="btn btn-neutral float-right" title="Glossary" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Blankenship J.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
