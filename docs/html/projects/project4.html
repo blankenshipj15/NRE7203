@@ -1,0 +1,309 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Project 4: Nodal Expansion Method and Discontinuity Factors &mdash; NRE7203 0.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css?v=7f9a90b1" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=d45e8c67"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Glossary" href="../glossary.html" />
+    <link rel="prev" title="Project 3: Diffusion Coefficients and Critical Spectrum Search" href="project3.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            NRE7203
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../overview.html">Class Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributors.html">Contributers</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Projects</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="project1.html">Project 1: Weighted Delta Tracking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="project2.html">Project 2: Transport Correction Ratio</a></li>
+<li class="toctree-l2"><a class="reference internal" href="project3.html">Project 3: Diffusion Coefficients and Critical Spectrum Search</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Project 4: Nodal Expansion Method and Discontinuity Factors</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#introduction">Introduction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#methodology">Methodology</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#results">Results</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#homogeneous-flux-distributions">Homogeneous Flux Distributions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#discontinuity-factors">Discontinuity Factors</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#conclusions">Conclusions</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">NRE7203</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Projects</a></li>
+      <li class="breadcrumb-item active">Project 4: Nodal Expansion Method and Discontinuity Factors</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/projects/project4.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="project-4-nodal-expansion-method-and-discontinuity-factors">
+<span id="proj4"></span><h1>Project 4: Nodal Expansion Method and Discontinuity Factors<a class="headerlink" href="#project-4-nodal-expansion-method-and-discontinuity-factors" title="Link to this heading"></a></h1>
+<section id="introduction">
+<span id="id1"></span><h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading"></a></h2>
+<p>Lattice calculations for heterogeneous fuel assemblies tend to be computationally expensive. If multiphysics informed solutions are considered, the computation time can be prohibitive for design iteration.
+Alternatives to using the high-fidelity Monte Carlo solution are nodal diffusion methods which are capable of developing quick and relatively accurate results. The heterogeneous assembly configuration is replaced with a homogenized region and the node is solved via nodal diffusion methods.
+In particular, the Nodal Expansion Method is used to calculate homogenized group fluxes which are presented against the reference heterogeneous solution.
+Taking a node <em>i</em> with a volume <span class="math notranslate nohighlight">\(V^{i}=\Delta x^{i} \Delta y^{i} \Delta z^{i}\)</span>, the multigroup diffusion equation is given by:</p>
+<div class="math notranslate nohighlight">
+\[\nabla\cdot\mathbf{J}_{g}^{i}(\mathbf{r})+ [\Sigma_{ra,g}^{i}+\Sigma_{sp,g}^{i}]\phi_{g}^{i}({\bf r})=\sum_{g^{\prime}=1}^{G}\Sigma_{s p,g^{\prime}g}^{i}\phi_{g^{\prime}}^{i}({\bf r})+\frac{1}{k}\chi_{g}^{i}\sum_{g^{\prime}=1}^{G}\nu\Sigma_{f,g^{\prime}}^{i}\phi_{g^{\prime}}^{i}({\bf r})\]</div>
+<p>The following matrices are defined.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{gather}
+A_{g}^{i} = \Sigma_{ra,g}^{i}+\Sigma_{sp,g}^{i} \\
+Q_{g}^{i}(\mathbf{r}) = \sum_{g^{\prime}=1}^{G}\Sigma_{s p,g^{\prime}g}^{i}\phi_{g^{\prime}}^{i}(\mathbf{r})+\frac{1}{k}\chi_{g}^{i}\sum_{g^{\prime}=1}^{G}\nu\Sigma_{f,g^{\prime}}^{i}\phi_{g^{\prime}}^{i}(\mathbf{r})
+\end{gather}\end{split}\]</div>
+<p>The problems considered for this project are 2D with heterogenous solution data being provided by Serpent for the following assemblies.</p>
+<figure class="align-center" id="id2">
+<a class="reference internal image-reference" href="../_images/NEM_DF_6_0.png"><img alt="../_images/NEM_DF_6_0.png" src="../_images/NEM_DF_6_0.png" style="width: 600px;" />
+</a>
+<figcaption>
+<p><span class="caption-text">SMR colorset.</span><a class="headerlink" href="#id2" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<p>The above assemblies are: Upper left <strong>F12</strong> - 2.6% <span class="math notranslate nohighlight">\(UO_2\)</span> - Upper right <strong>Ref</strong> - stainless steel - Bottom left <strong>F2</strong> - 4.55% <span class="math notranslate nohighlight">\(UO_2\)</span> with 8% <span class="math notranslate nohighlight">\(Gd_2\)</span> <span class="math notranslate nohighlight">\(O_3\)</span> - Bottom right <strong>F11</strong> - 2.6% <span class="math notranslate nohighlight">\(UO_2\)</span>.
+Using NEM and transverse leakage methods, a 1D diffusion equation integrated in the transverse direction including the leakage term transverse to the solution direction is developed for node <em>i</em>:</p>
+<div class="math notranslate nohighlight">
+\[\frac{\partial}{\partial y}\bar{J}_{gy}(y) + A_{g}\bar{\phi}_{gy}(y) = \bar{Q}_{gy}(y)-\frac{1}{\Delta x}\bar{L}_{gx}(y)\]</div>
+<p>Fick’s law is used to represent the current. For the nodal expansion method, it is assumed the nodal homogeneous flux can be expanded over a set of basis functions (PARCS defined basis functions are used) such that:</p>
+<div class="math notranslate nohighlight">
+\[\bar{\phi}_{gy}^{i}(y) = \sum_{n=0}^{4}a_{gyn}^{i}f_n(y)\]</div>
+<p>This expansion produces 4xG unknown coefficients and an unknown flux for each solution direction which are solved for simultaneously.</p>
+<p>The transverse leakage term is approximated using a quadratic expression based on basis functions found in PARCS. The approximation is provided below.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{gather}
+\bar{L}_{x}^{i}(y)=\bar{L}_{x}^{i}+\ell_{x1}^{i}f_{1}(y)+\ell_{x2}^{i}f_{2}(y) \\\\
+f_{1}(y)=\frac{y}{\Delta y^{i}} \\\\
+f_{2}(y)=3\left(\frac{x}{\Delta y^{i}}\right)^{2}-\frac{1}{4}
+\end{gather}\end{split}\]</div>
+<p>The coefficients of the quadratic are solved via a polynomial interpolation.
+Finally, a weighted residual scheme is applied, producing a first and second moment of the base diffusion equation. The first and second moment equations are weighted with <span class="math notranslate nohighlight">\(f_{1}\)</span> and <span class="math notranslate nohighlight">\(f_{2}\)</span>, respectively.
+With a set of conservation equations (average flux, net surface currents, weighted residuals) and appropriate boundary conditions supplied by the heterogeneous solution from Serpent, the 1D homogeneous flux distribution is obtained simultaneously through</p>
+<div class="math notranslate nohighlight">
+\[\mathbf{A}\mathbf{x}=\mathbf{B}\]</div>
+<p>where <strong>x</strong> contains the unknown expansion coefficients used to recover the homogenized flux and <strong>B</strong> contains flux, currents, and transverse leakages.</p>
+<p>It is expected that the homogeneous flux will likely not be continuous at the node interface. Therefore, groupwise discontinuity factors (DF) are defined at each node interface to couple the homogeneous flux solution to the reference heterogenous flux solution.
+This is accomplished by defining the DF as:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{gather}
+f_{g}^{-}\equiv\frac{\phi_{g}^{h e t-}}{\phi_{g}^{h o m-}} \\\\
+f_{g}^{+}\equiv\frac{\phi_{g}^{h e t+}}{\phi_{g}^{h o m+}}
+\end{gather}\end{split}\]</div>
+<p>where the + and - indicate the north (+) and south (-) node faces. The heterogeneous flux is provided as a boundary condition from the Serpent solution.</p>
+<p>The Jupyter Notebook containing work completed for calculating the nodal expansion method homogenized flux distributions and discontinuity factors is provided below for reference:</p>
+<p><a class="reference internal" href="NEM_DF_notebook.html#nemnotebook"><span class="std std-ref">Nodal Expansion Method and Discontinuity Factors</span></a></p>
+</section>
+<section id="methodology">
+<h2>Methodology<a class="headerlink" href="#methodology" title="Link to this heading"></a></h2>
+<p>Results are read in from Serpent using <code class="docutils literal notranslate"><span class="pre">serpentTools</span></code>. Using the theory described in the <a class="reference internal" href="#introduction"><span class="std std-ref">Introduction</span></a>, the class <code class="docutils literal notranslate"><span class="pre">CartesianNem1D</span></code> is developed. When initializing the class, required arguments include <code class="docutils literal notranslate"><span class="pre">dx</span></code>, <code class="docutils literal notranslate"><span class="pre">dy</span></code>, <code class="docutils literal notranslate"><span class="pre">xs</span></code>, <code class="docutils literal notranslate"><span class="pre">bc</span></code>, <code class="docutils literal notranslate"><span class="pre">trL</span></code>, and <code class="docutils literal notranslate"><span class="pre">symbolic</span></code>. <code class="docutils literal notranslate"><span class="pre">trL</span></code> is a dictionary containing information such as interface leakage, diffusion coefficients, and surface lengths.
+<code class="docutils literal notranslate"><span class="pre">symbolic</span></code> is a Boolean which is set to <code class="docutils literal notranslate"><span class="pre">True</span></code> if symbolic solving is desired using <code class="docutils literal notranslate"><span class="pre">Sympy</span></code>. If set to <code class="docutils literal notranslate"><span class="pre">False</span></code>, the code instead completes all calculations using manually evaluated integrals and derivative functions, thereby improving efficiency.
+Numerous auxiliary functions live within the <code class="docutils literal notranslate"><span class="pre">CartesianNem1D</span></code> class and will not be discussed in detail here. All functions are contained within <code class="docutils literal notranslate"><span class="pre">NEM.py</span></code>.</p>
+</section>
+<section id="results">
+<h2>Results<a class="headerlink" href="#results" title="Link to this heading"></a></h2>
+<p>Flux profiles are generated by group and for each node within the SMR colorset initially described for the problem. The results presented are for homogeneous flux distributions calculated as a function of <em>y</em>. <em>x</em> transverse leakages are presented as a function of <em>y</em> for both fast and thermal groups for each node.
+Finally, discontinuity factors for each node face (solving in the <em>y</em> direction) are presented.</p>
+<section id="homogeneous-flux-distributions">
+<h3>Homogeneous Flux Distributions<a class="headerlink" href="#homogeneous-flux-distributions" title="Link to this heading"></a></h3>
+<p>The fast and thermal flux distributions are plotted for the left and right columns of the SMR colorset. The heterogeneous solution produced by Serpent is provided as a reference for comparing the NEM calculated homogenized flux. Both infinite transport cross sections and CMM transport cross sections from Serpent are used to calculate the homogenized flux profiles.</p>
+<figure class="align-center" id="id3">
+<a class="reference internal image-reference" href="../_images/NEM_DF_32_1.png"><img alt="../_images/NEM_DF_32_1.png" src="../_images/NEM_DF_32_1.png" style="width: 600px;" />
+</a>
+<figcaption>
+<p><span class="caption-text">Fast flux distributions for SMR colorset column 1 (F2/F12).</span><a class="headerlink" href="#id3" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<figure class="align-center" id="id4">
+<a class="reference internal image-reference" href="../_images/NEM_DF_33_1.png"><img alt="../_images/NEM_DF_33_1.png" src="../_images/NEM_DF_33_1.png" style="width: 600px;" />
+</a>
+<figcaption>
+<p><span class="caption-text">Thermal flux distributions for SMR colorset column 1 (F2/F12).</span><a class="headerlink" href="#id4" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<figure class="align-center" id="id5">
+<a class="reference internal image-reference" href="../_images/SMR_column2_fastflux.png"><img alt="../_images/SMR_column2_fastflux.png" src="../_images/SMR_column2_fastflux.png" style="width: 600px;" />
+</a>
+<figcaption>
+<p><span class="caption-text">Fast flux distributions for SMR colorset column 2 (F11/Ref).</span><a class="headerlink" href="#id5" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<figure class="align-center" id="id6">
+<a class="reference internal image-reference" href="../_images/SMR_column2_thermalflux.png"><img alt="../_images/SMR_column2_thermalflux.png" src="../_images/SMR_column2_thermalflux.png" style="width: 600px;" />
+</a>
+<figcaption>
+<p><span class="caption-text">Thermal flux distributions for SMR colorset column 2 (F11/Ref).</span><a class="headerlink" href="#id6" title="Link to this image"></a></p>
+<div class="legend">
+<p>The transverse leakages are plotted separately and provided for each column of the colorset below.</p>
+</div>
+</figcaption>
+</figure>
+<figure class="align-center" id="id7">
+<a class="reference internal image-reference" href="../_images/SMR_column1_trL.png"><img alt="../_images/SMR_column1_trL.png" src="../_images/SMR_column1_trL.png" style="width: 600px;" />
+</a>
+<figcaption>
+<p><span class="caption-text">Transverse leakage as a function of <em>y</em> for SMR colorset column 1 (F2/F12).</span><a class="headerlink" href="#id7" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<figure class="align-center" id="id8">
+<a class="reference internal image-reference" href="../_images/SMR_column2_trL.png"><img alt="../_images/SMR_column2_trL.png" src="../_images/SMR_column2_trL.png" style="width: 600px;" />
+</a>
+<figcaption>
+<p><span class="caption-text">Transverse leakage as a function of <em>y</em> for SMR colorset column 2 (F11/Ref).</span><a class="headerlink" href="#id8" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</section>
+<section id="discontinuity-factors">
+<h3>Discontinuity Factors<a class="headerlink" href="#discontinuity-factors" title="Link to this heading"></a></h3>
+<p>Discontinuity factors are presented for each north/south interface per node. Both NEM calculated and Serpent calculated values are shown.</p>
+<p><em>Column 1 Discontinuity Factors</em></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Location</p></th>
+<th class="head"><p>Fast DF (NEM/Serpent)</p></th>
+<th class="head"><p>Thermal DF (NEM/Serpent)</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>F2 (South)</p></td>
+<td><p>1.017/1.026</p></td>
+<td><p>1.074/1.063</p></td>
+</tr>
+<tr class="row-odd"><td><p>F2 (North)</p></td>
+<td><p>1.018/1.006</p></td>
+<td><p>1.034/1.057</p></td>
+</tr>
+<tr class="row-even"><td><p>F12 (South)</p></td>
+<td><p>0.995/1.006</p></td>
+<td><p>0.954/0.951</p></td>
+</tr>
+<tr class="row-odd"><td><p>F12 (North)</p></td>
+<td><p>1.008/0.997</p></td>
+<td><p>0.974/0.973</p></td>
+</tr>
+</tbody>
+</table>
+<p><em>Column 2 Discontinuity Factors</em></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Location</p></th>
+<th class="head"><p>Fast DF (NEM/Serpent)</p></th>
+<th class="head"><p>Thermal DF (NEM/Serpent)</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>F11 (South)</p></td>
+<td><p>1.000/0.990</p></td>
+<td><p>0.927/0.937</p></td>
+</tr>
+<tr class="row-odd"><td><p>F11 (North)</p></td>
+<td><p>1.030/1.048</p></td>
+<td><p>1.084/1.027</p></td>
+</tr>
+<tr class="row-even"><td><p>Ref (South)</p></td>
+<td><p>0.978/0.974</p></td>
+<td><p>0.880/1.012</p></td>
+</tr>
+<tr class="row-odd"><td><p>Ref (North)</p></td>
+<td><p>1.045/1.052</p></td>
+<td><p>2.482/1.012</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="conclusions">
+<h2>Conclusions<a class="headerlink" href="#conclusions" title="Link to this heading"></a></h2>
+<p>The nodal expansion method for calculating homogenized nodal fluxes using a transverse integration method produces flux distributions representative of the heterogeneous solutions reported by Serpent. This method achieves the desired goal of implementing a quick and relatively accurate solver useful when solving the full core heterogeneous solution could be prohibitive.
+Next steps will look to accomplish pin power reconstruction from homogenized 2D flux distribution.</p>
+<p>Return to the top of the page: <a class="reference internal" href="#proj4"><span class="std std-ref">Project 4: Nodal Expansion Method and Discontinuity Factors</span></a></p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="project3.html" class="btn btn-neutral float-left" title="Project 3: Diffusion Coefficients and Critical Spectrum Search" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../glossary.html" class="btn btn-neutral float-right" title="Glossary" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Blankenship J.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

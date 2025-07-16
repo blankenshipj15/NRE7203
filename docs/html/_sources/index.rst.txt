@@ -1,14 +1,12 @@
 .. NRE7203 documentation master file, created by
-   sphinx-quickstart on put Exact date.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
+   sphinx-quickstart on put 7/13/25.
 
 NRE7203 Class Documentation
 ============================
 
 .. only:: html
 
-This page contains the documentation for class projects performed during NRE7203 at Georgia Tech with Professor Kotlyar.
+This page contains the documentation for class projects performed during NRE7203 at Georgia Tech with Dr. Dan Kotlyar.
 
 
 .. toctree::
