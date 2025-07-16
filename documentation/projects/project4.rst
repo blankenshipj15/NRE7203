@@ -58,7 +58,7 @@ The transverse leakage term is approximated using a quadratic expression based o
   \begin{gather}
   \bar{L}_{x}^{i}(y)=\bar{L}_{x}^{i}+\ell_{x1}^{i}f_{1}(y)+\ell_{x2}^{i}f_{2}(y) \\\\
   f_{1}(y)=\frac{y}{\Delta y^{i}} \\\\
-  f_{2}(y)=3\left(\frac{x}{\Delta y^{i}}\right)^{2}-\frac{1}{4}
+  f_{2}(y)=3\left(\frac{y}{\Delta y^{i}}\right)^{2}-\frac{1}{4}
   \end{gather}
 
 The coefficients of the quadratic are solved via a polynomial interpolation.

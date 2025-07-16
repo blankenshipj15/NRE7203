@@ -130,7 +130,7 @@ Using NEM and transverse leakage methods, a 1D diffusion equation integrated in 
 \[\begin{split}\begin{gather}
 \bar{L}_{x}^{i}(y)=\bar{L}_{x}^{i}+\ell_{x1}^{i}f_{1}(y)+\ell_{x2}^{i}f_{2}(y) \\\\
 f_{1}(y)=\frac{y}{\Delta y^{i}} \\\\
-f_{2}(y)=3\left(\frac{x}{\Delta y^{i}}\right)^{2}-\frac{1}{4}
+f_{2}(y)=3\left(\frac{y}{\Delta y^{i}}\right)^{2}-\frac{1}{4}
 \end{gather}\end{split}\]</div>
 <p>The coefficients of the quadratic are solved via a polynomial interpolation.
 Finally, a weighted residual scheme is applied, producing a first and second moment of the base diffusion equation. The first and second moment equations are weighted with <span class="math notranslate nohighlight">\(f_{1}\)</span> and <span class="math notranslate nohighlight">\(f_{2}\)</span>, respectively.
