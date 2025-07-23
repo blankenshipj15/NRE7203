@@ -5,7 +5,7 @@
 Critical Spectrum Calculations
 ==============================
 
-Return to Project 3 documentation: :ref:`proj3`
+Return to :ref:`proj3` documentation.
 
 .. code:: python
 

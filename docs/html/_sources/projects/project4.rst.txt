@@ -1,6 +1,6 @@
 .. _proj4:
 
-Project 4: Nodal Expansion Method and Discontinuity Factors
+Nodal Expansion Method and Discontinuity Factors
 ---------------------------------------------------------------
 
 .. _Introduction:

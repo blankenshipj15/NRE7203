@@ -6,7 +6,7 @@
 Weighted Delta Tracking Notebook
 ================================
 
-Return to Project 1 documentation: :ref:`proj1`
+Return to :ref:`proj1` documentation.
 
 .. code:: python
 

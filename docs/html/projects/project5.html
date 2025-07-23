@@ -1,0 +1,279 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Analytic Function Expansion Nodal Method &mdash; NRE7203 0.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css?v=7f9a90b1" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=d45e8c67"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Glossary" href="../glossary.html" />
+    <link rel="prev" title="Nodal Expansion Method and Discontinuity Factors" href="project4.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            NRE7203
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../overview.html">Class Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributors.html">Contributers</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Projects</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="project1.html">Weighted Delta Tracking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="project2.html">Transport Correction Ratio</a></li>
+<li class="toctree-l2"><a class="reference internal" href="project3.html">Diffusion Coefficients and Critical Spectrum Search</a></li>
+<li class="toctree-l2"><a class="reference internal" href="project4.html">Nodal Expansion Method and Discontinuity Factors</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Analytic Function Expansion Nodal Method</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#introduction">Introduction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#methodology">Methodology</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#results">Results</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#homogeneous-flux-distributions">Homogeneous Flux Distributions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#power-distributions">Power Distributions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#one-dimensional-comparisons">One Dimensional Comparisons</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#conclusions">Conclusions</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">NRE7203</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Projects</a></li>
+      <li class="breadcrumb-item active">Analytic Function Expansion Nodal Method</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/projects/project5.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="analytic-function-expansion-nodal-method">
+<span id="proj5"></span><h1>Analytic Function Expansion Nodal Method<a class="headerlink" href="#analytic-function-expansion-nodal-method" title="Link to this heading"></a></h1>
+<section id="introduction">
+<span id="introductionafen"></span><h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading"></a></h2>
+<p>In the project addressing <a class="reference internal" href="project4.html#proj4"><span class="std std-ref">Nodal Expansion Method and Discontinuity Factors</span></a>, one-dimensional homogenized flux profiles were generated for a 2x2 colorset using NEM and transverse leakages. By implementing transverse leakages, the dimensionality of the 2D case was reduced to 1D.
+This method conveniently provided homogenized flux values for the node surfaces and average nodal flux. However, the usage of NEM with transverse leakages precludes the pin-power reconstruction. To accomplish pin-power reconstruction from the homogeneous solution, a multidimensional homogeneous flux distribution must be known.
+In this project, the multidimensional (2D) flux distribution is obtained using the analytic function expansion nodal (AFEN) method. This method does not assume spatial separability for the homogenized flux, but instead directly solves the 2D diffusion equations in 2 groups.
+2D homogenized flux distributions are calculated for each assembly in the 2x2 colorset represented below.</p>
+<figure class="align-center" id="id1">
+<a class="reference internal image-reference" href="../_images/NEM_DF_6_0.png"><img alt="../_images/NEM_DF_6_0.png" src="../_images/NEM_DF_6_0.png" style="width: 600px;" />
+</a>
+<figcaption>
+<p><span class="caption-text">SMR colorset.</span><a class="headerlink" href="#id1" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<p>The above assemblies are: Upper left <strong>F12</strong> - 2.6% <span class="math notranslate nohighlight">\(UO_2\)</span> - Upper right <strong>Ref</strong> - stainless steel - Bottom left <strong>F2</strong> - 4.55% <span class="math notranslate nohighlight">\(UO_2\)</span> with 8% <span class="math notranslate nohighlight">\(Gd_2\)</span> <span class="math notranslate nohighlight">\(O_3\)</span> - Bottom right <strong>F11</strong> - 2.6% <span class="math notranslate nohighlight">\(UO_2\)</span>.
+The governing equations solved are the 2-group diffusion equations given by:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{gather}
+{{-D_{1}\nabla^{2}\phi_{1}(x,y)+\Sigma_{r1}\phi_{1}(x,y)={\frac{\nu\Sigma_{f1}\phi_{1}(x,y)+\nu\Sigma_{f2}\phi_{2}(x,y)}{k_{eff}}}+\Sigma_{21}\phi_{2}(x,y)}} \\
+{{-D_{2}\nabla^{2}\phi_{2}(x,y)+\Sigma_{r2}\phi_{2}(x,y)=\Sigma_{12}\phi_{1}(x,y)}}
+\end{gather}\end{split}\]</div>
+<p>This set of equations is written in matrix vector notation as:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{gather}
+\left({\frac{\partial^{2}}{\partial x^{2}}}+{\frac{\partial^{2}}{\partial y^{2}}}\right)\underline{\phi}(x,y)-{\underline{\underline{{D}}}}^{-1}\left(\underline{\underline{{{\Sigma}}}}-{\frac{1}{k_{e f f}}}{\underline{\underline{{{F}}}}}\right)\;\underline{\phi}(x,y)=\underline{0} \\
+\underline{\underline{{{D}}}}=\left[\begin{array}{c c}{{D_{1}}}&amp;{{0}}\\ {{0}}&amp;{{D_{2}}}\end{array}\right] \\
+\underline{\underline{\Sigma}}=\left[\begin{array}{c c}{{\Sigma_{r1}}}&amp;{{-\Sigma_{21}}}\\ {{-\Sigma_{12}}}&amp;{{\ \Sigma_{r2}}}\end{array}\right] \\
+\underline{\underline{F}}=\left[\begin{array}{c c}{{\nu\Sigma_{f1}}}&amp;{{\nu\Sigma_{f2}}}\\ {{0}}&amp;{{0}}\end{array}\right] \\
+\underline{\phi}(x,y) = \begin{bmatrix}\phi_{1}(x,y) \\ \phi_{2}(x,y) \\ \end{bmatrix}
+\end{gather}\end{split}\]</div>
+<p>If the eigenvalues and right eigenvectors of the expression <span class="math notranslate nohighlight">\({\underline{\underline{{D}}}}^{-1}\left(\underline{\underline{{{\Sigma}}}}-{\frac{1}{k_{e f f}}}{\underline{\underline{{{F}}}}}\right)\)</span> are determined as <span class="math notranslate nohighlight">\(\lambda_{g}\)</span> and <span class="math notranslate nohighlight">\(\underline{\underline{R}}\)</span> , then the following expressions are defined:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{gather}
+{\nabla}^{2}\xi_{g}(x,y)-{\lambda}_{g}\xi_{g}(x,y)=0 , g=1,2 \\
+\underline{\xi}(x,y)=\underline{\underline{{R}}}^{-1}\;\underline{{{\phi}}}(x,y)
+\end{gather}\end{split}\]</div>
+<p>Using the newly defined variable, a general solution comprised of an infinite series of hyperbolic functions and periodic functions is obtained using:</p>
+<div class="math notranslate nohighlight">
+\[\xi_{g}(x,y)=\sum_{i=0}^{\infty}\left[A_{g i}^{\prime}S N\left(k_{g}\left[\alpha_{g x i}x+\alpha_{g y i}y\right]\right)+B_{g i}^{\prime}C S\left(k_{g}\left[\alpha_{g x i}x+\alpha_{g y i}y\right]\right)\right]\]</div>
+<p>Boundary conditions are given by the four surface fluxes defined at each node’s four faces along with the four cornerpoint fluxes. Further discussion for using the AFEN method is provided by Jae Man Noh &amp; Nam Zin Cho (1994).
+However, the general process solves for the unknown coefficients and then uses the variable definition of <span class="math notranslate nohighlight">\(\underline{\xi}\)</span> to reconstruct the homogeneous flux as:</p>
+<div class="math notranslate nohighlight">
+\[\underline{\phi}(x,y)=\underline{\underline{{R}}}\;\underline{{{\xi}}}(x,y)\]</div>
+<p>The Jupyter Notebook containing work completed for calculating the analytic function expansion nodal method homogenized flux distributions is provided below for reference:</p>
+<p><a class="reference internal" href="AFENMethod_notebook.html#afennotebook"><span class="std std-ref">AFEN Method</span></a></p>
+</section>
+<section id="methodology">
+<h2>Methodology<a class="headerlink" href="#methodology" title="Link to this heading"></a></h2>
+<p>Results are read in from Serpent using <code class="docutils literal notranslate"><span class="pre">serpentTools</span></code>. Using the theory described in the <a class="reference internal" href="#introductionafen"><span class="std std-ref">Introduction</span></a>, the class <code class="docutils literal notranslate"><span class="pre">AFEN2D</span></code> is developed. When initializing the class, required arguments include <code class="docutils literal notranslate"><span class="pre">xs</span></code>, <code class="docutils literal notranslate"><span class="pre">bc</span></code>, <code class="docutils literal notranslate"><span class="pre">dx</span></code>, and <code class="docutils literal notranslate"><span class="pre">symbolic</span></code>. <code class="docutils literal notranslate"><span class="pre">xs</span></code> and <code class="docutils literal notranslate"><span class="pre">bc</span></code> contain the 2-group homogenized cross section data and the flux boundary conditions for the specified universe.
+<code class="docutils literal notranslate"><span class="pre">symbolic</span></code> is a Boolean which is set to <code class="docutils literal notranslate"><span class="pre">True</span></code> if symbolic solving is desired using <code class="docutils literal notranslate"><span class="pre">Sympy</span></code>. If set to <code class="docutils literal notranslate"><span class="pre">False</span></code>, the code instead completes all calculations using manually evaluated basis functions and their integrals, thereby improving efficiency.
+Several other functions are defined within <code class="docutils literal notranslate"><span class="pre">AFEN2D</span></code> such as <code class="docutils literal notranslate"><span class="pre">Eigenvalues</span></code>, <code class="docutils literal notranslate"><span class="pre">ReconstructFlux</span></code>, and <code class="docutils literal notranslate"><span class="pre">GetFlux2D</span></code>. These functions are called from <code class="docutils literal notranslate"><span class="pre">analytic_nodal_expansion.py</span></code>. A second script is called from <code class="docutils literal notranslate"><span class="pre">NEM.py</span></code> to facilitate NEM calculated 1D flux profiles for later comparison.</p>
+</section>
+<section id="results">
+<h2>Results<a class="headerlink" href="#results" title="Link to this heading"></a></h2>
+<p>Groupwise flux distributions are generated for each node within the SMR colorset initially described for the problem. Although distributions for all nodes are calculated, only F2 and Ref are presented here. Fast and thermal flux distributions are presented for assemblies F2 and Ref. Within <code class="docutils literal notranslate"><span class="pre">analytic_nodal_expansion.py</span></code>, the class <code class="docutils literal notranslate"><span class="pre">AFEN2D</span></code> contains a function called <code class="docutils literal notranslate"><span class="pre">HomogeneousPower</span></code>. This function produces the homogeneous group power distributions but does not use form functions. Therefore, the homogeneous power distributions do not capture large power gradients.
+Finally, 1D x-dependent y-average nodal fluxes are compared from the AFEN method solution and a NEM solution against the heterogeneous Serpent output.</p>
+<section id="homogeneous-flux-distributions">
+<h3>Homogeneous Flux Distributions<a class="headerlink" href="#homogeneous-flux-distributions" title="Link to this heading"></a></h3>
+<p>The fast and thermal flux distributions are plotted for assemblies F2 and Ref using the AFEN method solution.</p>
+<figure class="align-center" id="id2">
+<a class="reference internal image-reference" href="../_images/F2_fastflux_manual.png"><img alt="../_images/F2_fastflux_manual.png" src="../_images/F2_fastflux_manual.png" style="width: 600px;" />
+</a>
+<figcaption>
+<p><span class="caption-text">Fast flux distribution for SMR assembly F2 using AFEN method.</span><a class="headerlink" href="#id2" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<figure class="align-center" id="id3">
+<a class="reference internal image-reference" href="../_images/F2_thermalflux_manual.png"><img alt="../_images/F2_thermalflux_manual.png" src="../_images/F2_thermalflux_manual.png" style="width: 600px;" />
+</a>
+<figcaption>
+<p><span class="caption-text">Thermal flux distribution for SMR assembly F2 using AFEN method.</span><a class="headerlink" href="#id3" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<figure class="align-center" id="id4">
+<a class="reference internal image-reference" href="../_images/Ref_fastflux_manual.png"><img alt="../_images/Ref_fastflux_manual.png" src="../_images/Ref_fastflux_manual.png" style="width: 600px;" />
+</a>
+<figcaption>
+<p><span class="caption-text">Fast flux distribution for SMR assembly Ref using AFEN method.</span><a class="headerlink" href="#id4" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<figure class="align-center" id="id5">
+<a class="reference internal image-reference" href="../_images/Ref_thermalflux_manual.png"><img alt="../_images/Ref_thermalflux_manual.png" src="../_images/Ref_thermalflux_manual.png" style="width: 600px;" />
+</a>
+<figcaption>
+<p><span class="caption-text">Thermal flux distribution for SMR assembly Ref using AFEN method.</span><a class="headerlink" href="#id5" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</section>
+<section id="power-distributions">
+<h3>Power Distributions<a class="headerlink" href="#power-distributions" title="Link to this heading"></a></h3>
+<p>The thermal power distributions are plotted using both the homogenized flux from the AFEN method solution and from the Serpent reported thermal power. Results for the fuel containing assemblies are shown below.</p>
+<figure class="align-center" id="id6">
+<a class="reference internal image-reference" href="../_images/F12_powers.png"><img alt="../_images/F12_powers.png" src="../_images/F12_powers.png" style="width: 600px;" />
+</a>
+<figcaption>
+<p><span class="caption-text">AFEN (left) and Serpent (right) thermal power for assembly F12.</span><a class="headerlink" href="#id6" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<figure class="align-center" id="id7">
+<a class="reference internal image-reference" href="../_images/F2_powers.png"><img alt="../_images/F2_powers.png" src="../_images/F2_powers.png" style="width: 600px;" />
+</a>
+<figcaption>
+<p><span class="caption-text">AFEN (left) and Serpent (right) thermal power for assembly F2.</span><a class="headerlink" href="#id7" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<figure class="align-center" id="id8">
+<a class="reference internal image-reference" href="../_images/F11_powers.png"><img alt="../_images/F11_powers.png" src="../_images/F11_powers.png" style="width: 600px;" />
+</a>
+<figcaption>
+<p><span class="caption-text">AFEN (left) and Serpent (right) thermal power for assembly F11.</span><a class="headerlink" href="#id8" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<p>The largest thermal power discrepancies are found in assembly F2. Assembly F2 contains burnable absorbers which locally produce large changes in thermal power output. F12 and F11 AFEN calculated power distributions provide better agreement with the Serpent heterogenous power.</p>
+</section>
+<section id="one-dimensional-comparisons">
+<h3>One Dimensional Comparisons<a class="headerlink" href="#one-dimensional-comparisons" title="Link to this heading"></a></h3>
+<p>The 2D distributions calculated using AFEN are reduced to a 1D profile by averaging in the <em>y</em>-direction. This result is compared against 1D NEM solutions for the same row of assemblies.
+The fast flux and thermal flux profiles are compared for assemblies F12 and Ref. Finally, a power profile is compared for assemblies F2 and F11.</p>
+<figure class="align-center" id="id9">
+<a class="reference internal image-reference" href="../_images/F12Ref_fastflux_compare.png"><img alt="../_images/F12Ref_fastflux_compare.png" src="../_images/F12Ref_fastflux_compare.png" style="width: 600px;" />
+</a>
+<figcaption>
+<p><span class="caption-text">Assemblies F12/Ref fast flux profile.</span><a class="headerlink" href="#id9" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<figure class="align-center" id="id10">
+<a class="reference internal image-reference" href="../_images/F12Ref_thermalflux_compare.png"><img alt="../_images/F12Ref_thermalflux_compare.png" src="../_images/F12Ref_thermalflux_compare.png" style="width: 600px;" />
+</a>
+<figcaption>
+<p><span class="caption-text">Assemblies F12/Ref thermal flux profile.</span><a class="headerlink" href="#id10" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<figure class="align-center" id="id11">
+<a class="reference internal image-reference" href="../_images/F2F11_thermalpower_compare.png"><img alt="../_images/F2F11_thermalpower_compare.png" src="../_images/F2F11_thermalpower_compare.png" style="width: 600px;" />
+</a>
+<figcaption>
+<p><span class="caption-text">Assemblies F2/F11 thermal power profile.</span><a class="headerlink" href="#id11" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</section>
+</section>
+<section id="conclusions">
+<h2>Conclusions<a class="headerlink" href="#conclusions" title="Link to this heading"></a></h2>
+<p>The AFEN method provides a means to calculate the homogeneous power distribution through its ability to solve the mutidimensional diffusion equation. However, relatively high errors are seen in the power reconstruction when compared to the Serpent results.
+Without the use of form factors, the pin power reconstruction inadequately models the underlying heterogeneous assembly composition. This will be an area of improvement for the next project.</p>
+<p>Return to the top of the page: <a class="reference internal" href="#proj5"><span class="std std-ref">Analytic Function Expansion Nodal Method</span></a></p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="project4.html" class="btn btn-neutral float-left" title="Nodal Expansion Method and Discontinuity Factors" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../glossary.html" class="btn btn-neutral float-right" title="Glossary" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Blankenship J.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -6,7 +6,7 @@
 Transport Correction Ratio Notebook
 ====================================
 
-Return to Project 2 documentation: :ref:`proj2`
+Return to :ref:`proj2` documentation.
 
 Transport Correction Ratio
 

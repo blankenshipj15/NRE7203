@@ -1,7 +1,7 @@
 .. _proj3:
 
 
-Project 3: Diffusion Coefficients and Critical Spectrum Search
+Diffusion Coefficients and Critical Spectrum Search
 ---------------------------------------------------------------
 
 =====================

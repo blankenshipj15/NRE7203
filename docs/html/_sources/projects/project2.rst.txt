@@ -1,7 +1,7 @@
 .. _proj2:
 
 
-Project 2: Transport Correction Ratio
+Transport Correction Ratio
 -------------------------------------
 
 =====================

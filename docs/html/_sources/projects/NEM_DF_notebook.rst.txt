@@ -5,7 +5,7 @@
 Nodal Expansion Method and Discontinuity Factors
 ====================================================================
 
-Return to Project 4 documentation: :ref:`proj4`
+Return to :ref:`proj4` documentation.
 
 .. code:: python
 

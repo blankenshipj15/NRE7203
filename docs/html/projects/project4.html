@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Project 4: Nodal Expansion Method and Discontinuity Factors &mdash; NRE7203 0.0.1 documentation</title>
+  <title>Nodal Expansion Method and Discontinuity Factors &mdash; NRE7203 0.0.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css?v=7f9a90b1" />
@@ -21,8 +21,8 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Glossary" href="../glossary.html" />
-    <link rel="prev" title="Project 3: Diffusion Coefficients and Critical Spectrum Search" href="project3.html" /> 
+    <link rel="next" title="Analytic Function Expansion Nodal Method" href="project5.html" />
+    <link rel="prev" title="Diffusion Coefficients and Critical Spectrum Search" href="project3.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -49,10 +49,10 @@
 <li class="toctree-l1"><a class="reference internal" href="../overview.html">Class Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../contributors.html">Contributers</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Projects</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="project1.html">Project 1: Weighted Delta Tracking</a></li>
-<li class="toctree-l2"><a class="reference internal" href="project2.html">Project 2: Transport Correction Ratio</a></li>
-<li class="toctree-l2"><a class="reference internal" href="project3.html">Project 3: Diffusion Coefficients and Critical Spectrum Search</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Project 4: Nodal Expansion Method and Discontinuity Factors</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="project1.html">Weighted Delta Tracking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="project2.html">Transport Correction Ratio</a></li>
+<li class="toctree-l2"><a class="reference internal" href="project3.html">Diffusion Coefficients and Critical Spectrum Search</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Nodal Expansion Method and Discontinuity Factors</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#introduction">Introduction</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#methodology">Methodology</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#results">Results</a><ul>
@@ -63,6 +63,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#conclusions">Conclusions</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="project5.html">Analytic Function Expansion Nodal Method</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
@@ -83,7 +84,7 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="index.html">Projects</a></li>
-      <li class="breadcrumb-item active">Project 4: Nodal Expansion Method and Discontinuity Factors</li>
+      <li class="breadcrumb-item active">Nodal Expansion Method and Discontinuity Factors</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/projects/project4.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -93,8 +94,8 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="project-4-nodal-expansion-method-and-discontinuity-factors">
-<span id="proj4"></span><h1>Project 4: Nodal Expansion Method and Discontinuity Factors<a class="headerlink" href="#project-4-nodal-expansion-method-and-discontinuity-factors" title="Link to this heading"></a></h1>
+  <section id="nodal-expansion-method-and-discontinuity-factors">
+<span id="proj4"></span><h1>Nodal Expansion Method and Discontinuity Factors<a class="headerlink" href="#nodal-expansion-method-and-discontinuity-factors" title="Link to this heading"></a></h1>
 <section id="introduction">
 <span id="id1"></span><h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading"></a></h2>
 <p>Lattice calculations for heterogeneous fuel assemblies tend to be computationally expensive. If multiphysics informed solutions are considered, the computation time can be prohibitive for design iteration.
@@ -151,7 +152,7 @@ f_{g}^{+}\equiv\frac{\phi_{g}^{h e t+}}{\phi_{g}^{h o m+}}
 </section>
 <section id="methodology">
 <h2>Methodology<a class="headerlink" href="#methodology" title="Link to this heading"></a></h2>
-<p>Results are read in from Serpent using <code class="docutils literal notranslate"><span class="pre">serpentTools</span></code>. Using the theory described in the <a class="reference internal" href="#introduction"><span class="std std-ref">Introduction</span></a>, the class <code class="docutils literal notranslate"><span class="pre">CartesianNem1D</span></code> is developed. When initializing the class, required arguments include <code class="docutils literal notranslate"><span class="pre">dx</span></code>, <code class="docutils literal notranslate"><span class="pre">dy</span></code>, <code class="docutils literal notranslate"><span class="pre">xs</span></code>, <code class="docutils literal notranslate"><span class="pre">bc</span></code>, <code class="docutils literal notranslate"><span class="pre">trL</span></code>, and <code class="docutils literal notranslate"><span class="pre">symbolic</span></code>. <code class="docutils literal notranslate"><span class="pre">trL</span></code> is a dictionary containing information such as interface leakage, diffusion coefficients, and surface lengths.
+<p>Results are read in from Serpent using <code class="docutils literal notranslate"><span class="pre">serpentTools</span></code>. Using the theory described in the <a class="reference internal" href="project5.html#introduction"><span class="std std-ref">Introduction</span></a>, the class <code class="docutils literal notranslate"><span class="pre">CartesianNem1D</span></code> is developed. When initializing the class, required arguments include <code class="docutils literal notranslate"><span class="pre">dx</span></code>, <code class="docutils literal notranslate"><span class="pre">dy</span></code>, <code class="docutils literal notranslate"><span class="pre">xs</span></code>, <code class="docutils literal notranslate"><span class="pre">bc</span></code>, <code class="docutils literal notranslate"><span class="pre">trL</span></code>, and <code class="docutils literal notranslate"><span class="pre">symbolic</span></code>. <code class="docutils literal notranslate"><span class="pre">trL</span></code> is a dictionary containing information such as interface leakage, diffusion coefficients, and surface lengths.
 <code class="docutils literal notranslate"><span class="pre">symbolic</span></code> is a Boolean which is set to <code class="docutils literal notranslate"><span class="pre">True</span></code> if symbolic solving is desired using <code class="docutils literal notranslate"><span class="pre">Sympy</span></code>. If set to <code class="docutils literal notranslate"><span class="pre">False</span></code>, the code instead completes all calculations using manually evaluated integrals and derivative functions, thereby improving efficiency.
 Numerous auxiliary functions live within the <code class="docutils literal notranslate"><span class="pre">CartesianNem1D</span></code> class and will not be discussed in detail here. All functions are contained within <code class="docutils literal notranslate"><span class="pre">NEM.py</span></code>.</p>
 </section>
@@ -271,7 +272,7 @@ Finally, discontinuity factors for each node face (solving in the <em>y</em> dir
 <h2>Conclusions<a class="headerlink" href="#conclusions" title="Link to this heading"></a></h2>
 <p>The nodal expansion method for calculating homogenized nodal fluxes using a transverse integration method produces flux distributions representative of the heterogeneous solutions reported by Serpent. This method achieves the desired goal of implementing a quick and relatively accurate solver useful when solving the full core heterogeneous solution could be prohibitive.
 Next steps will look to accomplish pin power reconstruction from homogenized 2D flux distribution.</p>
-<p>Return to the top of the page: <a class="reference internal" href="#proj4"><span class="std std-ref">Project 4: Nodal Expansion Method and Discontinuity Factors</span></a></p>
+<p>Return to the top of the page: <a class="reference internal" href="#proj4"><span class="std std-ref">Nodal Expansion Method and Discontinuity Factors</span></a></p>
 </section>
 </section>
 
@@ -279,8 +280,8 @@ Next steps will look to accomplish pin power reconstruction from homogenized 2D 
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="project3.html" class="btn btn-neutral float-left" title="Project 3: Diffusion Coefficients and Critical Spectrum Search" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="../glossary.html" class="btn btn-neutral float-right" title="Glossary" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="project3.html" class="btn btn-neutral float-left" title="Diffusion Coefficients and Critical Spectrum Search" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="project5.html" class="btn btn-neutral float-right" title="Analytic Function Expansion Nodal Method" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
