@@ -40,3 +40,23 @@ Glossary
         A python package used to create (in this case) .html files out of .rst
         files. Sphinx powers the creation of this page! More information at
         `<https://www.sphinx-doc.org/en/master/index.html>`_
+
+    latexocr
+        A python based picture to Latex software. This program generated many of
+        the equations displayed throughout the projects.
+        `<https://pix2tex.readthedocs.io/en/latest/>`_
+
+    serpentTools
+        A python based package built for reading Serpent output data. This package
+        is used extensively to interact with Serpent lattice calculations which are ingested
+        for analysis.
+        `<https://serpent-tools.readthedocs.io/en/master/>`_
+
+    sympy
+        A python library used for symbolic mathematics. Particularly useful when calculating moments of basis functions.
+        `<https://www.sympy.org/en/index.html>`_
+
+    Data Wrangler
+        A VS Code extension designed for code-centric viewing and cleaning of tabular data. This
+        is particularly useful while viewing data stored in dictionaries.
+        `<https://code.visualstudio.com/docs/datascience/data-wrangler>`_ 

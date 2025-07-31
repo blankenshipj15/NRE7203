@@ -1,0 +1,315 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Flux and Power Reconstruction &mdash; NRE7203 0.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css?v=7f9a90b1" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=d45e8c67"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            NRE7203
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../overview.html">Class Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributors.html">Contributers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html">Projects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">NRE7203</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Flux and Power Reconstruction</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/projects/powerReconstruct.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="flux-and-power-reconstruction">
+<span id="powerreconstruct"></span><h1>Flux and Power Reconstruction<a class="headerlink" href="#flux-and-power-reconstruction" title="Link to this heading"></a></h1>
+<p>Return to <a class="reference internal" href="project6.html#proj6"><span class="std std-ref">Two-Step Approach</span></a> documentation.</p>
+<p>The 2D nodal flux solutions are obtained using the analytic function
+expansion nodal method. Homogeneous corner-point flux values are found
+using a Fischer and Finnemann formulation.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">IPython.display</span><span class="w"> </span><span class="kn">import</span> <span class="n">Image</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">rcParams</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="n">FONT_SIZE</span> <span class="o">=</span> <span class="mi">16</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;figure.figsize&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">6</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">analytic_nodal_expansion</span><span class="w"> </span><span class="kn">import</span> <span class="n">AFEN2D</span><span class="p">,</span> <span class="n">meshPlot</span><span class="p">,</span> <span class="n">GetSerpentRes</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">serpentTools</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">serpentTools.settings</span><span class="w"> </span><span class="kn">import</span> <span class="n">rc</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import relevant data from the lattice step calculations and NEM solution</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">importnb</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">importnb</span><span class="w"> </span><span class="kn">import</span> <span class="n">imports</span>
+<span class="k">with</span> <span class="n">imports</span><span class="p">(</span><span class="s2">&quot;ipynb&quot;</span><span class="p">):</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">latticeParameters</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">latticeParameters</span><span class="w"> </span><span class="kn">import</span> <span class="n">cdf455</span><span class="p">,</span> <span class="n">cdf260</span><span class="p">,</span> <span class="n">ff455</span><span class="p">,</span> <span class="n">ff260</span><span class="p">,</span> <span class="n">surffluxhom</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># read in data</span>
+<span class="n">detFile</span> <span class="o">=</span> <span class="s1">&#39;./serpent/SMR/SMR_Ref_2D_2g_det0.m&#39;</span>
+<span class="n">resFile</span> <span class="o">=</span> <span class="s1">&#39;./serpent/SMR/SMR_Ref_2D_2g_res.m&#39;</span>
+<span class="n">rc</span><span class="p">[</span><span class="s2">&quot;serpentVersion&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;2.2.1&quot;</span>
+<span class="n">det</span> <span class="o">=</span> <span class="n">serpentTools</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">detFile</span><span class="p">)</span>
+<span class="n">xsF2</span><span class="p">,</span> <span class="n">bcF2</span> <span class="o">=</span> <span class="n">GetSerpentRes</span><span class="p">(</span><span class="n">resFile</span><span class="p">,</span> <span class="s1">&#39;F2&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">xsF11</span><span class="p">,</span> <span class="n">bcF11</span> <span class="o">=</span> <span class="n">GetSerpentRes</span><span class="p">(</span><span class="n">resFile</span><span class="p">,</span> <span class="s1">&#39;F11&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">xsF12</span><span class="p">,</span> <span class="n">bcF12</span> <span class="o">=</span> <span class="n">GetSerpentRes</span><span class="p">(</span><span class="n">resFile</span><span class="p">,</span> <span class="s1">&#39;F12&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">xsRef</span><span class="p">,</span> <span class="n">bcRef</span> <span class="o">=</span> <span class="n">GetSerpentRes</span><span class="p">(</span><span class="n">resFile</span><span class="p">,</span> <span class="s1">&#39;Ref&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+
+<span class="n">bc</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;F2&#39;</span><span class="p">:</span> <span class="n">bcF2</span><span class="p">,</span> <span class="s1">&#39;F11&#39;</span><span class="p">:</span> <span class="n">bcF11</span><span class="p">,</span> <span class="s1">&#39;F12&#39;</span><span class="p">:</span> <span class="n">bcF12</span><span class="p">,</span> <span class="s1">&#39;Ref&#39;</span><span class="p">:</span> <span class="n">bcRef</span><span class="p">}</span>
+<span class="n">xs</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;F2&#39;</span><span class="p">:</span> <span class="n">xsF2</span><span class="p">,</span> <span class="s1">&#39;F11&#39;</span><span class="p">:</span> <span class="n">xsF11</span><span class="p">,</span> <span class="s1">&#39;F12&#39;</span><span class="p">:</span> <span class="n">xsF12</span><span class="p">,</span> <span class="s1">&#39;Ref&#39;</span><span class="p">:</span> <span class="n">xsRef</span><span class="p">}</span>
+
+<span class="n">npins</span> <span class="o">=</span> <span class="mi">17</span>
+<span class="n">dx</span><span class="p">,</span> <span class="n">dy</span> <span class="o">=</span> <span class="mf">21.42</span><span class="p">,</span> <span class="mf">21.42</span>
+</pre></div>
+</div>
+<p>Build out the heterogeneous flux boundary condition dictionary</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">bcflux</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="k">for</span> <span class="n">univ</span> <span class="ow">in</span> <span class="n">bc</span><span class="p">:</span> <span class="c1"># defining BC for each universe</span>
+    <span class="n">bcflux</span><span class="p">[</span><span class="n">univ</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="c1"># store the heterogeneous surface and corner fluxes</span>
+    <span class="n">bcflux</span><span class="p">[</span><span class="n">univ</span><span class="p">][</span><span class="s1">&#39;av&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">bc</span><span class="p">[</span><span class="n">univ</span><span class="p">][</span><span class="s1">&#39;flux&#39;</span><span class="p">]</span>
+
+    <span class="n">bcflux</span><span class="p">[</span><span class="n">univ</span><span class="p">][</span><span class="s1">&#39;w&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">bc</span><span class="p">[</span><span class="n">univ</span><span class="p">][</span><span class="s1">&#39;wFlux&#39;</span><span class="p">]</span>
+    <span class="n">bcflux</span><span class="p">[</span><span class="n">univ</span><span class="p">][</span><span class="s1">&#39;e&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">bc</span><span class="p">[</span><span class="n">univ</span><span class="p">][</span><span class="s1">&#39;eFlux&#39;</span><span class="p">]</span>
+    <span class="n">bcflux</span><span class="p">[</span><span class="n">univ</span><span class="p">][</span><span class="s1">&#39;s&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">bc</span><span class="p">[</span><span class="n">univ</span><span class="p">][</span><span class="s1">&#39;sFlux&#39;</span><span class="p">]</span>
+    <span class="n">bcflux</span><span class="p">[</span><span class="n">univ</span><span class="p">][</span><span class="s1">&#39;n&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">bc</span><span class="p">[</span><span class="n">univ</span><span class="p">][</span><span class="s1">&#39;nFlux&#39;</span><span class="p">]</span>
+
+    <span class="n">bcflux</span><span class="p">[</span><span class="n">univ</span><span class="p">][</span><span class="s1">&#39;nw&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">bcflux</span><span class="p">[</span><span class="n">univ</span><span class="p">][</span><span class="s1">&#39;n&#39;</span><span class="p">]</span><span class="o">+</span><span class="n">bcflux</span><span class="p">[</span><span class="n">univ</span><span class="p">][</span><span class="s1">&#39;w&#39;</span><span class="p">]</span><span class="o">-</span><span class="n">bcflux</span><span class="p">[</span><span class="n">univ</span><span class="p">][</span><span class="s1">&#39;av&#39;</span><span class="p">]</span>
+    <span class="n">bcflux</span><span class="p">[</span><span class="n">univ</span><span class="p">][</span><span class="s1">&#39;ne&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">bcflux</span><span class="p">[</span><span class="n">univ</span><span class="p">][</span><span class="s1">&#39;n&#39;</span><span class="p">]</span><span class="o">+</span><span class="n">bcflux</span><span class="p">[</span><span class="n">univ</span><span class="p">][</span><span class="s1">&#39;e&#39;</span><span class="p">]</span><span class="o">-</span><span class="n">bcflux</span><span class="p">[</span><span class="n">univ</span><span class="p">][</span><span class="s1">&#39;av&#39;</span><span class="p">]</span>
+    <span class="n">bcflux</span><span class="p">[</span><span class="n">univ</span><span class="p">][</span><span class="s1">&#39;sw&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">bcflux</span><span class="p">[</span><span class="n">univ</span><span class="p">][</span><span class="s1">&#39;s&#39;</span><span class="p">]</span><span class="o">+</span><span class="n">bcflux</span><span class="p">[</span><span class="n">univ</span><span class="p">][</span><span class="s1">&#39;w&#39;</span><span class="p">]</span><span class="o">-</span><span class="n">bcflux</span><span class="p">[</span><span class="n">univ</span><span class="p">][</span><span class="s1">&#39;av&#39;</span><span class="p">]</span>
+    <span class="n">bcflux</span><span class="p">[</span><span class="n">univ</span><span class="p">][</span><span class="s1">&#39;se&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">bcflux</span><span class="p">[</span><span class="n">univ</span><span class="p">][</span><span class="s1">&#39;s&#39;</span><span class="p">]</span><span class="o">+</span><span class="n">bcflux</span><span class="p">[</span><span class="n">univ</span><span class="p">][</span><span class="s1">&#39;e&#39;</span><span class="p">]</span><span class="o">-</span><span class="n">bcflux</span><span class="p">[</span><span class="n">univ</span><span class="p">][</span><span class="s1">&#39;av&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Calculate the homogeneous corner-point fluxes using the heterogeneous
+surfaces fluxes and assembly CDFs</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Build homogeneous flux bc dictionary</span>
+<span class="n">bcfluxhom</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="k">for</span> <span class="n">univ</span> <span class="ow">in</span> <span class="n">bc</span><span class="p">:</span>
+    <span class="n">bcfluxhom</span><span class="p">[</span><span class="n">univ</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">bcfluxhom</span><span class="p">[</span><span class="n">univ</span><span class="p">][</span><span class="s1">&#39;av&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">bc</span><span class="p">[</span><span class="n">univ</span><span class="p">][</span><span class="s1">&#39;flux&#39;</span><span class="p">]</span>
+
+    <span class="c1"># Assign homogeneous surface fluxes from NEM solution</span>
+    <span class="n">bcfluxhom</span><span class="p">[</span><span class="n">univ</span><span class="p">][</span><span class="s1">&#39;w&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">surffluxhom</span><span class="p">[</span><span class="n">univ</span><span class="p">][</span><span class="s1">&#39;w&#39;</span><span class="p">]</span>
+    <span class="n">bcfluxhom</span><span class="p">[</span><span class="n">univ</span><span class="p">][</span><span class="s1">&#39;e&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">surffluxhom</span><span class="p">[</span><span class="n">univ</span><span class="p">][</span><span class="s1">&#39;e&#39;</span><span class="p">]</span>
+    <span class="n">bcfluxhom</span><span class="p">[</span><span class="n">univ</span><span class="p">][</span><span class="s1">&#39;s&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">surffluxhom</span><span class="p">[</span><span class="n">univ</span><span class="p">][</span><span class="s1">&#39;s&#39;</span><span class="p">]</span>
+    <span class="n">bcfluxhom</span><span class="p">[</span><span class="n">univ</span><span class="p">][</span><span class="s1">&#39;n&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">surffluxhom</span><span class="p">[</span><span class="n">univ</span><span class="p">][</span><span class="s1">&#39;n&#39;</span><span class="p">]</span>
+
+    <span class="c1"># Heterogeneous surface flux BCs</span>
+    <span class="c1"># bcfluxhom[univ][&#39;w&#39;] = bc[univ][&#39;wFlux&#39;]</span>
+    <span class="c1"># bcfluxhom[univ][&#39;e&#39;] = bc[univ][&#39;eFlux&#39;]</span>
+    <span class="c1"># bcfluxhom[univ][&#39;s&#39;] = bc[univ][&#39;sFlux&#39;]</span>
+    <span class="c1"># bcfluxhom[univ][&#39;n&#39;] = bc[univ][&#39;nFlux&#39;]</span>
+
+
+<span class="c1"># Calculate homogeneous cornerpoint fluxes</span>
+<span class="c1"># F12</span>
+<span class="n">bcfluxhom</span><span class="p">[</span><span class="s1">&#39;F12&#39;</span><span class="p">][</span><span class="s1">&#39;ne&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">bcflux</span><span class="p">[</span><span class="s1">&#39;F12&#39;</span><span class="p">][</span><span class="s1">&#39;ne&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">bcflux</span><span class="p">[</span><span class="s1">&#39;Ref&#39;</span><span class="p">][</span><span class="s1">&#39;nw&#39;</span><span class="p">])</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">cdf260</span><span class="p">)</span>
+<span class="n">bcfluxhom</span><span class="p">[</span><span class="s1">&#39;F12&#39;</span><span class="p">][</span><span class="s1">&#39;nw&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">bcflux</span><span class="p">[</span><span class="s1">&#39;F12&#39;</span><span class="p">][</span><span class="s1">&#39;nw&#39;</span><span class="p">])</span><span class="o">/</span><span class="p">(</span><span class="n">cdf260</span><span class="p">)</span>
+<span class="n">bcfluxhom</span><span class="p">[</span><span class="s1">&#39;F12&#39;</span><span class="p">][</span><span class="s1">&#39;sw&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">bcflux</span><span class="p">[</span><span class="s1">&#39;F12&#39;</span><span class="p">][</span><span class="s1">&#39;sw&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">bcflux</span><span class="p">[</span><span class="s1">&#39;F2&#39;</span><span class="p">][</span><span class="s1">&#39;nw&#39;</span><span class="p">])</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">cdf260</span><span class="p">)</span>
+<span class="n">bcfluxhom</span><span class="p">[</span><span class="s1">&#39;F12&#39;</span><span class="p">][</span><span class="s1">&#39;se&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">bcflux</span><span class="p">[</span><span class="s1">&#39;F12&#39;</span><span class="p">][</span><span class="s1">&#39;se&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">bcflux</span><span class="p">[</span><span class="s1">&#39;Ref&#39;</span><span class="p">][</span><span class="s1">&#39;sw&#39;</span><span class="p">]</span><span class="o">+</span>
+                       <span class="n">bcflux</span><span class="p">[</span><span class="s1">&#39;F2&#39;</span><span class="p">][</span><span class="s1">&#39;ne&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">bcflux</span><span class="p">[</span><span class="s1">&#39;F11&#39;</span><span class="p">][</span><span class="s1">&#39;nw&#39;</span><span class="p">])</span><span class="o">/</span><span class="p">(</span><span class="mi">4</span><span class="o">*</span><span class="n">cdf260</span><span class="p">)</span>
+
+<span class="c1"># F2</span>
+<span class="n">bcfluxhom</span><span class="p">[</span><span class="s1">&#39;F2&#39;</span><span class="p">][</span><span class="s1">&#39;ne&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">bcflux</span><span class="p">[</span><span class="s1">&#39;F12&#39;</span><span class="p">][</span><span class="s1">&#39;se&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">bcflux</span><span class="p">[</span><span class="s1">&#39;Ref&#39;</span><span class="p">][</span><span class="s1">&#39;sw&#39;</span><span class="p">]</span><span class="o">+</span>
+                       <span class="n">bcflux</span><span class="p">[</span><span class="s1">&#39;F2&#39;</span><span class="p">][</span><span class="s1">&#39;ne&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">bcflux</span><span class="p">[</span><span class="s1">&#39;F11&#39;</span><span class="p">][</span><span class="s1">&#39;nw&#39;</span><span class="p">])</span><span class="o">/</span><span class="p">(</span><span class="mi">4</span><span class="o">*</span><span class="n">cdf455</span><span class="p">)</span>
+<span class="n">bcfluxhom</span><span class="p">[</span><span class="s1">&#39;F2&#39;</span><span class="p">][</span><span class="s1">&#39;nw&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">bcflux</span><span class="p">[</span><span class="s1">&#39;F12&#39;</span><span class="p">][</span><span class="s1">&#39;sw&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">bcflux</span><span class="p">[</span><span class="s1">&#39;F2&#39;</span><span class="p">][</span><span class="s1">&#39;nw&#39;</span><span class="p">])</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">cdf455</span><span class="p">)</span>
+<span class="n">bcfluxhom</span><span class="p">[</span><span class="s1">&#39;F2&#39;</span><span class="p">][</span><span class="s1">&#39;sw&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">bcflux</span><span class="p">[</span><span class="s1">&#39;F2&#39;</span><span class="p">][</span><span class="s1">&#39;sw&#39;</span><span class="p">])</span><span class="o">/</span><span class="p">(</span><span class="n">cdf455</span><span class="p">)</span>
+<span class="n">bcfluxhom</span><span class="p">[</span><span class="s1">&#39;F2&#39;</span><span class="p">][</span><span class="s1">&#39;se&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">bcflux</span><span class="p">[</span><span class="s1">&#39;F2&#39;</span><span class="p">][</span><span class="s1">&#39;se&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">bcflux</span><span class="p">[</span><span class="s1">&#39;F11&#39;</span><span class="p">][</span><span class="s1">&#39;sw&#39;</span><span class="p">])</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">cdf455</span><span class="p">)</span>
+
+<span class="c1"># F11</span>
+<span class="n">bcfluxhom</span><span class="p">[</span><span class="s1">&#39;F11&#39;</span><span class="p">][</span><span class="s1">&#39;ne&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">bcflux</span><span class="p">[</span><span class="s1">&#39;F11&#39;</span><span class="p">][</span><span class="s1">&#39;ne&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">bcflux</span><span class="p">[</span><span class="s1">&#39;Ref&#39;</span><span class="p">][</span><span class="s1">&#39;se&#39;</span><span class="p">])</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">cdf260</span><span class="p">)</span>
+<span class="n">bcfluxhom</span><span class="p">[</span><span class="s1">&#39;F11&#39;</span><span class="p">][</span><span class="s1">&#39;nw&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">bcflux</span><span class="p">[</span><span class="s1">&#39;F12&#39;</span><span class="p">][</span><span class="s1">&#39;se&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">bcflux</span><span class="p">[</span><span class="s1">&#39;Ref&#39;</span><span class="p">][</span><span class="s1">&#39;sw&#39;</span><span class="p">]</span><span class="o">+</span>
+                       <span class="n">bcflux</span><span class="p">[</span><span class="s1">&#39;F2&#39;</span><span class="p">][</span><span class="s1">&#39;ne&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">bcflux</span><span class="p">[</span><span class="s1">&#39;F11&#39;</span><span class="p">][</span><span class="s1">&#39;nw&#39;</span><span class="p">])</span><span class="o">/</span><span class="p">(</span><span class="mi">4</span><span class="o">*</span><span class="n">cdf260</span><span class="p">)</span>
+<span class="n">bcfluxhom</span><span class="p">[</span><span class="s1">&#39;F11&#39;</span><span class="p">][</span><span class="s1">&#39;sw&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">bcflux</span><span class="p">[</span><span class="s1">&#39;F2&#39;</span><span class="p">][</span><span class="s1">&#39;se&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">bcflux</span><span class="p">[</span><span class="s1">&#39;F11&#39;</span><span class="p">][</span><span class="s1">&#39;sw&#39;</span><span class="p">])</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">cdf260</span><span class="p">)</span>
+<span class="n">bcfluxhom</span><span class="p">[</span><span class="s1">&#39;F11&#39;</span><span class="p">][</span><span class="s1">&#39;se&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">bcflux</span><span class="p">[</span><span class="s1">&#39;F11&#39;</span><span class="p">][</span><span class="s1">&#39;se&#39;</span><span class="p">])</span><span class="o">/</span><span class="p">(</span><span class="n">cdf260</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Develop flux solutions for fuel assemblies using specified assembly and
+AFEN method</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">xvals</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="n">dx</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="o">+</span><span class="n">dx</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">npins</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">xvals</span> <span class="o">=</span> <span class="mf">0.5</span><span class="o">*</span><span class="p">(</span><span class="n">xvals</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span><span class="o">+</span><span class="n">xvals</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">yvals</span> <span class="o">=</span> <span class="n">xvals</span>
+<span class="n">universes</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;F2&#39;</span><span class="p">,</span> <span class="s1">&#39;F12&#39;</span><span class="p">,</span> <span class="s1">&#39;F11&#39;</span><span class="p">]</span>
+<span class="n">homogeneousFlux</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="n">pinPower</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">univId</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">universes</span><span class="p">):</span>
+    <span class="n">homogeneousFlux</span><span class="p">[</span><span class="n">univId</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">univres</span> <span class="o">=</span> <span class="n">AFEN2D</span><span class="p">(</span><span class="n">xs</span><span class="p">[</span><span class="n">univId</span><span class="p">],</span> <span class="n">bcfluxhom</span><span class="p">[</span><span class="n">univId</span><span class="p">],</span> <span class="n">dx</span><span class="p">,</span> <span class="n">symbolic</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">univres</span><span class="o">.</span><span class="n">ReconstructFlux</span><span class="p">()</span>
+    <span class="n">univres</span><span class="o">.</span><span class="n">GetFlux2D</span><span class="p">(</span><span class="n">xvals</span><span class="p">,</span> <span class="n">yvals</span><span class="p">)</span>
+    <span class="n">homogeneousFlux</span><span class="p">[</span><span class="n">univId</span><span class="p">]</span> <span class="o">=</span> <span class="n">univres</span><span class="o">.</span><span class="n">flux2d</span>
+
+    <span class="c1"># Compute power</span>
+    <span class="k">if</span> <span class="n">univId</span> <span class="o">==</span> <span class="s1">&#39;F2&#39;</span><span class="p">:</span>
+        <span class="n">pinPower</span><span class="p">[</span><span class="n">univId</span><span class="p">]</span> <span class="o">=</span> <span class="n">univres</span><span class="o">.</span><span class="n">ReconstructPower</span><span class="p">(</span><span class="n">homogeneousFlux</span><span class="p">[</span><span class="n">univId</span><span class="p">],</span> <span class="n">ff455</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">univId</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;F11&#39;</span><span class="p">,</span> <span class="s1">&#39;F12&#39;</span><span class="p">]:</span>
+        <span class="n">pinPower</span><span class="p">[</span><span class="n">univId</span><span class="p">]</span> <span class="o">=</span> <span class="n">univres</span><span class="o">.</span><span class="n">ReconstructPower</span><span class="p">(</span><span class="n">homogeneousFlux</span><span class="p">[</span><span class="n">univId</span><span class="p">],</span> <span class="n">ff260</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Generate data for reference solution power distribution</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># F2</span>
+<span class="n">fastHetFluxF2</span> <span class="o">=</span> <span class="n">det</span><span class="o">.</span><span class="n">detectors</span><span class="p">[</span><span class="s1">&#39;flux_fast&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">tallies</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">npins</span><span class="p">,</span> <span class="mi">0</span><span class="p">:</span><span class="n">npins</span><span class="p">]</span>
+<span class="n">thermalHetFluxF2</span> <span class="o">=</span> <span class="n">det</span><span class="o">.</span><span class="n">detectors</span><span class="p">[</span><span class="s1">&#39;flux_thermal&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">tallies</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">npins</span><span class="p">,</span> <span class="mi">0</span><span class="p">:</span><span class="n">npins</span><span class="p">]</span>
+<span class="n">fastPowerF2</span> <span class="o">=</span> <span class="n">det</span><span class="o">.</span><span class="n">detectors</span><span class="p">[</span><span class="s1">&#39;power_fast&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">tallies</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">npins</span><span class="p">,</span> <span class="mi">0</span><span class="p">:</span><span class="n">npins</span><span class="p">]</span>
+<span class="n">thermalPowerF2</span> <span class="o">=</span> <span class="n">det</span><span class="o">.</span><span class="n">detectors</span><span class="p">[</span><span class="s1">&#39;power_thermal&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">tallies</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">npins</span><span class="p">,</span> <span class="mi">0</span><span class="p">:</span><span class="n">npins</span><span class="p">]</span>
+<span class="n">totalPowerF2</span> <span class="o">=</span> <span class="n">fastPowerF2</span> <span class="o">+</span> <span class="n">thermalPowerF2</span>
+<span class="c1"># F11</span>
+<span class="n">fastHetFluxF11</span> <span class="o">=</span> <span class="n">det</span><span class="o">.</span><span class="n">detectors</span><span class="p">[</span><span class="s1">&#39;flux_fast&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">tallies</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">npins</span><span class="p">,</span> <span class="n">npins</span><span class="p">:]</span>
+<span class="n">thermalHetFluxF11</span> <span class="o">=</span> <span class="n">det</span><span class="o">.</span><span class="n">detectors</span><span class="p">[</span><span class="s1">&#39;flux_thermal&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">tallies</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">npins</span><span class="p">,</span> <span class="n">npins</span><span class="p">:]</span>
+<span class="n">fastPowerF11</span> <span class="o">=</span> <span class="n">det</span><span class="o">.</span><span class="n">detectors</span><span class="p">[</span><span class="s1">&#39;power_fast&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">tallies</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">npins</span><span class="p">,</span> <span class="n">npins</span><span class="p">:]</span>
+<span class="n">thermalPowerF11</span> <span class="o">=</span> <span class="n">det</span><span class="o">.</span><span class="n">detectors</span><span class="p">[</span><span class="s1">&#39;power_thermal&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">tallies</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">npins</span><span class="p">,</span> <span class="n">npins</span><span class="p">:]</span>
+<span class="n">totalPowerF11</span> <span class="o">=</span> <span class="n">fastPowerF11</span> <span class="o">+</span> <span class="n">thermalPowerF11</span>
+<span class="c1"># F12</span>
+<span class="n">fastHetFluxF12</span> <span class="o">=</span> <span class="n">det</span><span class="o">.</span><span class="n">detectors</span><span class="p">[</span><span class="s1">&#39;flux_fast&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">tallies</span><span class="p">[</span><span class="n">npins</span><span class="p">:,</span> <span class="mi">0</span><span class="p">:</span><span class="n">npins</span><span class="p">]</span>
+<span class="n">thermalHetFluxF12</span> <span class="o">=</span> <span class="n">det</span><span class="o">.</span><span class="n">detectors</span><span class="p">[</span><span class="s1">&#39;flux_thermal&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">tallies</span><span class="p">[</span><span class="n">npins</span><span class="p">:,</span> <span class="mi">0</span><span class="p">:</span><span class="n">npins</span><span class="p">]</span>
+<span class="n">fastPowerF12</span> <span class="o">=</span> <span class="n">det</span><span class="o">.</span><span class="n">detectors</span><span class="p">[</span><span class="s1">&#39;power_fast&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">tallies</span><span class="p">[</span><span class="n">npins</span><span class="p">:,</span> <span class="mi">0</span><span class="p">:</span><span class="n">npins</span><span class="p">]</span>
+<span class="n">thermalPowerF12</span> <span class="o">=</span> <span class="n">det</span><span class="o">.</span><span class="n">detectors</span><span class="p">[</span><span class="s1">&#39;power_thermal&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">tallies</span><span class="p">[</span><span class="n">npins</span><span class="p">:,</span> <span class="mi">0</span><span class="p">:</span><span class="n">npins</span><span class="p">]</span>
+<span class="n">totalPowerF12</span> <span class="o">=</span> <span class="n">fastPowerF12</span> <span class="o">+</span> <span class="n">thermalPowerF12</span>
+</pre></div>
+</div>
+<p>Plot power distributions for reference and reconstructed</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">meshPlot</span><span class="p">(</span><span class="n">totalPowerF2</span><span class="p">,</span> <span class="n">npins</span><span class="p">,</span> <span class="n">universes</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s1">&#39;power&#39;</span><span class="p">)</span>
+<span class="n">meshPlot</span><span class="p">(</span><span class="n">pinPower</span><span class="p">[</span><span class="s1">&#39;F2&#39;</span><span class="p">],</span> <span class="n">npins</span><span class="p">,</span> <span class="n">universes</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s1">&#39;power&#39;</span><span class="p">)</span>
+
+<span class="n">meshPlot</span><span class="p">(</span><span class="n">totalPowerF12</span><span class="p">,</span> <span class="n">npins</span><span class="p">,</span> <span class="n">universes</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="s1">&#39;power&#39;</span><span class="p">)</span>
+<span class="n">meshPlot</span><span class="p">(</span><span class="n">pinPower</span><span class="p">[</span><span class="s1">&#39;F12&#39;</span><span class="p">],</span> <span class="n">npins</span><span class="p">,</span> <span class="n">universes</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="s1">&#39;power&#39;</span><span class="p">)</span>
+
+<span class="n">meshPlot</span><span class="p">(</span><span class="n">totalPowerF11</span><span class="p">,</span> <span class="n">npins</span><span class="p">,</span> <span class="n">universes</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="s1">&#39;power&#39;</span><span class="p">)</span>
+<span class="n">meshPlot</span><span class="p">(</span><span class="n">pinPower</span><span class="p">[</span><span class="s1">&#39;F11&#39;</span><span class="p">],</span> <span class="n">npins</span><span class="p">,</span> <span class="n">universes</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="s1">&#39;power&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<img alt="../_images/powerReconstruct_14_0.png" src="../_images/powerReconstruct_14_0.png" />
+<img alt="../_images/powerReconstruct_14_1.png" src="../_images/powerReconstruct_14_1.png" />
+<img alt="../_images/powerReconstruct_14_2.png" src="../_images/powerReconstruct_14_2.png" />
+<img alt="../_images/powerReconstruct_14_3.png" src="../_images/powerReconstruct_14_3.png" />
+<img alt="../_images/powerReconstruct_14_4.png" src="../_images/powerReconstruct_14_4.png" />
+<img alt="../_images/powerReconstruct_14_5.png" src="../_images/powerReconstruct_14_5.png" />
+<p>Build relative error plots</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">totalPowerF2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">totalPowerF2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="n">totalPowerF2</span><span class="p">)</span>
+<span class="n">errorF2</span> <span class="o">=</span> <span class="mi">100</span><span class="o">*</span><span class="p">(</span><span class="n">totalPowerF2</span><span class="o">-</span><span class="n">pinPower</span><span class="p">[</span><span class="s1">&#39;F2&#39;</span><span class="p">])</span><span class="o">/</span><span class="p">(</span><span class="n">totalPowerF2</span><span class="p">)</span>
+
+<span class="n">totalPowerF12</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">totalPowerF12</span> <span class="o">==</span> <span class="mi">0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="n">totalPowerF12</span><span class="p">)</span>
+<span class="n">errorF12</span> <span class="o">=</span> <span class="mi">100</span><span class="o">*</span><span class="p">(</span><span class="n">totalPowerF12</span><span class="o">-</span><span class="n">pinPower</span><span class="p">[</span><span class="s1">&#39;F12&#39;</span><span class="p">])</span><span class="o">/</span><span class="p">(</span><span class="n">totalPowerF12</span><span class="p">)</span>
+
+<span class="n">totalPowerF11</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">totalPowerF11</span> <span class="o">==</span> <span class="mi">0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="n">totalPowerF11</span><span class="p">)</span>
+<span class="n">errorF11</span> <span class="o">=</span> <span class="mi">100</span><span class="o">*</span><span class="p">(</span><span class="n">totalPowerF11</span><span class="o">-</span><span class="n">pinPower</span><span class="p">[</span><span class="s1">&#39;F11&#39;</span><span class="p">])</span><span class="o">/</span><span class="p">(</span><span class="n">totalPowerF11</span><span class="p">)</span>
+
+<span class="n">meshPlot</span><span class="p">(</span><span class="n">errorF2</span><span class="p">,</span> <span class="n">npins</span><span class="p">,</span> <span class="s1">&#39;F2&#39;</span><span class="p">,</span> <span class="s1">&#39;relative error&#39;</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;coolwarm&#39;</span><span class="p">)</span>
+<span class="n">meshPlot</span><span class="p">(</span><span class="n">errorF12</span><span class="p">,</span> <span class="n">npins</span><span class="p">,</span> <span class="s1">&#39;F12&#39;</span><span class="p">,</span> <span class="s1">&#39;relative error&#39;</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;coolwarm&#39;</span><span class="p">)</span>
+<span class="n">meshPlot</span><span class="p">(</span><span class="n">errorF11</span><span class="p">,</span> <span class="n">npins</span><span class="p">,</span> <span class="s1">&#39;F11&#39;</span><span class="p">,</span> <span class="s1">&#39;relative error&#39;</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;coolwarm&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<img alt="../_images/powerReconstruct_16_0.png" src="../_images/powerReconstruct_16_0.png" />
+<img alt="../_images/powerReconstruct_16_1.png" src="../_images/powerReconstruct_16_1.png" />
+<img alt="../_images/powerReconstruct_16_2.png" src="../_images/powerReconstruct_16_2.png" />
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">errorF2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan_to_num</span><span class="p">(</span><span class="n">errorF2</span><span class="p">)</span>
+<span class="n">maxErrorF2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">errorF2</span><span class="p">)</span>
+<span class="n">averageAbsErrorF2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">average</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">errorF2</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The maximum error is </span><span class="si">{</span><span class="n">maxErrorF2</span><span class="si">}</span><span class="s2">% and the mean absolute error is </span><span class="si">{</span><span class="n">averageAbsErrorF2</span><span class="si">}</span><span class="s2">%.&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">The</span> <span class="n">maximum</span> <span class="n">error</span> <span class="ow">is</span> <span class="mf">5.867936391468032</span><span class="o">%</span> <span class="ow">and</span> <span class="n">the</span> <span class="n">mean</span> <span class="n">absolute</span> <span class="n">error</span> <span class="ow">is</span> <span class="mf">1.1390347278271205</span><span class="o">%.</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">errorF12</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan_to_num</span><span class="p">(</span><span class="n">errorF12</span><span class="p">)</span>
+<span class="n">maxErrorF12</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">errorF12</span><span class="p">)</span>
+<span class="n">averageAbsErrorF12</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">average</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">errorF12</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The maximum error is </span><span class="si">{</span><span class="n">maxErrorF12</span><span class="si">}</span><span class="s2">% and the mean absolute error is </span><span class="si">{</span><span class="n">averageAbsErrorF12</span><span class="si">}</span><span class="s2">%.&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">The</span> <span class="n">maximum</span> <span class="n">error</span> <span class="ow">is</span> <span class="mf">14.16044533652908</span><span class="o">%</span> <span class="ow">and</span> <span class="n">the</span> <span class="n">mean</span> <span class="n">absolute</span> <span class="n">error</span> <span class="ow">is</span> <span class="mf">2.6383209518641477</span><span class="o">%.</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">errorF11</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan_to_num</span><span class="p">(</span><span class="n">errorF11</span><span class="p">)</span>
+<span class="n">maxErrorF11</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">errorF11</span><span class="p">)</span>
+<span class="n">averageAbsErrorF11</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">average</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">errorF11</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The maximum error is </span><span class="si">{</span><span class="n">maxErrorF11</span><span class="si">}</span><span class="s2">% and the mean absolute error is </span><span class="si">{</span><span class="n">averageAbsErrorF11</span><span class="si">}</span><span class="s2">%.&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">The</span> <span class="n">maximum</span> <span class="n">error</span> <span class="ow">is</span> <span class="mf">14.18504491205774</span><span class="o">%</span> <span class="ow">and</span> <span class="n">the</span> <span class="n">mean</span> <span class="n">absolute</span> <span class="n">error</span> <span class="ow">is</span> <span class="mf">2.632173609101986</span><span class="o">%.</span>
+</pre></div>
+</div>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Blankenship J.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

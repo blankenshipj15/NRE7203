@@ -1,0 +1,385 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lattice Steps and NEM Solutions &mdash; NRE7203 0.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css?v=7f9a90b1" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=d45e8c67"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            NRE7203
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../overview.html">Class Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributors.html">Contributers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html">Projects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">NRE7203</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Lattice Steps and NEM Solutions</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/projects/latticeParameters.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="lattice-steps-and-nem-solutions">
+<span id="latticeparam"></span><h1>Lattice Steps and NEM Solutions<a class="headerlink" href="#lattice-steps-and-nem-solutions" title="Link to this heading"></a></h1>
+<p>Return to <a class="reference internal" href="project6.html#proj6"><span class="std std-ref">Two-Step Approach</span></a> documentation.</p>
+<p>The cross sections for the non-reflector fuel assemblies and the corner
+DFs are obtained from the infinite lattice calculations. These values
+are used in subsequent NEM and AFEN method calculations.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># import relevant packages</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">IPython.display</span><span class="w"> </span><span class="kn">import</span> <span class="n">Image</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">rcParams</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">serpentTools</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">serpentTools.settings</span><span class="w"> </span><span class="kn">import</span> <span class="n">rc</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">analytic_nodal_expansion</span><span class="w"> </span><span class="kn">import</span> <span class="n">AFEN2D</span><span class="p">,</span> <span class="n">meshPlot</span><span class="p">,</span> <span class="n">GetSerpentRes</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">NEM</span><span class="w"> </span><span class="kn">import</span> <span class="n">CartesianNem1D</span><span class="p">,</span> <span class="n">Plot1d</span>
+<span class="n">FONT_SIZE</span> <span class="o">=</span> <span class="mi">16</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;figure.figsize&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">6</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span> <span class="c1"># Set default figure size</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Read in Serpent data for each unique fuel assembly type</span>
+<span class="n">detFile455</span> <span class="o">=</span> <span class="s1">&#39;./serpent/Fuel_only/Fuel_455_2g_900K_det0.m&#39;</span>
+<span class="n">resFile455</span> <span class="o">=</span> <span class="s1">&#39;./serpent/Fuel_only/Fuel_455_2g_900K_res.m&#39;</span>
+<span class="n">detFile260</span> <span class="o">=</span> <span class="s1">&#39;./serpent/Fuel_only/Fuel_260_2g_det0.m&#39;</span>
+<span class="n">resFile260</span> <span class="o">=</span> <span class="s1">&#39;./serpent/Fuel_only/Fuel_260_2g_res.m&#39;</span>
+
+<span class="n">rc</span><span class="p">[</span><span class="s2">&quot;serpentVersion&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;2.2.1&quot;</span>
+<span class="n">det455</span> <span class="o">=</span> <span class="n">serpentTools</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">detFile455</span><span class="p">)</span>
+<span class="n">res455</span> <span class="o">=</span> <span class="n">serpentTools</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">resFile455</span><span class="p">)</span>
+<span class="n">det260</span> <span class="o">=</span> <span class="n">serpentTools</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">detFile260</span><span class="p">)</span>
+<span class="n">res260</span> <span class="o">=</span> <span class="n">serpentTools</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">resFile260</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>4.55% Enriched Fuel Assembly Data and 2.60% Enriched Fuel Assembly Data
+using GetSerpentRes</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">xs455</span><span class="p">,</span> <span class="n">bc455</span> <span class="o">=</span> <span class="n">GetSerpentRes</span><span class="p">(</span><span class="n">resFile455</span><span class="p">,</span> <span class="s1">&#39;F1&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">xs260</span><span class="p">,</span> <span class="n">bc260</span> <span class="o">=</span> <span class="n">GetSerpentRes</span><span class="p">(</span><span class="n">resFile260</span><span class="p">,</span> <span class="s1">&#39;F1&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+
+<span class="c1"># XS and BC stored as dictionaries</span>
+<span class="n">bc</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;F2&#39;</span><span class="p">:</span> <span class="n">bc455</span><span class="p">,</span> <span class="s1">&#39;F11&#39;</span><span class="p">:</span> <span class="n">bc260</span><span class="p">}</span>
+<span class="n">xs</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;F2&#39;</span><span class="p">:</span> <span class="n">xs455</span><span class="p">,</span> <span class="s1">&#39;F11&#39;</span><span class="p">:</span> <span class="n">xs260</span><span class="p">}</span>
+
+<span class="c1"># Calculating Corner Discontinuity Factors from infinite lattice results for each assembly (eq. 13.6)</span>
+<span class="n">cdf455</span> <span class="o">=</span> <span class="n">bc</span><span class="p">[</span><span class="s1">&#39;F2&#39;</span><span class="p">][</span><span class="s1">&#39;neFlux&#39;</span><span class="p">]</span><span class="o">/</span><span class="n">bc</span><span class="p">[</span><span class="s1">&#39;F2&#39;</span><span class="p">][</span><span class="s1">&#39;flux&#39;</span><span class="p">]</span>
+<span class="n">cdf260</span> <span class="o">=</span> <span class="n">bc</span><span class="p">[</span><span class="s1">&#39;F11&#39;</span><span class="p">][</span><span class="s1">&#39;neFlux&#39;</span><span class="p">]</span><span class="o">/</span><span class="n">bc</span><span class="p">[</span><span class="s1">&#39;F11&#39;</span><span class="p">][</span><span class="s1">&#39;flux&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Obtain Group-wise Form Functions</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">npins</span> <span class="o">=</span> <span class="mi">17</span>
+<span class="n">dx</span><span class="p">,</span> <span class="n">dy</span> <span class="o">=</span> <span class="mf">21.42</span><span class="p">,</span> <span class="mf">21.42</span>  <span class="c1"># cm  - assembly length</span>
+<span class="n">fastPower455</span> <span class="o">=</span> <span class="n">det455</span><span class="o">.</span><span class="n">detectors</span><span class="p">[</span><span class="s1">&#39;power_fast&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">tallies</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">npins</span><span class="p">,</span> <span class="mi">0</span><span class="p">:</span><span class="n">npins</span><span class="p">]</span>
+<span class="n">thermalPower455</span> <span class="o">=</span> <span class="n">det455</span><span class="o">.</span><span class="n">detectors</span><span class="p">[</span><span class="s1">&#39;power_thermal&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">tallies</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">npins</span><span class="p">,</span> <span class="mi">0</span><span class="p">:</span><span class="n">npins</span><span class="p">]</span>
+<span class="n">fastPower260</span> <span class="o">=</span> <span class="n">det260</span><span class="o">.</span><span class="n">detectors</span><span class="p">[</span><span class="s1">&#39;power_fast&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">tallies</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">npins</span><span class="p">,</span> <span class="mi">0</span><span class="p">:</span><span class="n">npins</span><span class="p">]</span>
+<span class="n">thermalPower260</span> <span class="o">=</span> <span class="n">det260</span><span class="o">.</span><span class="n">detectors</span><span class="p">[</span><span class="s1">&#39;power_thermal&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">tallies</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">npins</span><span class="p">,</span> <span class="mi">0</span><span class="p">:</span><span class="n">npins</span><span class="p">]</span>
+
+<span class="c1"># 4.55% form factors</span>
+<span class="n">ff455</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="n">ff455</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">fastPower455</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">average</span><span class="p">(</span><span class="n">fastPower455</span><span class="p">);</span> <span class="n">ff455</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">thermalPower455</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">average</span><span class="p">(</span><span class="n">thermalPower455</span><span class="p">)</span>
+
+<span class="c1"># 2.60% form factors</span>
+<span class="n">ff260</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="n">ff260</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">fastPower260</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">average</span><span class="p">(</span><span class="n">fastPower260</span><span class="p">);</span> <span class="n">ff260</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">thermalPower260</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">average</span><span class="p">(</span><span class="n">thermalPower260</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Generate mesh plots for form factors</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># plt.figure()</span>
+<span class="c1"># meshPlot(ff455[0], npins, &#39;F2 (Fast)&#39;, &#39;ff&#39;)</span>
+<span class="c1"># meshPlot(ff455[1], npins, &#39;F2 (Thermal)&#39;, &#39;ff&#39;)</span>
+<span class="c1"># meshPlot(ff260[0], npins, &#39;F11/F12 (Fast)&#39;, &#39;ff&#39;)</span>
+<span class="c1"># meshPlot(ff260[1], npins, &#39;F11/F12 (Thermal)&#39;, &#39;ff&#39;)</span>
+</pre></div>
+</div>
+<p>Begin Nodal Expansion Method (NEM) solution for full colorset</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">detFile</span> <span class="o">=</span> <span class="s1">&#39;./serpent/SMR/SMR_Ref_2D_2g_det0.m&#39;</span>
+<span class="n">resFile</span> <span class="o">=</span> <span class="s1">&#39;./serpent/SMR/SMR_Ref_2D_2g_res.m&#39;</span>
+
+<span class="n">det</span> <span class="o">=</span> <span class="n">serpentTools</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">detFile</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Solutions in the x-direction for row 1 (F2/F11) and row 2 (F12/Ref)</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">xtally</span> <span class="o">=</span> <span class="n">det</span><span class="o">.</span><span class="n">detectors</span><span class="p">[</span><span class="s1">&#39;flux_fast&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">x</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span>
+<span class="c1"># Row 1 Data</span>
+<span class="n">fastHetFluxX1</span> <span class="o">=</span> <span class="n">det</span><span class="o">.</span><span class="n">detectors</span><span class="p">[</span><span class="s1">&#39;flux_fast&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">tallies</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">npins</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">thermalHetFluxX1</span> <span class="o">=</span> <span class="n">det</span><span class="o">.</span><span class="n">detectors</span><span class="p">[</span><span class="s1">&#39;flux_thermal&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">tallies</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">npins</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">universesX1</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;F2&#39;</span><span class="p">,</span> <span class="s1">&#39;F11&#39;</span><span class="p">]</span>
+<span class="c1"># Row 2 Data</span>
+<span class="n">fastHetFluxX2</span> <span class="o">=</span> <span class="n">det</span><span class="o">.</span><span class="n">detectors</span><span class="p">[</span><span class="s1">&#39;flux_fast&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">tallies</span><span class="p">[</span><span class="n">npins</span><span class="p">:]</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">thermalHetFluxX2</span> <span class="o">=</span> <span class="n">det</span><span class="o">.</span><span class="n">detectors</span><span class="p">[</span><span class="s1">&#39;flux_thermal&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">tallies</span><span class="p">[</span><span class="n">npins</span><span class="p">:]</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">universesX2</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;F12&#39;</span><span class="p">,</span> <span class="s1">&#39;Ref&#39;</span><span class="p">]</span>
+
+<span class="n">xsX11</span><span class="p">,</span> <span class="n">bcX11</span> <span class="o">=</span> <span class="n">GetSerpentRes</span><span class="p">(</span><span class="n">resFile</span><span class="p">,</span> <span class="n">universesX1</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">timeDays</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">xsX12</span><span class="p">,</span> <span class="n">bcX12</span> <span class="o">=</span> <span class="n">GetSerpentRes</span><span class="p">(</span><span class="n">resFile</span><span class="p">,</span> <span class="n">universesX1</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">timeDays</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="c1"># Define transverse leakage terms</span>
+<span class="c1"># F2</span>
+<span class="n">trLeakageX11</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="n">trLeakageX11</span><span class="p">[</span><span class="s1">&#39;eL&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">bcX12</span><span class="p">[</span><span class="s1">&#39;nJnet&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">bcX12</span><span class="p">[</span><span class="s1">&#39;sJnet&#39;</span><span class="p">]</span>
+<span class="n">trLeakageX11</span><span class="p">[</span><span class="s1">&#39;eD&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">xsX12</span><span class="p">[</span><span class="s1">&#39;diff&#39;</span><span class="p">]</span>
+<span class="n">trLeakageX11</span><span class="p">[</span><span class="s1">&#39;edx&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dx</span>
+<span class="n">trLeakageX11</span><span class="p">[</span><span class="s1">&#39;wL&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">bcX11</span><span class="p">[</span><span class="s1">&#39;nJnet&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">bcX11</span><span class="p">[</span><span class="s1">&#39;sJnet&#39;</span><span class="p">]</span>
+<span class="n">trLeakageX11</span><span class="p">[</span><span class="s1">&#39;wD&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">xsX11</span><span class="p">[</span><span class="s1">&#39;diff&#39;</span><span class="p">]</span>
+<span class="n">trLeakageX11</span><span class="p">[</span><span class="s1">&#39;wdx&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dx</span>
+<span class="c1"># F11</span>
+<span class="n">trLeakageX12</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="n">trLeakageX12</span><span class="p">[</span><span class="s1">&#39;wL&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">bcX11</span><span class="p">[</span><span class="s1">&#39;nJnet&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">bcX11</span><span class="p">[</span><span class="s1">&#39;sJnet&#39;</span><span class="p">]</span>
+<span class="n">trLeakageX12</span><span class="p">[</span><span class="s1">&#39;wD&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">xsX11</span><span class="p">[</span><span class="s1">&#39;diff&#39;</span><span class="p">]</span>
+<span class="n">trLeakageX12</span><span class="p">[</span><span class="s1">&#39;wdx&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dx</span>
+<span class="n">trLeakageX12</span><span class="p">[</span><span class="s1">&#39;eL&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">bcX12</span><span class="p">[</span><span class="s1">&#39;nJnet&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">bcX12</span><span class="p">[</span><span class="s1">&#39;sJnet&#39;</span><span class="p">]</span>
+<span class="n">trLeakageX12</span><span class="p">[</span><span class="s1">&#39;eD&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">xsX12</span><span class="p">[</span><span class="s1">&#39;diff&#39;</span><span class="p">]</span>
+<span class="n">trLeakageX12</span><span class="p">[</span><span class="s1">&#39;edx&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dx</span>
+
+<span class="n">xvals</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="n">dx</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="o">+</span><span class="n">dx</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">npins</span><span class="p">)</span>
+<span class="c1"># F2</span>
+<span class="n">nemX11</span> <span class="o">=</span> <span class="n">CartesianNem1D</span><span class="p">(</span><span class="n">dx</span><span class="p">,</span> <span class="n">dy</span><span class="p">,</span> <span class="n">xsX11</span><span class="p">,</span> <span class="n">bcX11</span><span class="p">,</span> <span class="n">trLeakageX11</span><span class="p">,</span> <span class="n">symbolic</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">nemX11</span><span class="o">.</span><span class="n">TransverseLeakageCoef</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">)</span>
+<span class="n">nemX11</span><span class="o">.</span><span class="n">GetExpansionCoeffs</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;diff&#39;</span><span class="p">)</span>
+<span class="n">fluxX11</span> <span class="o">=</span> <span class="n">nemX11</span><span class="o">.</span><span class="n">GetHomogFlux</span><span class="p">([</span><span class="o">-</span><span class="n">dx</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">dx</span><span class="o">/</span><span class="mi">2</span><span class="p">])</span>
+<span class="c1"># F11</span>
+<span class="n">nemX12</span> <span class="o">=</span> <span class="n">CartesianNem1D</span><span class="p">(</span><span class="n">dx</span><span class="p">,</span> <span class="n">dy</span><span class="p">,</span> <span class="n">xsX12</span><span class="p">,</span> <span class="n">bcX12</span><span class="p">,</span> <span class="n">trLeakageX12</span><span class="p">,</span> <span class="n">symbolic</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">nemX12</span><span class="o">.</span><span class="n">TransverseLeakageCoef</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">)</span>
+<span class="n">nemX12</span><span class="o">.</span><span class="n">GetExpansionCoeffs</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;diff&#39;</span><span class="p">)</span>
+<span class="n">fluxX12</span> <span class="o">=</span> <span class="n">nemX12</span><span class="o">.</span><span class="n">GetHomogFlux</span><span class="p">([</span><span class="o">-</span><span class="n">dx</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">dx</span><span class="o">/</span><span class="mi">2</span><span class="p">])</span>
+
+<span class="c1"># Solution for row 2 data</span>
+<span class="n">xsX21</span><span class="p">,</span> <span class="n">bcX21</span> <span class="o">=</span> <span class="n">GetSerpentRes</span><span class="p">(</span><span class="n">resFile</span><span class="p">,</span> <span class="n">universesX2</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">timeDays</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">xsX22</span><span class="p">,</span> <span class="n">bcX22</span> <span class="o">=</span> <span class="n">GetSerpentRes</span><span class="p">(</span><span class="n">resFile</span><span class="p">,</span> <span class="n">universesX2</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">timeDays</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="c1"># Define transverse leakage terms</span>
+<span class="c1"># F12</span>
+<span class="n">trLeakageX21</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="n">trLeakageX21</span><span class="p">[</span><span class="s1">&#39;eL&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">bcX22</span><span class="p">[</span><span class="s1">&#39;nJnet&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">bcX22</span><span class="p">[</span><span class="s1">&#39;sJnet&#39;</span><span class="p">]</span>
+<span class="n">trLeakageX21</span><span class="p">[</span><span class="s1">&#39;eD&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">xsX22</span><span class="p">[</span><span class="s1">&#39;diff&#39;</span><span class="p">]</span>
+<span class="n">trLeakageX21</span><span class="p">[</span><span class="s1">&#39;edx&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dx</span>
+<span class="n">trLeakageX21</span><span class="p">[</span><span class="s1">&#39;wL&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">bcX21</span><span class="p">[</span><span class="s1">&#39;nJnet&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">bcX21</span><span class="p">[</span><span class="s1">&#39;sJnet&#39;</span><span class="p">]</span>
+<span class="n">trLeakageX21</span><span class="p">[</span><span class="s1">&#39;wD&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">xsX21</span><span class="p">[</span><span class="s1">&#39;diff&#39;</span><span class="p">]</span>
+<span class="n">trLeakageX21</span><span class="p">[</span><span class="s1">&#39;wdx&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dx</span>
+<span class="c1"># Ref</span>
+<span class="n">trLeakageX22</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="n">trLeakageX22</span><span class="p">[</span><span class="s1">&#39;wL&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">bcX21</span><span class="p">[</span><span class="s1">&#39;nJnet&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">bcX21</span><span class="p">[</span><span class="s1">&#39;sJnet&#39;</span><span class="p">]</span>
+<span class="n">trLeakageX22</span><span class="p">[</span><span class="s1">&#39;wD&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">xsX21</span><span class="p">[</span><span class="s1">&#39;diff&#39;</span><span class="p">]</span>
+<span class="n">trLeakageX22</span><span class="p">[</span><span class="s1">&#39;wdx&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dx</span>
+<span class="n">trLeakageX22</span><span class="p">[</span><span class="s1">&#39;eL&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">bcX22</span><span class="p">[</span><span class="s1">&#39;nJnet&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">bcX22</span><span class="p">[</span><span class="s1">&#39;sJnet&#39;</span><span class="p">]</span>
+<span class="n">trLeakageX22</span><span class="p">[</span><span class="s1">&#39;eD&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">xsX22</span><span class="p">[</span><span class="s1">&#39;diff&#39;</span><span class="p">]</span>
+<span class="n">trLeakageX22</span><span class="p">[</span><span class="s1">&#39;edx&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dx</span>
+
+<span class="c1"># F12</span>
+<span class="n">nemX21</span> <span class="o">=</span> <span class="n">CartesianNem1D</span><span class="p">(</span><span class="n">dx</span><span class="p">,</span> <span class="n">dy</span><span class="p">,</span> <span class="n">xsX21</span><span class="p">,</span> <span class="n">bcX21</span><span class="p">,</span> <span class="n">trLeakageX21</span><span class="p">,</span> <span class="n">symbolic</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">nemX21</span><span class="o">.</span><span class="n">TransverseLeakageCoef</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">)</span>
+<span class="n">nemX21</span><span class="o">.</span><span class="n">GetExpansionCoeffs</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;diff&#39;</span><span class="p">)</span>
+<span class="n">fluxX21</span> <span class="o">=</span> <span class="n">nemX21</span><span class="o">.</span><span class="n">GetHomogFlux</span><span class="p">([</span><span class="o">-</span><span class="n">dx</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">dx</span><span class="o">/</span><span class="mi">2</span><span class="p">])</span>
+<span class="c1"># Ref</span>
+<span class="n">nemX22</span> <span class="o">=</span> <span class="n">CartesianNem1D</span><span class="p">(</span><span class="n">dx</span><span class="p">,</span> <span class="n">dy</span><span class="p">,</span> <span class="n">xsX22</span><span class="p">,</span> <span class="n">bcX22</span><span class="p">,</span> <span class="n">trLeakageX22</span><span class="p">,</span> <span class="n">symbolic</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">nemX22</span><span class="o">.</span><span class="n">TransverseLeakageCoef</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">)</span>
+<span class="n">nemX22</span><span class="o">.</span><span class="n">GetExpansionCoeffs</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;diff&#39;</span><span class="p">)</span>
+<span class="n">fluxX22</span> <span class="o">=</span> <span class="n">nemX22</span><span class="o">.</span><span class="n">GetHomogFlux</span><span class="p">([</span><span class="o">-</span><span class="n">dx</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">dx</span><span class="o">/</span><span class="mi">2</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>Solutions in the y-direction for column 1 (F2/F12) and column 2
+(F11/Ref)</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">ytally</span> <span class="o">=</span> <span class="n">xtally</span>
+<span class="c1"># Column 1 data</span>
+<span class="n">fastHetFluxY1</span> <span class="o">=</span> <span class="n">det</span><span class="o">.</span><span class="n">detectors</span><span class="p">[</span><span class="s1">&#39;flux_fast&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">tallies</span><span class="p">[:,</span><span class="mi">0</span><span class="p">:</span><span class="n">npins</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">thermalHetFluxY1</span> <span class="o">=</span> <span class="n">det</span><span class="o">.</span><span class="n">detectors</span><span class="p">[</span><span class="s1">&#39;flux_thermal&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">tallies</span><span class="p">[:,</span><span class="mi">0</span><span class="p">:</span><span class="n">npins</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">universesY1</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;F2&#39;</span><span class="p">,</span> <span class="s1">&#39;F12&#39;</span><span class="p">]</span>
+<span class="c1"># Column 2 data</span>
+<span class="n">fastHetFluxY2</span> <span class="o">=</span> <span class="n">det</span><span class="o">.</span><span class="n">detectors</span><span class="p">[</span><span class="s1">&#39;flux_fast&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">tallies</span><span class="p">[:,</span><span class="n">npins</span><span class="p">:]</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">thermalHetFluxY2</span> <span class="o">=</span> <span class="n">det</span><span class="o">.</span><span class="n">detectors</span><span class="p">[</span><span class="s1">&#39;flux_thermal&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">tallies</span><span class="p">[:,</span><span class="n">npins</span><span class="p">:]</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">universesY2</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;F11&#39;</span><span class="p">,</span> <span class="s1">&#39;Ref&#39;</span><span class="p">]</span>
+
+<span class="n">xsY11</span><span class="p">,</span> <span class="n">bcY11</span> <span class="o">=</span> <span class="n">GetSerpentRes</span><span class="p">(</span><span class="n">resFile</span><span class="p">,</span> <span class="n">universesY1</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">timeDays</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">xsY21</span><span class="p">,</span> <span class="n">bcY21</span> <span class="o">=</span> <span class="n">GetSerpentRes</span><span class="p">(</span><span class="n">resFile</span><span class="p">,</span> <span class="n">universesY1</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">timeDays</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="c1"># Define transverse leakage terms</span>
+<span class="c1"># F2</span>
+<span class="n">trLeakageY11</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="n">trLeakageY11</span><span class="p">[</span><span class="s1">&#39;nL&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">bcY21</span><span class="p">[</span><span class="s1">&#39;eJnet&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">bcY21</span><span class="p">[</span><span class="s1">&#39;wJnet&#39;</span><span class="p">]</span>
+<span class="n">trLeakageY11</span><span class="p">[</span><span class="s1">&#39;nD&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">xsY21</span><span class="p">[</span><span class="s1">&#39;diff&#39;</span><span class="p">]</span>
+<span class="n">trLeakageY11</span><span class="p">[</span><span class="s1">&#39;ndy&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dy</span>
+<span class="n">trLeakageY11</span><span class="p">[</span><span class="s1">&#39;sL&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">bcY11</span><span class="p">[</span><span class="s1">&#39;eJnet&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">bcY11</span><span class="p">[</span><span class="s1">&#39;wJnet&#39;</span><span class="p">]</span>
+<span class="n">trLeakageY11</span><span class="p">[</span><span class="s1">&#39;sD&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">xsY11</span><span class="p">[</span><span class="s1">&#39;diff&#39;</span><span class="p">]</span>
+<span class="n">trLeakageY11</span><span class="p">[</span><span class="s1">&#39;sdy&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dy</span>
+<span class="c1"># F12</span>
+<span class="n">trLeakageY21</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="n">trLeakageY21</span><span class="p">[</span><span class="s1">&#39;sL&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">bcY11</span><span class="p">[</span><span class="s1">&#39;eJnet&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">bcY11</span><span class="p">[</span><span class="s1">&#39;wJnet&#39;</span><span class="p">]</span>
+<span class="n">trLeakageY21</span><span class="p">[</span><span class="s1">&#39;sD&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">xsY11</span><span class="p">[</span><span class="s1">&#39;diff&#39;</span><span class="p">]</span>
+<span class="n">trLeakageY21</span><span class="p">[</span><span class="s1">&#39;sdy&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dy</span>
+<span class="n">trLeakageY21</span><span class="p">[</span><span class="s1">&#39;nL&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">bcY21</span><span class="p">[</span><span class="s1">&#39;eJnet&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">bcY21</span><span class="p">[</span><span class="s1">&#39;wJnet&#39;</span><span class="p">]</span>
+<span class="n">trLeakageY21</span><span class="p">[</span><span class="s1">&#39;nD&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">xsY21</span><span class="p">[</span><span class="s1">&#39;diff&#39;</span><span class="p">]</span>
+<span class="n">trLeakageY21</span><span class="p">[</span><span class="s1">&#39;ndy&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dy</span>
+
+<span class="n">yvals</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="n">dy</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="o">+</span><span class="n">dy</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">npins</span><span class="p">)</span>
+<span class="c1"># F2</span>
+<span class="n">nemY11</span> <span class="o">=</span> <span class="n">CartesianNem1D</span><span class="p">(</span><span class="n">dx</span><span class="p">,</span> <span class="n">dy</span><span class="p">,</span> <span class="n">xsY11</span><span class="p">,</span> <span class="n">bcY11</span><span class="p">,</span> <span class="n">trLeakageY11</span><span class="p">,</span> <span class="n">symbolic</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">nemY11</span><span class="o">.</span><span class="n">TransverseLeakageCoef</span><span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">)</span>
+<span class="n">nemY11</span><span class="o">.</span><span class="n">GetExpansionCoeffs</span><span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="s1">&#39;diff&#39;</span><span class="p">)</span>
+<span class="n">fluxY11</span> <span class="o">=</span> <span class="n">nemY11</span><span class="o">.</span><span class="n">GetHomogFlux</span><span class="p">([</span><span class="o">-</span><span class="n">dy</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">dy</span><span class="o">/</span><span class="mi">2</span><span class="p">])</span>
+<span class="c1"># F12</span>
+<span class="n">nemY21</span> <span class="o">=</span> <span class="n">CartesianNem1D</span><span class="p">(</span><span class="n">dx</span><span class="p">,</span> <span class="n">dy</span><span class="p">,</span> <span class="n">xsY21</span><span class="p">,</span> <span class="n">bcY21</span><span class="p">,</span> <span class="n">trLeakageY21</span><span class="p">,</span> <span class="n">symbolic</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">nemY21</span><span class="o">.</span><span class="n">TransverseLeakageCoef</span><span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">)</span>
+<span class="n">nemY21</span><span class="o">.</span><span class="n">GetExpansionCoeffs</span><span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="s1">&#39;diff&#39;</span><span class="p">)</span>
+<span class="n">fluxY21</span> <span class="o">=</span> <span class="n">nemY21</span><span class="o">.</span><span class="n">GetHomogFlux</span><span class="p">([</span><span class="o">-</span><span class="n">dy</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">dy</span><span class="o">/</span><span class="mi">2</span><span class="p">])</span>
+
+<span class="c1"># Solution for column 2 data</span>
+<span class="n">xsY12</span><span class="p">,</span> <span class="n">bcY12</span> <span class="o">=</span> <span class="n">GetSerpentRes</span><span class="p">(</span><span class="n">resFile</span><span class="p">,</span> <span class="n">universesY2</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">timeDays</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">xsY22</span><span class="p">,</span> <span class="n">bcY22</span> <span class="o">=</span> <span class="n">GetSerpentRes</span><span class="p">(</span><span class="n">resFile</span><span class="p">,</span> <span class="n">universesY2</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">timeDays</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="c1"># F11</span>
+<span class="n">trLeakageY12</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="n">trLeakageY12</span><span class="p">[</span><span class="s1">&#39;nL&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">bcY22</span><span class="p">[</span><span class="s1">&#39;eJnet&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">bcY22</span><span class="p">[</span><span class="s1">&#39;wJnet&#39;</span><span class="p">]</span>
+<span class="n">trLeakageY12</span><span class="p">[</span><span class="s1">&#39;nD&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">xsY22</span><span class="p">[</span><span class="s1">&#39;diff&#39;</span><span class="p">]</span>
+<span class="n">trLeakageY12</span><span class="p">[</span><span class="s1">&#39;ndy&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dy</span>
+<span class="n">trLeakageY12</span><span class="p">[</span><span class="s1">&#39;sL&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">bcY12</span><span class="p">[</span><span class="s1">&#39;eJnet&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">bcY12</span><span class="p">[</span><span class="s1">&#39;wJnet&#39;</span><span class="p">]</span>
+<span class="n">trLeakageY12</span><span class="p">[</span><span class="s1">&#39;sD&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">xsY12</span><span class="p">[</span><span class="s1">&#39;diff&#39;</span><span class="p">]</span>
+<span class="n">trLeakageY12</span><span class="p">[</span><span class="s1">&#39;sdy&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dy</span>
+
+<span class="c1"># Ref</span>
+<span class="n">trLeakageY22</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="n">trLeakageY22</span><span class="p">[</span><span class="s1">&#39;nL&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">bcY22</span><span class="p">[</span><span class="s1">&#39;eJnet&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">bcY22</span><span class="p">[</span><span class="s1">&#39;wJnet&#39;</span><span class="p">]</span>
+<span class="n">trLeakageY22</span><span class="p">[</span><span class="s1">&#39;nD&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">xsY22</span><span class="p">[</span><span class="s1">&#39;diff&#39;</span><span class="p">]</span>
+<span class="n">trLeakageY22</span><span class="p">[</span><span class="s1">&#39;ndy&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dy</span>
+<span class="n">trLeakageY22</span><span class="p">[</span><span class="s1">&#39;sL&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">bcY12</span><span class="p">[</span><span class="s1">&#39;eJnet&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">bcY12</span><span class="p">[</span><span class="s1">&#39;wJnet&#39;</span><span class="p">]</span>
+<span class="n">trLeakageY22</span><span class="p">[</span><span class="s1">&#39;sD&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">xsY12</span><span class="p">[</span><span class="s1">&#39;diff&#39;</span><span class="p">]</span>
+<span class="n">trLeakageY22</span><span class="p">[</span><span class="s1">&#39;sdy&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dy</span>
+
+<span class="c1"># F11</span>
+<span class="n">nemY12</span> <span class="o">=</span> <span class="n">CartesianNem1D</span><span class="p">(</span><span class="n">dx</span><span class="p">,</span> <span class="n">dy</span><span class="p">,</span> <span class="n">xsY12</span><span class="p">,</span> <span class="n">bcY12</span><span class="p">,</span> <span class="n">trLeakageY12</span><span class="p">,</span> <span class="n">symbolic</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">nemY12</span><span class="o">.</span><span class="n">TransverseLeakageCoef</span><span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">)</span>
+<span class="n">nemY12</span><span class="o">.</span><span class="n">GetExpansionCoeffs</span><span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="s1">&#39;diff&#39;</span><span class="p">)</span>
+<span class="n">fluxY12</span> <span class="o">=</span> <span class="n">nemY12</span><span class="o">.</span><span class="n">GetHomogFlux</span><span class="p">([</span><span class="o">-</span><span class="n">dy</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">dy</span><span class="o">/</span><span class="mi">2</span><span class="p">])</span>
+<span class="c1"># Ref</span>
+<span class="n">nemY22</span> <span class="o">=</span> <span class="n">CartesianNem1D</span><span class="p">(</span><span class="n">dx</span><span class="p">,</span> <span class="n">dy</span><span class="p">,</span> <span class="n">xsY22</span><span class="p">,</span> <span class="n">bcY22</span><span class="p">,</span> <span class="n">trLeakageY22</span><span class="p">,</span> <span class="n">symbolic</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">nemY22</span><span class="o">.</span><span class="n">TransverseLeakageCoef</span><span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">)</span>
+<span class="n">nemY22</span><span class="o">.</span><span class="n">GetExpansionCoeffs</span><span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="s1">&#39;diff&#39;</span><span class="p">)</span>
+<span class="n">fluxY22</span> <span class="o">=</span> <span class="n">nemY22</span><span class="o">.</span><span class="n">GetHomogFlux</span><span class="p">([</span><span class="o">-</span><span class="n">dy</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">dy</span><span class="o">/</span><span class="mi">2</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>Obtain the homogeneous surface flux at each face</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># stored as dictionary in format used in AFEN calculation</span>
+<span class="n">surffluxhom</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;F2&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;w&quot;</span><span class="p">:</span> <span class="n">fluxX11</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span>
+        <span class="s2">&quot;s&quot;</span><span class="p">:</span> <span class="n">fluxY11</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span>
+        <span class="s2">&quot;e&quot;</span><span class="p">:</span> <span class="n">fluxX11</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span>
+        <span class="s2">&quot;n&quot;</span><span class="p">:</span> <span class="n">fluxY11</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;F11&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;w&quot;</span><span class="p">:</span> <span class="n">fluxX12</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span>
+        <span class="s2">&quot;s&quot;</span><span class="p">:</span> <span class="n">fluxY12</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span>
+        <span class="s2">&quot;e&quot;</span><span class="p">:</span> <span class="n">fluxX12</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span>
+        <span class="s2">&quot;n&quot;</span><span class="p">:</span> <span class="n">fluxY12</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span>
+
+    <span class="p">},</span>
+    <span class="s2">&quot;F12&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;w&quot;</span><span class="p">:</span> <span class="n">fluxX21</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span>
+        <span class="s2">&quot;s&quot;</span><span class="p">:</span> <span class="n">fluxY21</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span>
+        <span class="s2">&quot;e&quot;</span><span class="p">:</span> <span class="n">fluxX21</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span>
+        <span class="s2">&quot;n&quot;</span><span class="p">:</span> <span class="n">fluxY21</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;Ref&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;w&quot;</span><span class="p">:</span> <span class="n">fluxX22</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span>
+        <span class="s2">&quot;s&quot;</span><span class="p">:</span> <span class="n">fluxY22</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span>
+        <span class="s2">&quot;e&quot;</span><span class="p">:</span> <span class="n">fluxX22</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span>
+        <span class="s2">&quot;n&quot;</span><span class="p">:</span> <span class="n">fluxY22</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># plt.figure()</span>
+<span class="c1"># Plot1d(xvals-10.71, fluxY12[0,:], xlabel=&quot;position, cm&quot;,</span>
+<span class="c1">#        ylabel=&#39;Flux distribution&#39;,</span>
+<span class="c1">#        fontsize=16, marker=&quot;-r&quot;, markersize=6)</span>
+<span class="c1"># Plot1d(xvals+10.71, fluxY22[0,:], xlabel=&quot;position, cm&quot;,</span>
+<span class="c1">#        ylabel=&#39;Flux distribution&#39;,</span>
+<span class="c1">#        fontsize=16, marker=&quot;-b&quot;, markersize=6)</span>
+<span class="c1"># Plot1d(xtally, fastHetFluxY2, xlabel=&quot;position, cm&quot;,</span>
+<span class="c1">#        ylabel=&#39;Fast flux distribution&#39;,</span>
+<span class="c1">#        fontsize=16, marker=&quot;-k&quot;, markersize=6)</span>
+<span class="c1"># plt.show()</span>
+</pre></div>
+</div>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Blankenship J.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

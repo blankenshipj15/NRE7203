@@ -1,0 +1,306 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Two-Step Approach &mdash; NRE7203 0.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css?v=7f9a90b1" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=d45e8c67"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Glossary" href="../glossary.html" />
+    <link rel="prev" title="Analytic Function Expansion Nodal Method" href="project5.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            NRE7203
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../overview.html">Class Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributors.html">Contributers</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Projects</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="project1.html">Weighted Delta Tracking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="project2.html">Transport Correction Ratio</a></li>
+<li class="toctree-l2"><a class="reference internal" href="project3.html">Diffusion Coefficients and Critical Spectrum Search</a></li>
+<li class="toctree-l2"><a class="reference internal" href="project4.html">Nodal Expansion Method and Discontinuity Factors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="project5.html">Analytic Function Expansion Nodal Method</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Two-Step Approach</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#introduction">Introduction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#methodology">Methodology</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#results">Results</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#form-factors">Form Factors</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#power-reconstruction">Power Reconstruction</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#conclusions">Conclusions</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">NRE7203</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Projects</a></li>
+      <li class="breadcrumb-item active">Two-Step Approach</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/projects/project6.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="two-step-approach">
+<span id="proj6"></span><h1>Two-Step Approach<a class="headerlink" href="#two-step-approach" title="Link to this heading"></a></h1>
+<section id="introduction">
+<span id="introductiontwostep"></span><h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading"></a></h2>
+<p>Combining all aspects of the previous projects, this project seeks to transition from lattice calculations to power reconstruction using homogeneous nodal solutions.
+Again, considering the 2x2 SMR colorset, a set of Serpent MC runs are performed to develop individual infinite lattice data sets for the unique fuel assemblies.</p>
+<figure class="align-center" id="id1">
+<a class="reference internal image-reference" href="../_images/NEM_DF_6_0.png"><img alt="../_images/NEM_DF_6_0.png" src="../_images/NEM_DF_6_0.png" style="width: 600px;" />
+</a>
+<figcaption>
+<p><span class="caption-text">SMR colorset.</span><a class="headerlink" href="#id1" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<p>The above assemblies are: Upper left <strong>F12</strong> - 2.6% <span class="math notranslate nohighlight">\(UO_2\)</span> - Upper right <strong>Ref</strong> - stainless steel - Bottom left <strong>F2</strong> - 4.55% <span class="math notranslate nohighlight">\(UO_2\)</span> with 8% <span class="math notranslate nohighlight">\(Gd_2\)</span> <span class="math notranslate nohighlight">\(O_3\)</span> - Bottom right <strong>F11</strong> - 2.6% <span class="math notranslate nohighlight">\(UO_2\)</span>.
+From this, the two unique fuel assemblies are F2 and F11/F12. Therefore, infinite lattice calculations are performed specifically using the F2 and F11/F12 assemblies.
+In addition to the infinite lattice calculations, a full colorset solution is developed using Serpent.
+With the above-described data files and a goal to recreate the heterogeneous solution using nodal methods, the following steps are performed:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><dl class="simple">
+<dt>Perform lattice calculations to develop energy condensed homogenized group constants for the given assemblies.</dt><dd><ol class="loweralpha simple">
+<li><p>This is performed both for the full colorset and for fuel assembly only.</p></li>
+</ol>
+</dd>
+</dl>
+</li>
+<li><p>From the assembly only calculations, generate assembly discontinuity factors for both node surfaces and corners and calculate groupwise form factors for power reconstruction.</p></li>
+<li><dl class="simple">
+<dt>Develop 1D nodal expansion method (NEM) solutions for the full colorset using transverse leakage methods.</dt><dd><ol class="loweralpha simple">
+<li><p>Obtain the homogeneous surface fluxes for each node face.</p></li>
+<li><p>Store this data for use in power reconstruction.</p></li>
+</ol>
+</dd>
+</dl>
+</li>
+<li><p>Calculate homogenized corner-point fluxes using full colorset heterogeneous surface fluxes and assembly CDFs.</p></li>
+<li><p>Use the homogenized surface fluxes, corner-point fluxes, and node average fluxes to develop a 2D analytic function expansion nodal (AFEN) method flux distribution.</p></li>
+<li><p>Reconstruct the 2D power distribution using form factors and the AFEN calculated homogeneous flux distribution.</p></li>
+</ol>
+</div></blockquote>
+<p>Steps 1 and 2 are performed in the “pre-generation” phase while the remaining steps represent the general “core analysis” phase. It should be noted that a complete study would consider a range of operating conditions as a function of burnup (however, that is not completed here).
+Theory used for group condensation, diffusion coefficient generation, transport cross section calculation methods, discontinuity factors, NEM, and AFEN are covered in the previous project documentation.
+Updated theory used for solution reconstruction in this project is limited to the use of CDFs and form factors in reconstructing the full 2D power distribution.
+At the infinite lattice calculation phase for the unique fuel assemblies, CDFs are calculated using the heterogeneous group corner-point fluxes and the node averaged heterogeneous group fluxes. This can be represented as:</p>
+<div class="math notranslate nohighlight">
+\[CDF_{g}(j)=\frac{\phi_{c,g}^{het}(j)}{\overline{\phi_{g}^{het}(j)}}\]</div>
+<p>This information is used explicitly when recovering the homogeneous corner-point fluxes used in the AFEN solution.
+Additionally, it is assumed the infinite fuel assembly flux distribution does not differ greatly from the global flux distribution of the full colorset solution. Therefore, form factors are generated for unique fuel assemblies.
+The groupwise form factors are calculated as:</p>
+<div class="math notranslate nohighlight">
+\[f_{g}(x,y)=\frac{\kappa\Sigma_{f,g}(x,y)\phi_{g}^{het}(x,y)}{\kappa\overline{\Sigma_{f,g}}\overline{\phi_{g}^{het}(x,y)}}\]</div>
+<p>The form factors provide a way to modulate the homogeneous power to better match the heterogeneous full colorset power distribution. Therefore, the form factors are used in the power reconstruction.
+Heterogeneous corner-point fluxes are calculated using a Fischer and Finnemann method. This method calculates the heterogeneous corner-point flux as the sum of adjacent heterogeneous surface fluxes minus the node average flux.
+The heterogeneous corner-point flux is thus calculated as:</p>
+<div class="math notranslate nohighlight">
+\[\phi_{c,g}^{het}=\phi_{s1,g}^{het}+\phi_{s2,g}^{het}-\overline{\phi_{g}^{het}}\]</div>
+<p>In the 2x2 case, multiple corners share the same vertex. A smoothing is accomplished by performing a simple arithmetic average of the corner-point fluxes sharing the vertex.
+Finally, the homogeneous corner-point flux is recovered through:</p>
+<div class="math notranslate nohighlight">
+\[\phi_{g,c}^{hom}(j)=\frac{\overline{\phi_{g,c}^{het}}}{CDF_{g}(j)}\]</div>
+<p>where <em>j</em> represents the node.</p>
+<p>The Jupyter Notebook containing work completed for calculating the analytic function expansion nodal method homogenized flux distributions is provided below for reference:</p>
+<p><a class="reference internal" href="latticeParameters.html#latticeparam"><span class="std std-ref">Lattice Steps and NEM Solutions</span></a></p>
+<p><a class="reference internal" href="powerReconstruct.html#powerreconstruct"><span class="std std-ref">Flux and Power Reconstruction</span></a></p>
+</section>
+<section id="methodology">
+<h2>Methodology<a class="headerlink" href="#methodology" title="Link to this heading"></a></h2>
+<p>First, the assembly CDF values are calculated using infinite lattice Serpent solutions for the 4.55% and 2.6% fuel assemblies.
+In this same step the form factors are calculated. Next, a NEM solution is created, providing 1D flux profiles for each row and column of the 2x2 colorset.
+From this calculation the homogeneous surface fluxes are obtained. Finally, homogeneous corner-point fluxes are calculated. An AFEN solution gives the 2D homogeneous flux. Applying the form factors develops the reconstructed power distribution which is compared against the heterogeneous Serpent solution.</p>
+</section>
+<section id="results">
+<h2>Results<a class="headerlink" href="#results" title="Link to this heading"></a></h2>
+<section id="form-factors">
+<h3>Form Factors<a class="headerlink" href="#form-factors" title="Link to this heading"></a></h3>
+<p>In the first steps of developing the homogeneous solution, form factors are derived from the infinite lattice assembly level calculations for the unique fuel assemblies.
+The form factor distributions are provided below.</p>
+<figure class="align-center" id="id2">
+<a class="reference internal image-reference" href="../_images/F2_ff.png"><img alt="../_images/F2_ff.png" src="../_images/F2_ff.png" style="width: 600px;" />
+</a>
+<figcaption>
+<p><span class="caption-text">Form factors calculated for the 4.55% enriched fuel assembly (F2).</span><a class="headerlink" href="#id2" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<figure class="align-center" id="id3">
+<a class="reference internal image-reference" href="../_images/F11F12_ff.png"><img alt="../_images/F11F12_ff.png" src="../_images/F11F12_ff.png" style="width: 600px;" />
+</a>
+<figcaption>
+<p><span class="caption-text">Form factors calculated for the 2.60% enriched fuel assembly (F11/F12).</span><a class="headerlink" href="#id3" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<p>Additionally, CDFs are calculated at this stage. Only one CDF (2-groups) are considered for each assembly since they are calculated using symmetric assembly only information.
+The CDFs used for each assembly type are provided in the following table.</p>
+<p><em>Corner Discontinuity Factors</em></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Assembly</p></th>
+<th class="head"><p>Fast CDF</p></th>
+<th class="head"><p>Thermal CDF</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>4.55% (F2)</p></td>
+<td><p>1.0225</p></td>
+<td><p>1.0225</p></td>
+</tr>
+<tr class="row-odd"><td><p>2.60% (F11/F12)</p></td>
+<td><p>1.0034</p></td>
+<td><p>0.9395</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="power-reconstruction">
+<h3>Power Reconstruction<a class="headerlink" href="#power-reconstruction" title="Link to this heading"></a></h3>
+<p>A NEM solution is implemented to obtain homogeneous surface fluxes to act as boundary conditions in the AFEN solution.
+The CDFs convert the Fischer and Finnemann calculated average heterogeneous corner-point fluxes to the assembly homogeneous corner-point fluxes.
+Using this data and the average nodal flux, the homogeneous nodal flux distribution is generated. Using <cite>ReconstructPower</cite> function within the <cite>AFEN2D</cite> class, the reconstructed power distribution is obtained for each assembly.
+The data is presented first by showing the Serpent generated heterogeneous power distributions. The two-step approach generated homogenized nodal power is then presented for comparison.
+Finally, a relative error plot is presented with the maximum error and mean absolute error for each assembly.</p>
+<figure class="align-center" id="id4">
+<a class="reference internal image-reference" href="../_images/referencePower.png"><img alt="../_images/referencePower.png" src="../_images/referencePower.png" style="width: 600px;" />
+</a>
+<figcaption>
+<p><span class="caption-text">Reference power distribution.</span><a class="headerlink" href="#id4" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<figure class="align-center" id="id5">
+<a class="reference internal image-reference" href="../_images/reconstructedPower.png"><img alt="../_images/reconstructedPower.png" src="../_images/reconstructedPower.png" style="width: 600px;" />
+</a>
+<figcaption>
+<p><span class="caption-text">Reconstructed power distribution.</span><a class="headerlink" href="#id5" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<figure class="align-center" id="id6">
+<a class="reference internal image-reference" href="../_images/relativeError.png"><img alt="../_images/relativeError.png" src="../_images/relativeError.png" style="width: 600px;" />
+</a>
+<figcaption>
+<p><span class="caption-text">Relative error plots.</span><a class="headerlink" href="#id6" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<p><em>Solution Error per Assembly</em></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Assembly</p></th>
+<th class="head"><p>Maximum Error</p></th>
+<th class="head"><p>Mean Absolute Error</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>F2</p></td>
+<td><p>5.87%</p></td>
+<td><p>1.14%</p></td>
+</tr>
+<tr class="row-odd"><td><p>F11</p></td>
+<td><p>14.19%</p></td>
+<td><p>2.63%</p></td>
+</tr>
+<tr class="row-even"><td><p>F12</p></td>
+<td><p>14.16%</p></td>
+<td><p>2.64%</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="conclusions">
+<h2>Conclusions<a class="headerlink" href="#conclusions" title="Link to this heading"></a></h2>
+<p>From the above results, the two-step homogeneous nodal solution method developed average nodal power distributions within 3% error for all fuel assemblies.
+The locations with largest error were closest to the reflector while assembly F2 exhibited the lowest maximum error and average error.
+The solution could be improved with higher order methods for calculating the average heterogeneous corner-point fluxes which directly impact the homogeneous corner-point fluxes.
+However, the power reconstruction achieved higher fidelity than what was achieved in <a class="reference internal" href="project5.html#proj5"><span class="std std-ref">Analytic Function Expansion Nodal Method</span></a>. By including form factors, the homogeneous solution could better reproduce the spatial power fluctuations due to heterogeneities.
+This method, though not exact at the level of analysis performed, proves to be a valid option in conducting computationally inexpensive reactor physics calculations.</p>
+<p>Return to the top of the page: <a class="reference internal" href="#proj6"><span class="std std-ref">Two-Step Approach</span></a></p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="project5.html" class="btn btn-neutral float-left" title="Analytic Function Expansion Nodal Method" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../glossary.html" class="btn btn-neutral float-right" title="Glossary" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Blankenship J.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
