@@ -67,7 +67,7 @@ Finally, the homogeneous corner-point flux is recovered through:
 
 where *j* represents the node.
 
-The Jupyter Notebook containing work completed for calculating the analytic function expansion nodal method homogenized flux distributions is provided below for reference:
+The Jupyter Notebooks containing work completed for calculating the lattice parameters and power reconstruction are provided below for reference:
 
 :ref:`LatticeParam`
 
